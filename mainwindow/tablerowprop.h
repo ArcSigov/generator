@@ -2,7 +2,7 @@
 #define TABLE_ROW_PROPS_H
 
 
-enum class ColumnProp
+enum ColumnProp
 {
     MODULE_NUM = 1,
     FILE_PATH,

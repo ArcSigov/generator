@@ -28,19 +28,19 @@ namespace Ui {
 class Table;
 }
 
-enum column_pos
-{
-    MODULE = 0,
-    FILE_PATH,
-    FILE_TYPE,
-    FILE_DATE,
-    FILE_VERREV,
-    FILE_CRC,
-    FILE_DESCRIPTION,
-    FILE_RAM_ADDR,
-    FILE_PART_NUM,
-    COLUMNS_COUNT
-};
+//enum column_pos
+//{
+//    MODULE = 0,
+//    FILE_PATH,
+//    FILE_TYPE,
+//    FILE_DATE,
+//    FILE_VERREV,
+//    FILE_CRC,
+//    FILE_DESCRIPTION,
+//    FILE_RAM_ADDR,
+//    FILE_PART_NUM,
+//    COLUMNS_COUNT
+//};
 
 
 class FileGen
