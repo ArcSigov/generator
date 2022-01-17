@@ -5,8 +5,6 @@ TableModel::TableModel(QObject* parent, QVector<DataStorage> *_hash) :
 {
 
 }
-
-
 int TableModel::rowCount(const QModelIndex &parent) const
 {
     return storage ? storage->size() : 0;
@@ -19,14 +17,10 @@ int TableModel::columnCount(const QModelIndex &parent) const
 
 QVariant TableModel::data(const QModelIndex &index, int role) const
 {
-    QVariant v;
-
-
-    if (!index.isValid() || !storage)
-        return v;
+    if (!index.isValid())
+        return QVariant();
 
     auto s = storage->begin()+index.row();
-
     switch(role)
     {
         case Qt::DisplayRole	 : //  Ключевые данные, которые будут отображаться в виде текста. ( QString )
@@ -36,7 +30,6 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
         default:
             return QVariant();
     }
-
 }
 
 bool TableModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -45,29 +38,26 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
     {
         auto p = storage->begin()+index.row();
         p->SetValue(value,index.column());
+        emit dataChanged(index,index);
+        return true;
     }
+    return false;
 }
-
 
 //!< выполняет обработку флагов каждой конкретной ячейки
 //!< если ячейка не валидна, то возвращает отсутствие флагов
 Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
 {
-    if (!index.isValid() || !storage)
+    if (!index.isValid())
         return Qt::NoItemFlags;
 
     return Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 
-
 bool TableModel::insertRows(int row, int count, const QModelIndex &parent)
 {
     beginInsertRows(parent,row,row+count-1);
+    storage->push_back(DataStorage());
     endInsertRows();
-
-//    for (auto i = row; i < count; i++)
-//    {
-//        hash[i] = "";
-//    }
     return true;
 }

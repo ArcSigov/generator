@@ -4,7 +4,7 @@
 
 enum ColumnProp
 {
-    MODULE_NUM = 1,
+    MODULE_NUM,
     FILE_PATH,
     ID_DATE,
     VERSION,

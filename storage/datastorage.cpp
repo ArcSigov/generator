@@ -53,20 +53,28 @@ void DataStorage::SetValue(const QVariant& v, int column)
     {
         case MODULE_NUM:
              m_num = v.toInt();
+             break;
         case FILE_PATH:
              f_path = v.toString();
+             break;
         case ID_DATE:
              date   = v.toDate();
+             break;
         case VERSION:
              version = v.toInt();
+             break;
         case CRC:
              crc = v.toInt();
+             break;
         case DESCRIPTION:
              description = v.toString();
+             break;
         case RAM_ADDR:
              ram_addr = v.toInt();
+             break;
         case PART_N:
              n_part = v.toInt();
+             break;
         default : break;
     }
 }

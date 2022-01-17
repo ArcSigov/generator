@@ -10,8 +10,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QVector<DataStorage> h;
-    h.push_back(DataStorage());
-
     MainWindow w;
     TableModel t(nullptr,&h);
     w.setModelToTable(&t);

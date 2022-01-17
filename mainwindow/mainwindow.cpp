@@ -13,8 +13,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // ui->tableView->setItemDelegate(i);
 
     ui->setupUi(this);
-
-    //ui->tableView->model()->insertRow()
     ui->progressBar->setVisible(false);
     connect(ui->dob,SIGNAL(triggered()),this,SLOT(addRowToTable()));
 
@@ -28,7 +26,7 @@ MainWindow::~MainWindow()
 void MainWindow::addRowToTable()
 {
     qDebug() << ui->tableView->model()->rowCount();
-    //ui->tableView->model()->insertRows(ui->tableView->model()->rowCount(),1);
+    ui->tableView->model()->insertRows(ui->tableView->model()->rowCount(),1);
 }
 
 void MainWindow::setModelToTable(QAbstractTableModel *m)
