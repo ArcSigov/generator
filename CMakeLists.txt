@@ -14,6 +14,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 REQUIRED Widgets Gui Core)
 
+
+set                        (SEARCH_DIRS
+                            cfggenerator
+                            sregenerator
+                            table
+                            mainwindow
+                            storage)
+
 add_executable(generator    main.cpp
                             cfggenerator/cfggenerator.cpp
                             cfggenerator/cfggenerator.h
@@ -26,13 +34,16 @@ add_executable(generator    main.cpp
                             mainwindow/tableitemdelegate.cpp
                             mainwindow/mainwindow.h
                             mainwindow/tableview.h
-                            mainwindow/tablerowprop.h
+                            tablerowprop.h
                             mainwindow/tableitemdelegate.h
                             mainwindow/mainwindow.ui
+                            storage/datastorage.h
+                            storage/datastorage.cpp
                             )
-
 
 
 target_link_libraries(generator  Qt5::Widgets
                                  Qt5::Gui
                                  Qt5::Core )
+
+target_include_directories(generator PRIVATE ${SEARCH_DIRS})

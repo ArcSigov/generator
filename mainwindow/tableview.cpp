@@ -1,17 +1,15 @@
 #include "tableview.h"
 #include <QDebug>
-TableModel::TableModel(QObject* parent) : QAbstractTableModel(parent)
+TableModel::TableModel(QObject* parent, QVector<DataStorage> *_hash) :
+    QAbstractTableModel(parent), storage(_hash)
 {
-    qDebug(__PRETTY_FUNCTION__);
-    hash[0][0]= QString("");
 
 }
 
 
 int TableModel::rowCount(const QModelIndex &parent) const
 {
-    qDebug(__PRETTY_FUNCTION__);
-    return hash.size();
+    return storage ? storage->size() : 0;
 }
 
 int TableModel::columnCount(const QModelIndex &parent) const
@@ -21,54 +19,33 @@ int TableModel::columnCount(const QModelIndex &parent) const
 
 QVariant TableModel::data(const QModelIndex &index, int role) const
 {
-
-    qDebug(__PRETTY_FUNCTION__);
-    if (!index.isValid())
-        return QVariant();
+    QVariant v;
 
 
-    auto column = index.column();
-    auto row    = index.row();
+    if (!index.isValid() || !storage)
+        return v;
 
-    switch(column)
-    {
-    case     MODULE_NUM:
-    case     FILE_PATH:
-    case     ID_DATE:
-    case     VERSION:
-    case     CRC:
-    case     DESCRIPTION:
-    case     RAM_ADDR:
-    case     PART_N:
-
-    }
-
-
+    auto s = storage->begin()+index.row();
 
     switch(role)
     {
         case Qt::DisplayRole	 : //  Ключевые данные, которые будут отображаться в виде текста. ( QString )
-        {
-            hash.at(row)[column] = "";
-        }
-        //case Qt::DecorationRole  : //  Данные для оформления в виде значка. ( QColor , QIcon или QPixmap )
         case Qt::EditRole        : //  Данные в форме удобной для редактирования в редакторе. ( QString )
-        //case Qt::ToolTipRole     : //  Данные, отображаемые во всплывающей подсказке элемента. ( QString )
-        //case Qt::StatusTipRole   : //  Данные отображаются в строке состояния. ( QString )
-        //case Qt::WhatsThisRole   : //  Данные, отображаемые для элемента в разделе «Что это?» режим. ( QString )
-        //case Qt::SizeHintRole    : //	Подсказка размера для элемента, который будет предоставлен представлениям. ( QРазмер )
-        default : break;
+             return s->GetValue(index.column());
+        //case Qt::DecorationRole  : //  Данные для оформления в виде значка. ( QColor , QIcon или QPixmap )
+        default:
+            return QVariant();
     }
 
-
-    return QVariant();
 }
 
 bool TableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    qDebug(__PRETTY_FUNCTION__);
-   // hash[index.row()] = value.toString();
-    //return true;
+    if (role == Qt::EditRole)
+    {
+        auto p = storage->begin()+index.row();
+        p->SetValue(value,index.column());
+    }
 }
 
 
@@ -76,7 +53,7 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
 //!< если ячейка не валидна, то возвращает отсутствие флагов
 Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || !storage)
         return Qt::NoItemFlags;
 
     return Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled;

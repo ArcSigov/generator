@@ -2,17 +2,16 @@
 #define TABLE_VIEW_H
 
 #include <QAbstractTableModel>
-#include <QHash>
-
+#include <QVector>
 #include "tablerowprop.h"
-
+#include "datastorage.h"
 
 
 class TableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit TableModel(QObject* parent = nullptr);
+    explicit TableModel(QObject* parent = nullptr,QVector<DataStorage>* _hash = nullptr);
     ~TableModel(){}
     Q_INVOKABLE virtual int rowCount(const QModelIndex &parent = QModelIndex())             const override;
     Q_INVOKABLE virtual int columnCount(const QModelIndex &parent = QModelIndex())          const override;
@@ -20,8 +19,9 @@ public:
     Q_INVOKABLE virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     Q_INVOKABLE virtual Qt::ItemFlags flags(const QModelIndex &index) const;
     virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    void setHash(QHash<int,DataStorage>*);
 private:
-    QHash<int,QVariant> hash; // данные по каждой ячейке таблицы
+    QVector<DataStorage>* storage; // данные по каждой ячейке таблицы
 };
 
 #endif
