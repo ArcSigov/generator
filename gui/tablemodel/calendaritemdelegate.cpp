@@ -17,7 +17,6 @@ QWidget* CalendarDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
     Q_UNUSED(index);
     QCalendarWidget* Calendar = new QCalendarWidget(parent);
     Calendar->setAutoFillBackground(true);
-    Calendar->setGeometry(option.rect);
     return Calendar;
 }
 
@@ -36,7 +35,7 @@ void CalendarDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, 
 void CalendarDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     Q_UNUSED(index);
-    editor->setGeometry(option.rect);
+    editor->setGeometry(255,255,255,255);
 }
 
 void CalendarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const

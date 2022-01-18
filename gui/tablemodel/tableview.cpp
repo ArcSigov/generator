@@ -12,7 +12,7 @@ int TableModel::rowCount(const QModelIndex &parent) const
 
 int TableModel::columnCount(const QModelIndex &parent) const
 {
-    return static_cast<int>(ColumnProp::COLUMN_COUNT);
+    return COLUMN_COUNT;
 }
 
 QVariant TableModel::data(const QModelIndex &index, int role) const
@@ -23,10 +23,11 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
     auto s = storage->begin()+index.row();
     switch(role)
     {
-        case Qt::DisplayRole	 : //  Ключевые данные, которые будут отображаться в виде текста. ( QString )
-        case Qt::EditRole        : //  Данные в форме удобной для редактирования в редакторе. ( QString )
+        case Qt::DisplayRole:
+        case Qt::EditRole:
              return s->GetValue(index.column());
-        //case Qt::DecorationRole  : //  Данные для оформления в виде значка. ( QColor , QIcon или QPixmap )
+        case Qt::BackgroundRole:
+            return QBrush((s->isValid(index.column()) ? Qt::red : Qt::transparent));
         default:
             return QVariant();
     }
@@ -44,8 +45,6 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
     return false;
 }
 
-//!< выполняет обработку флагов каждой конкретной ячейки
-//!< если ячейка не валидна, то возвращает отсутствие флагов
 Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
 {
     if (!index.isValid())
@@ -71,3 +70,40 @@ bool TableModel::removeRows(int row, int count, const QModelIndex &parent)
     endRemoveRows();
     return true;
 }
+
+
+QVariant TableModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (role == Qt::DisplayRole )
+    {
+        if (orientation == Qt::Horizontal)
+        {
+        switch(section)
+        {
+        case MODULE_NUM:
+            return QString("Адрес");
+        case FILE_PATH:
+            return QString("Файл");
+        case ID_DATE:
+            return QString("Дата");
+        case VERSION:
+            return QString("Версия");
+        case CRC:
+            return QString("КС");
+        case DESCRIPTION:
+            return QString("Описание");
+        case RAM_ADDR:
+            return QString("Адрес ОЗУ");
+        case PART_N:
+            return QString("Раздел");
+        default:break;
+        }
+        }
+        else
+        {
+            return section;
+        }
+    }
+    return QVariant();
+}
+

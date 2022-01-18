@@ -22,17 +22,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->tableView->setItemDelegateForColumn(FILE_PATH,i);
     ui->tableView->setItemDelegateForColumn(ID_DATE,c);
-    connect(ui->dob,SIGNAL(triggered()),this,SLOT(addRowToTable()));
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::addRowToTable()
-{
-    ui->tableView->model()->insertRows(ui->tableView->model()->rowCount(),1);
 }
 
 void MainWindow::setModelToTable(QAbstractTableModel *m)
@@ -43,5 +39,11 @@ void MainWindow::setModelToTable(QAbstractTableModel *m)
 void MainWindow::on_rem_triggered()
 {
     //ui->tableView->model()->removeRows(ui->tableView->model().,1);
+}
+
+
+void MainWindow::on_dob_triggered()
+{
+    ui->tableView->model()->insertRows(ui->tableView->model()->rowCount(),1);
 }
 

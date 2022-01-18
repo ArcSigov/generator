@@ -3,6 +3,8 @@
 
 #include <QAbstractTableModel>
 #include <QVector>
+#include <QSize>
+#include <QBrush>
 #include "tablerowprop.h"
 #include "datastorage.h"
 
@@ -18,6 +20,7 @@ public:
     Q_INVOKABLE virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     Q_INVOKABLE virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     Q_INVOKABLE virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
+    Q_INVOKABLE virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
     virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
     void setHash(QHash<int,DataStorage>*);

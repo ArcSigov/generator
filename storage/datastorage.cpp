@@ -47,6 +47,30 @@ QVariant DataStorage::GetValue(int column)
     }
 }
 
+bool DataStorage::isValid(int column)
+{
+    switch (column)
+    {
+    case MODULE_NUM:
+        return m_num < 25 || m_num > 49;
+    case FILE_PATH:
+        return f_path.isEmpty();
+    case ID_DATE:
+        return date.isNull();
+    case VERSION:
+        return true;
+    case CRC:
+        return crc == 0;
+    case DESCRIPTION:
+        return description.isEmpty();
+    case RAM_ADDR:
+        return ram_addr == 0;
+    case PART_N:
+        return n_part < 1 || n_part > 3;
+    default : return 0;
+    }
+}
+
 void DataStorage::SetValue(const QVariant& v, int column)
 {
     switch (column)

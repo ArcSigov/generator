@@ -21,6 +21,7 @@ public:
     ~DataStorage();
     QVariant GetValue(int column);
     void     SetValue(const QVariant &v, int column);
+    bool     isValid(int column);
 };
 
 #endif // DATASTORAGE_H

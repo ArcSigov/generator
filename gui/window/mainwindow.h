@@ -10,16 +10,15 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    public:
-     explicit MainWindow(QWidget *parent = nullptr);
+        public:
+                 explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void setModelToTable(QAbstractTableModel*);
-    public slots:
-    void addRowToTable();
-    private slots:
-        void on_rem_triggered();
-
-    private:
+public slots:
+private slots:
+    void on_rem_triggered();
+    void on_dob_triggered();
+private:
     Ui::MainWindow *ui;
 };
 
