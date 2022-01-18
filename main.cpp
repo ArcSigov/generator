@@ -2,8 +2,7 @@
 #include "tableview.h"
 #include "datastorage.h"
 #include <QApplication>
-#include <QMap>
-
+#include <QVector>
 
 
 int main(int argc, char *argv[])

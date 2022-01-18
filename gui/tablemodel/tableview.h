@@ -19,6 +19,7 @@ public:
     Q_INVOKABLE virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     Q_INVOKABLE virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
     virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+    virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
     void setHash(QHash<int,DataStorage>*);
 private:
     QVector<DataStorage>* storage; // данные по каждой ячейке таблицы

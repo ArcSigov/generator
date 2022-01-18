@@ -16,7 +16,10 @@ class MainWindow : public QMainWindow
     void setModelToTable(QAbstractTableModel*);
     public slots:
     void addRowToTable();
-private:
+    private slots:
+        void on_rem_triggered();
+
+    private:
     Ui::MainWindow *ui;
 };
 

@@ -19,7 +19,9 @@ set                        (SEARCH_DIRS
                             cfggenerator
                             sregenerator
                             table
-                            mainwindow
+                            gui
+                            gui/window
+                            gui/tablemodel
                             storage)
 
 add_executable(generator    main.cpp
@@ -29,16 +31,21 @@ add_executable(generator    main.cpp
                             sregenerator/sregenerator.h
                             table/table.cpp
                             table/table.h
-                            mainwindow/mainwindow.cpp
-                            mainwindow/tableview.cpp
-                            mainwindow/tableitemdelegate.cpp
-                            mainwindow/mainwindow.h
-                            mainwindow/tableview.h
+                            gui/window/mainwindow.cpp
+                            gui/tablemodel/tableview.cpp
+                            gui/tablemodel/dialogitemdelegate.cpp
+                            gui/tablemodel/calendaritemdelegate.cpp
+                            gui/window/mainwindow.h
+                            gui/tablemodel/tableview.h
                             tablerowprop.h
-                            mainwindow/tableitemdelegate.h
-                            mainwindow/mainwindow.ui
+                            gui/tablemodel/dialogitemdelegate.h
+                            gui/tablemodel/calendaritemdelegate.h
+                            gui/window/mainwindow.ui
                             storage/datastorage.h
                             storage/datastorage.cpp
+                            gui/tablemodel/itempathwidget.h
+                            gui/tablemodel/itempathwidget.cpp
+                            gui/tablemodel/itempathwidget.ui
                             )
 
 

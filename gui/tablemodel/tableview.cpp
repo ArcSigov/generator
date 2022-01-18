@@ -61,3 +61,13 @@ bool TableModel::insertRows(int row, int count, const QModelIndex &parent)
     endInsertRows();
     return true;
 }
+
+bool TableModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+    if(storage->size() > row)
+        return false;
+    beginRemoveRows(parent,row,row+count-1);
+    storage->erase(storage->begin()+row);
+    endRemoveRows();
+    return true;
+}
