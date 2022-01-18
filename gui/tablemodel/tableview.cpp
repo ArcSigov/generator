@@ -78,26 +78,26 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
     {
         if (orientation == Qt::Horizontal)
         {
-        switch(section)
-        {
-        case MODULE_NUM:
-            return QString("Адрес");
-        case FILE_PATH:
-            return QString("Файл");
-        case ID_DATE:
-            return QString("Дата");
-        case VERSION:
-            return QString("Версия");
-        case CRC:
-            return QString("КС");
-        case DESCRIPTION:
-            return QString("Описание");
-        case RAM_ADDR:
-            return QString("Адрес ОЗУ");
-        case PART_N:
-            return QString("Раздел");
-        default:break;
-        }
+            switch(section)
+            {
+            case MODULE_NUM:
+                return tr("Адрес");
+            case FILE_PATH:
+                return tr("Файл");
+            case ID_DATE:
+                return tr("Дата");
+            case VERSION:
+                return tr("Версия");
+            case CRC:
+                return tr("КС");
+            case DESCRIPTION:
+                return tr("Описание");
+            case RAM_ADDR:
+                return tr("Адрес ОЗУ");
+            case PART_N:
+                return tr("Раздел");
+            default:break;
+            }
         }
         else
         {

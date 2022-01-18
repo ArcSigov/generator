@@ -58,7 +58,7 @@ bool DataStorage::isValid(int column)
     case ID_DATE:
         return date.isNull();
     case VERSION:
-        return true;
+        return false;
     case CRC:
         return crc == 0;
     case DESCRIPTION:
