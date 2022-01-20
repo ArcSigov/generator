@@ -7,9 +7,10 @@
 #include <QDebug>
 #include <QStyle>
 
-MainWindow::MainWindow(QVector<DataStorage> *s, QWidget *parent) :
+MainWindow::MainWindow(QVector<DataStorage> *_s, QWidget *parent):
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    s(_s)
 {
     TableModel* t = new TableModel(this,s);
     ui->setupUi(this);
@@ -42,4 +43,9 @@ void MainWindow::on_dob_triggered()
 void MainWindow::on_Open_triggered()
 {
     emit filePathSetted(QFileDialog::getOpenFileName(this, tr("Открыть файл"), " ", tr("table(*.tbl)")));
+}
+
+void MainWindow::updateTable(bool f)
+{
+    if (f) ui->tableView->model()->insertRows(ui->tableView->model()->rowCount(),s->size());
 }

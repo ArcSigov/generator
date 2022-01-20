@@ -5,7 +5,7 @@
 #include <QVector>
 #include "datastorage.h"
 #include "mainwindow.h"
-#include "abstractfilesystem.h"
+#include "tblfilereader.h"
 #include "tblfileinterpreter.h"
 
 class Generator : public QObject

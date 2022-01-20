@@ -16,8 +16,11 @@ void TblFileInterpreter::readFileData(const QVector<QStringList> &l)
         emit dataUpdated(false);
 
     for (const auto& it:l)
-    {   
-        v->push_back(DataStorage());
+    {
+        DataStorage d;
+        for (auto i = 0 ; i < it.size(); i++)
+            d.SetValue(it.at(i),i);
+        v->push_back(d);
     }
 
     emit dataUpdated(true);

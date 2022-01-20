@@ -3,10 +3,11 @@
 Generator::Generator(QObject *parent) : QObject(parent),
     w(new MainWindow(&s))
 {
-    AbstractFileSystem*  f = new FileSystem(this);
-    FileDataInterpreter* i = new TblFileInterpreter(&s,this);
-    connect(w,&MainWindow::filePathSetted,f,&AbstractFileSystem::readFile);
-    connect(f,&AbstractFileSystem::Result,i,&FileDataInterpreter::readFileData);
+    FileReader*  reader = new TblFileReader(this);
+    FileDataInterpreter* interpreter = new TblFileInterpreter(&s,this);
+    connect(w,&MainWindow::filePathSetted,reader,&FileReader::readFile);
+    connect(reader,&FileReader::Result,interpreter,&FileDataInterpreter::readFileData);
+    connect(interpreter,&FileDataInterpreter::dataUpdated,w,&MainWindow::updateTable);
 }
 
 Generator::~Generator()

@@ -1,19 +1,19 @@
-#include "abstractfilesystem.h"
+#include "tblfilereader.h"
 
 
-FileSystem::FileSystem(QObject* parent) :
-    AbstractFileSystem(parent)
+TblFileReader::TblFileReader(QObject* parent) :
+    FileReader(parent)
 {
 
 }
 
 
-FileSystem::~FileSystem()
+TblFileReader::~TblFileReader()
 {
 
 }
 
-void FileSystem::readFile(const QString &path)
+void TblFileReader::readFile(const QString &path)
 {
     QFile* f = new QFile(path,this);
     if (f->open(QIODevice::ReadOnly))
