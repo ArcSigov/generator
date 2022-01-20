@@ -22,7 +22,9 @@ set                        (SEARCH_DIRS
                             gui
                             gui/window
                             gui/tablemodel
-                            storage)
+                            storage
+                            filesystem
+                            datainterpreter)
 
 add_executable(generator    main.cpp
                             cfggenerator/cfggenerator.cpp
@@ -46,6 +48,13 @@ add_executable(generator    main.cpp
                             gui/tablemodel/itempathwidget.h
                             gui/tablemodel/itempathwidget.cpp
                             gui/tablemodel/itempathwidget.ui
+                            generator.cpp
+                            generator.h
+                            filesystem/abstractfilesystem.h
+                            filesystem/abstractfilesystem.cpp
+                            datainterpreter/interpreter.h
+                            datainterpreter/tblfileinterpreter.cpp
+                            datainterpreter/tblfileinterpreter.h
                             )
 
 

@@ -1,10 +1,5 @@
 #include "dialogitemdelegate.h"
-#include "tablerowprop.h"
-#include "itempathwidget.h"
-#include <QDateEdit>
-#include <QDebug>
-#include <QApplication>
-#include <QFileDialog>
+
 
 DialogDelegate::DialogDelegate(QObject* parent)
     : QStyledItemDelegate(parent)

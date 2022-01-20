@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QAbstractTableModel>
+#include "datastorage.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -10,14 +12,17 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-        public:
-                 explicit MainWindow(QWidget *parent = nullptr);
+public:
+    explicit MainWindow(QVector<DataStorage> *s = nullptr, QWidget *parent = nullptr);
     ~MainWindow();
-    void setModelToTable(QAbstractTableModel*);
-public slots:
+
+signals:
+    void filePathSetted(const QString& path);
 private slots:
     void on_rem_triggered();
     void on_dob_triggered();
+    void on_Open_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

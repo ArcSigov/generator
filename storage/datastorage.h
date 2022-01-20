@@ -11,6 +11,7 @@ class DataStorage
     QString f_path;
     QDate   date;
     size_t  version;
+    size_t  revision;
     size_t  crc;
     QString description;
     size_t  ram_addr;

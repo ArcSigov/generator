@@ -7,6 +7,7 @@ DataStorage::DataStorage()
    f_path = "";
    date = QDate::currentDate();
    version = 0;
+   revision = 0;
    crc = 0;
    description= " ";
    ram_addr = 0;
@@ -35,6 +36,8 @@ QVariant DataStorage::GetValue(int column)
             return date;
         case VERSION:
             return version;
+        case REVISION:
+            return revision;
         case CRC:
             return crc;
         case DESCRIPTION:
@@ -58,6 +61,8 @@ bool DataStorage::isValid(int column)
     case ID_DATE:
         return date.isNull();
     case VERSION:
+        return false;
+    case REVISION:
         return false;
     case CRC:
         return crc == 0;
@@ -87,6 +92,9 @@ void DataStorage::SetValue(const QVariant& v, int column)
         case VERSION:
              version = v.toInt();
              break;
+        case REVISION:
+            revision = v.toInt();
+            break;
         case CRC:
              crc = v.toInt();
              break;

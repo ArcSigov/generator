@@ -3,15 +3,12 @@
 #include "datastorage.h"
 #include <QApplication>
 #include <QVector>
-
+#include "generator.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QVector<DataStorage> h;
-    MainWindow w;
-    TableModel t(nullptr,&h);
-    w.setModelToTable(&t);
-    w.show();
+    Generator g;
+    g.run();
     return a.exec();
 }

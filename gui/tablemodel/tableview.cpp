@@ -5,6 +5,12 @@ TableModel::TableModel(QObject* parent, QVector<DataStorage> *_hash) :
 {
 
 }
+
+TableModel::~TableModel()
+{
+
+}
+
 int TableModel::rowCount(const QModelIndex &parent) const
 {
     return storage ? storage->size() : 0;
@@ -27,7 +33,7 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
         case Qt::EditRole:
              return s->GetValue(index.column());
         case Qt::BackgroundRole:
-            return QBrush((s->isValid(index.column()) ? Qt::red : Qt::transparent));
+            return QBrush((s->isValid(index.column()) ? Qt::yellow : Qt::transparent));
         default:
             return QVariant();
     }
@@ -56,7 +62,8 @@ Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
 bool TableModel::insertRows(int row, int count, const QModelIndex &parent)
 {
     beginInsertRows(parent,row,row+count-1);
-    storage->push_back(DataStorage());
+    if (storage->size() <= row) //если размер хранилища меньше числа строк
+        storage->push_back(DataStorage());
     endInsertRows();
     return true;
 }
@@ -88,6 +95,8 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
                 return tr("Дата");
             case VERSION:
                 return tr("Версия");
+            case REVISION:
+                return tr("Редакция");
             case CRC:
                 return tr("КС");
             case DESCRIPTION:
