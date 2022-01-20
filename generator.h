@@ -10,17 +10,14 @@
 
 class Generator : public QObject
 {
-
     Q_OBJECT
 public:
     explicit Generator(QObject *parent = nullptr);
     ~Generator();
     void run();
-signals:
-
 private:
     QVector<DataStorage> s;
-    MainWindow* w;
+    MainWindow* window;
 };
 
 #endif // GENERATOR_H

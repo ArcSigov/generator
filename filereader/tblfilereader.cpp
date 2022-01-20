@@ -15,7 +15,7 @@ TblFileReader::~TblFileReader()
 
 void TblFileReader::readFile(const QString &path)
 {
-    QFile* f = new QFile(path,this);
+    f->setFileName(path);
     if (f->open(QIODevice::ReadOnly))
     {
         QVector<QStringList> l;
