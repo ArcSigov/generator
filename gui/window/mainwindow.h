@@ -18,12 +18,15 @@ public:
 
 signals:
     void filePathSetted(const QString& path);
+    void saveFilePath(const QString& path);
 private slots:
     void on_rem_triggered();
     void on_dob_triggered();
     void on_Open_triggered();
+    void on_Save_triggered();
 public slots:
     void updateTable(bool);
+    void showSaveFileResult(bool);
 private:
     Ui::MainWindow *ui;
     QVector<DataStorage> *s;

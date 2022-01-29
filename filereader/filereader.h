@@ -5,16 +5,20 @@
 #include <QFile>
 #include <QDebug>
 
-class FileReader : public QObject
+class FileManager : public QObject
 {
     Q_OBJECT
         public:
-    explicit FileReader(QObject *parent = nullptr) : QObject(parent), f(new QFile(parent)){};
-            ~FileReader(){};
+    explicit FileManager(QObject *parent = nullptr) : QObject(parent), f(new QFile(parent)){};
+            ~FileManager(){};
 public slots:
-        virtual void readFile(const QString& path) = 0;        
+        virtual void readFile(const QString& path) = 0;
+        virtual bool writeToFile(const QStringList& data) = 0;
+        virtual void setFilePath(const QString& path) = 0;
 signals:
-        void Result(QVector<QStringList>& list);
+        void readResult(const QVector<QStringList>& list);
+        void saveResult(bool);
+        void getDataToWrite(bool);
 protected:
         QFile* f;
 };

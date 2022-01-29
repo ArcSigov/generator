@@ -9,6 +9,5 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     Generator g;
-    g.run();
     return a.exec();
 }

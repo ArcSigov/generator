@@ -1,19 +1,18 @@
 #include "tblfilereader.h"
 
 
-TblFileReader::TblFileReader(QObject* parent) :
-    FileReader(parent)
+TblFileManager::TblFileManager(QObject* parent) :
+    FileManager(parent)
 {
 
 }
 
-
-TblFileReader::~TblFileReader()
+TblFileManager::~TblFileManager()
 {
 
 }
 
-void TblFileReader::readFile(const QString &path)
+void TblFileManager::readFile(const QString &path)
 {
     f->setFileName(path);
     if (f->open(QIODevice::ReadOnly))
@@ -25,7 +24,32 @@ void TblFileReader::readFile(const QString &path)
             auto string = s.readLine();
             l.push_back(string.split(";"));
         }
-        emit Result(l);
         f->close();
+        emit readResult(l);
+    }
+}
+
+bool TblFileManager::writeToFile(const QStringList &data)
+{
+    if(f->open(QIODevice::WriteOnly | QIODevice::Truncate))
+    {
+        QTextStream stream(f);
+        for (const auto& it: data)
+        {
+            stream << it;
+        }
+        f->close();
+        emit saveResult(true);
+    }
+    emit saveResult(false);
+    return false;
+}
+
+void TblFileManager::setFilePath(const QString& path)
+{
+    if (!path.isEmpty())
+    {
+        f->setFileName(path);
+        emit getDataToWrite(true);
     }
 }

@@ -6,15 +6,16 @@
 #include "interpreter.h"
 #include "datastorage.h"
 
-class TblFileInterpreter : public FileDataInterpreter
+class TblDataInterpreter : public FileDataInterpreter
 {
     Q_OBJECT
 public:
-    explicit TblFileInterpreter(QVector<DataStorage>* s = nullptr,QObject* parent = nullptr);
-    ~TblFileInterpreter();
+    explicit TblDataInterpreter(QVector<DataStorage>* s = nullptr,QObject* parent = nullptr);
+    ~TblDataInterpreter();
     virtual void readFileData(const QVector<QStringList>& l) override;
+    virtual void interpreteToFileData(bool) override;
 private:
     QVector<DataStorage>* v;
 };
 
-#endif // TBLFILEINTERPRETER_H
+#endif

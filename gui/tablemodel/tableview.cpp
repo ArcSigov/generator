@@ -31,7 +31,7 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
     {
         case Qt::DisplayRole:
         case Qt::EditRole:
-             return s->GetValue(index.column());
+             return s->at(index.column());
         case Qt::BackgroundRole:
             return QBrush((s->isValid(index.column()) ? Qt::yellow : Qt::transparent));
         default:
@@ -44,7 +44,7 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
     if (role == Qt::EditRole)
     {
         auto p = storage->begin()+index.row();
-        p->SetValue(value,index.column());
+        p->set(value,index.column());
         emit dataChanged(index,index);
         return true;
     }
@@ -62,7 +62,7 @@ Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
 bool TableModel::insertRows(int row, int count, const QModelIndex &parent)
 {
     beginInsertRows(parent,row,row+count-1);
-    if (storage->size() <= row) //если размер хранилища меньше числа строк
+    if (storage->size() <= row)
         storage->push_back(DataStorage());
     endInsertRows();
     return true;
@@ -70,10 +70,14 @@ bool TableModel::insertRows(int row, int count, const QModelIndex &parent)
 
 bool TableModel::removeRows(int row, int count, const QModelIndex &parent)
 {
-    if(storage->size() > row)
+    if(!parent.isValid())
         return false;
+
     beginRemoveRows(parent,row,row+count-1);
-    storage->erase(storage->begin()+row);
+    for (auto i = 0 ; i < count ; i++)
+    {
+        storage->erase(storage->begin()+row+i);
+    }
     endRemoveRows();
     return true;
 }
@@ -84,34 +88,9 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
     if (role == Qt::DisplayRole )
     {
         if (orientation == Qt::Horizontal)
-        {
-            switch(section)
-            {
-            case MODULE_NUM:
-                return tr("Адрес");
-            case FILE_PATH:
-                return tr("Файл");
-            case ID_DATE:
-                return tr("Дата");
-            case VERSION:
-                return tr("Версия");
-            case REVISION:
-                return tr("Редакция");
-            case CRC:
-                return tr("КС");
-            case DESCRIPTION:
-                return tr("Описание");
-            case RAM_ADDR:
-                return tr("Адрес ОЗУ");
-            case PART_N:
-                return tr("Раздел");
-            default:break;
-            }
-        }
+            return DataStorage::name(section);
         else
-        {
             return section;
-        }
     }
     return QVariant();
 }

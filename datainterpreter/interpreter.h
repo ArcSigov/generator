@@ -12,8 +12,10 @@ class FileDataInterpreter : public QObject
     ~FileDataInterpreter() {};
 public slots:
     virtual void readFileData(const QVector<QStringList>& l) = 0;
+    virtual void interpreteToFileData(bool) =0;
 signals:
-    void dataUpdated(bool);
+    void dataFromFileCompleted(bool);
+    void dataToFileCompleted(const QStringList&);
 };
 
 #endif // INTERPRETER_H

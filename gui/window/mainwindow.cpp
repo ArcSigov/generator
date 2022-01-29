@@ -47,5 +47,21 @@ void MainWindow::on_Open_triggered()
 
 void MainWindow::updateTable(bool f)
 {
-    if (f) ui->tableView->model()->insertRows(ui->tableView->model()->rowCount(),s->size());
+    if (f)
+    {
+        ui->tableView->model()->removeRows(0,ui->tableView->model()->rowCount());
+        ui->tableView->model()->insertRows(ui->tableView->model()->rowCount(),s->size());
+    }
+}
+
+void MainWindow::on_Save_triggered()
+{
+    emit saveFilePath(QFileDialog::getSaveFileName(this, tr("Сохранить файл"), "", tr("table(*.tbl)")));
+}
+
+void MainWindow::showSaveFileResult(bool flag)
+{
+
+
+
 }

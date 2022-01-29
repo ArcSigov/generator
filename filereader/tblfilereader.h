@@ -6,15 +6,16 @@
 #include <QDebug>
 #include "filereader.h"
 
-class TblFileReader : public FileReader
+class TblFileManager : public FileManager
 {
     Q_OBJECT
 public:
-    explicit TblFileReader(QObject *parent = nullptr);
-    ~TblFileReader();
+    explicit TblFileManager(QObject *parent = nullptr);
+    ~TblFileManager();
 public slots:
     virtual void readFile(const QString& path) override;
-
+    virtual bool writeToFile(const QStringList &data) override;
+    virtual void setFilePath(const QString& path) override;
 };
 
-#endif // ABSTRACTFILESYSTEM_H
+#endif

@@ -14,10 +14,11 @@ class Generator : public QObject
 public:
     explicit Generator(QObject *parent = nullptr);
     ~Generator();
-    void run();
 private:
     QVector<DataStorage> s;
     MainWindow* window;
+    FileManager* manager;
+    FileDataInterpreter* interpreter;
 };
 
 #endif // GENERATOR_H
