@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QAbstractTableModel>
+#include <QMessageBox>
 #include "datastorage.h"
 
 namespace Ui {
@@ -19,17 +20,20 @@ public:
 signals:
     void filePathSetted(const QString& path);
     void saveFilePath(const QString& path);
+    void generateActive(bool);
 private slots:
     void on_rem_triggered();
     void on_dob_triggered();
     void on_Open_triggered();
     void on_Save_triggered();
+    void on_generate_triggered();
 public slots:
-    void updateTable(bool);
+    void updateTable();
     void showSaveFileResult(bool);
 private:
     Ui::MainWindow *ui;
     QVector<DataStorage> *s;
+    QMessageBox* box;
 };
 
 #endif // MAINWINDOW_H

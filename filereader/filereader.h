@@ -1,27 +1,21 @@
-#ifndef FILEREADER_H
-#define FILEREADER_H
+#ifndef TBLFILEREADER_H
+#define TBLFILEREADER_H
 
 #include <QObject>
 #include <QFile>
 #include <QDebug>
+#include "abstractfilereader.h"
 
-class FileManager : public QObject
+class FileManager : public AbstractFileManager
 {
     Q_OBJECT
-        public:
-    explicit FileManager(QObject *parent = nullptr) : QObject(parent), f(new QFile(parent)){};
-            ~FileManager(){};
+public:
+    explicit FileManager(QObject *parent = nullptr);
+    ~FileManager();
 public slots:
-        virtual void readFile(const QString& path) = 0;
-        virtual bool writeToFile(const QStringList& data) = 0;
-        virtual void setFilePath(const QString& path) = 0;
-signals:
-        void readResult(const QVector<QStringList>& list);
-        void saveResult(bool);
-        void getDataToWrite(bool);
-protected:
-        QFile* f;
+    virtual QStringList readFile(const QString& path) override;
+    virtual bool writeToFile(const QStringList &data) override;
+    virtual void setFilePath(const QString& path) override;
 };
-
 
 #endif

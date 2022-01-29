@@ -3,22 +3,30 @@
 
 #include <QObject>
 #include <QVector>
+#include <QDir>
 #include "datastorage.h"
 #include "mainwindow.h"
-#include "tblfilereader.h"
+#include "filereader.h"
 #include "tblfileinterpreter.h"
+#include "inifileinterpreter.h"
+#include "tablerowprop.h"
 
 class Generator : public QObject
 {
     Q_OBJECT
 public:
     explicit Generator(QObject *parent = nullptr);
-    ~Generator();
+    ~Generator();    
 private:
+    void run(bool);
+    void readTblFile(const QString& path);
+    void saveTblFile(const QString& path);
     QVector<DataStorage> s;
     MainWindow* window;
     FileManager* manager;
-    FileDataInterpreter* interpreter;
+    FileDataInterpreter* tblinterpreter;
+    FileDataInterpreter* iniinterpreter;
+    FileDataInterpreter* cfginterpreter;
 };
 
 #endif // GENERATOR_H

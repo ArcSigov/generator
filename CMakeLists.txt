@@ -50,12 +50,14 @@ add_executable(generator    main.cpp
                             gui/tablemodel/itempathwidget.ui
                             generator.cpp
                             generator.h
+                            filereader/abstractfilereader.h
                             filereader/filereader.h
-                            filereader/tblfilereader.h
-                            filereader/tblfilereader.cpp
+                            filereader/filereader.cpp
                             datainterpreter/interpreter.h
                             datainterpreter/tblfileinterpreter.cpp
                             datainterpreter/tblfileinterpreter.h
+                            datainterpreter/inifileinterpreter.cpp
+                            datainterpreter/inifileinterpreter.h
                             )
 
 

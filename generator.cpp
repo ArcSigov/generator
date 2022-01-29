@@ -2,26 +2,13 @@
 
 Generator::Generator(QObject *parent) : QObject(parent),
     window(new MainWindow(&s)),
-    manager(new TblFileManager(this)),
-    interpreter(new TblDataInterpreter(&s,this))
+    manager(new FileManager(this)),
+    tblinterpreter(new TblDataInterpreter(&s,this)),
+    iniinterpreter(new IniDataInterpreter(&s,this))
 {
-    //!< обработчик события загрузки таблицы
-    //! 1. По нажатию на кнопку "открыть" из диалогового окна возвращается путь к файлу
-    //! 2. Путь к файлу приходит в объект чтения файлов, который формирует контейнер строк для дальнейшего анализа данных
-    //! 3. Контейнер для анализа передается в интерпретатор данных, который формирует структуру хранилища
-    //! 4. Интерпретатор уведомляет объекты о готовности данных для их отображения и обработки
-    connect(window,&MainWindow::filePathSetted,manager,&FileManager::readFile);
-    connect(manager,&FileManager::readResult,interpreter,&FileDataInterpreter::readFileData);
-    connect(interpreter,&FileDataInterpreter::dataFromFileCompleted,window,&MainWindow::updateTable);
-
-    //!< обработчик события сохранения таблицы
-    //! 1. Обработчик окна направляет в файловый менеджер путь к файлу сохранения
-    //! 2. Если путь валиден, то файловый менеджер запрашивает интерпретатор подготовить ему данные на отправку
-    //! 3. Подготовив данные, файловый интерпретатор передает их файловому менеджеру на сохранение
-    connect(window,&MainWindow::saveFilePath,manager,&FileManager::setFilePath);
-    connect(manager,&FileManager::getDataToWrite,interpreter,&FileDataInterpreter::interpreteToFileData);
-    connect(interpreter,&FileDataInterpreter::dataToFileCompleted,manager,&FileManager::writeToFile);
-    connect(manager,&FileManager::saveResult,window,&MainWindow::showSaveFileResult);
+    connect(window,&MainWindow::filePathSetted,this,&Generator::readTblFile);
+    connect(window,&MainWindow::saveFilePath,this,&Generator::saveTblFile);
+    connect(window,&MainWindow::generateActive,this,&Generator::run);
     window->show();
 }
 
@@ -30,3 +17,28 @@ Generator::~Generator()
     delete window;
 }
 
+void Generator::run(bool flag)
+{
+    if (!flag) return;
+    manager->setFilePath(QDir::currentPath()+"/out/conf.ini");
+
+    auto res = iniinterpreter->interpreteToFileData();
+    for (const auto &it : res)
+    {
+        manager->writeToFile(QStringList(it));
+    }
+}
+
+void Generator::readTblFile(const QString &path)
+{
+    auto res = manager->readFile(path);
+    tblinterpreter->readFileData(res);
+    window->updateTable();
+}
+
+void Generator::saveTblFile(const QString &path)
+{
+    manager->setFilePath(path);
+    auto res = manager->writeToFile(tblinterpreter->interpreteToFileData());
+    window->showSaveFileResult(res);
+}

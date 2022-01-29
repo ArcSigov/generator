@@ -11,11 +11,8 @@ class FileDataInterpreter : public QObject
     explicit FileDataInterpreter(QObject *parent = nullptr) : QObject(parent){};
     ~FileDataInterpreter() {};
 public slots:
-    virtual void readFileData(const QVector<QStringList>& l) = 0;
-    virtual void interpreteToFileData(bool) =0;
-signals:
-    void dataFromFileCompleted(bool);
-    void dataToFileCompleted(const QStringList&);
+    virtual void readFileData(const QStringList &l) = 0;
+    virtual QStringList interpreteToFileData() = 0;
 };
 
 #endif // INTERPRETER_H

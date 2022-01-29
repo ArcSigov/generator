@@ -12,25 +12,21 @@ TblDataInterpreter::~TblDataInterpreter()
 
 }
 
-void TblDataInterpreter::readFileData(const QVector<QStringList> &l)
+void TblDataInterpreter::readFileData(const QStringList &l)
 {
-    if (l.empty())
-        emit dataFromFileCompleted(false);
-
     for (const auto& it:l)
     {
+        auto list = it.split(";");
         DataStorage d;
-        for (auto i = 0 ; i < it.size(); i++)
-            d.set(it.at(i),i);
+        for (auto i = 0 ; i < list.size(); i++)
+            d.set(list.at(i),i);
         v->push_back(d);
     }
-    emit dataFromFileCompleted(true);
 }
 
-void TblDataInterpreter::interpreteToFileData(bool flag)
+QStringList TblDataInterpreter::interpreteToFileData()
 {
-    if(!flag || !v)
-        return;
+    if( !v) return{};
 
     QStringList data;
     for (auto it = v->begin(); it != v->end() ; it++)
@@ -42,5 +38,5 @@ void TblDataInterpreter::interpreteToFileData(bool flag)
         }
         data.push_back(str+"\r\n");
     }
-    emit dataToFileCompleted(data);
+    return data;
 }

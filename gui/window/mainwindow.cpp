@@ -10,9 +10,11 @@
 MainWindow::MainWindow(QVector<DataStorage> *_s, QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    s(_s)
+    s(_s),
+    box(new QMessageBox(this))
 {
     TableModel* t = new TableModel(this,s);
+
     ui->setupUi(this);
     ui->progressBar->setVisible(false);
     ui->dob->setIcon(style()->standardIcon(QStyle::SP_FileDialogStart));
@@ -45,13 +47,10 @@ void MainWindow::on_Open_triggered()
     emit filePathSetted(QFileDialog::getOpenFileName(this, tr("Открыть файл"), " ", tr("table(*.tbl)")));
 }
 
-void MainWindow::updateTable(bool f)
+void MainWindow::updateTable()
 {
-    if (f)
-    {
-        ui->tableView->model()->removeRows(0,ui->tableView->model()->rowCount());
-        ui->tableView->model()->insertRows(ui->tableView->model()->rowCount(),s->size());
-    }
+    ui->tableView->model()->removeRows(0,ui->tableView->model()->rowCount());
+    ui->tableView->model()->insertRows(ui->tableView->model()->rowCount(),s->size());
 }
 
 void MainWindow::on_Save_triggered()
@@ -61,7 +60,12 @@ void MainWindow::on_Save_triggered()
 
 void MainWindow::showSaveFileResult(bool flag)
 {
-
-
-
+    box->setText( flag ? "blablabla" : "olalalalal");
+    box->exec();
 }
+
+void MainWindow::on_generate_triggered()
+{
+    emit generateActive(true);
+}
+
