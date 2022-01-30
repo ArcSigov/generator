@@ -3,10 +3,13 @@
 Generator::Generator(QObject *parent) : QObject(parent),
     window(new MainWindow(&s)),
     manager(new FileManager(this)),
-    tblinterpreter(new TblDataInterpreter(&s,this)),
-    iniinterpreter(new IniDataInterpreter(&s,this)),
     system(new WinSystemProxy(this))
 {
+
+    interpreter[TBL] = new TblDataInterpreter(&s,this);
+    interpreter[INI] = new IniDataInterpreter(&s,this);
+    interpreter[BUTCH] = new ButchInterpreter(&s,this);
+
     connect(window,&MainWindow::filePathSetted,this,&Generator::readTblFile);
     connect(window,&MainWindow::saveFilePath,this,&Generator::saveTblFile);
     connect(window,&MainWindow::generateActive,this,&Generator::run);
@@ -22,14 +25,15 @@ void Generator::run(bool flag)
 {
     if (!flag) return;
 
-    auto res = iniinterpreter->interpreteToFileData();
-    for (const auto &it : res)
+    auto inilist = interpreter[INI]->interpreteToFileData();
+    auto butchlist = interpreter[BUTCH]->interpreteToFileData();
+    for (auto i = 0; i < s.size(); i++)
     {
         manager->setFilePath(QDir::currentPath()+"/conf.ini");
-        manager->writeToFile(QStringList(it));
-        system->command("");
+        manager->writeToFile(QStringList(inilist[i]));
+        system->command(butchlist[i]);
         auto status = manager->readFile(QDir::currentPath()+"/log.ini");
-        iniinterpreter->readFileData(res);
+        interpreter[INI]->readFileData(status);
     }
 }
 
@@ -38,7 +42,7 @@ void Generator::readTblFile(const QString &path)
     if (path.isEmpty()) return;
 
     auto res = manager->readFile(path);
-    tblinterpreter->readFileData(res);
+    interpreter[TBL]->readFileData(res);
     window->updateTable();
 }
 
@@ -47,6 +51,6 @@ void Generator::saveTblFile(const QString &path)
     if (path.isEmpty()) return;
 
     manager->setFilePath(path);
-    auto res = manager->writeToFile(tblinterpreter->interpreteToFileData());
+    auto res = manager->writeToFile(interpreter[TBL]->interpreteToFileData());
     window->showSaveFileResult(res);
 }

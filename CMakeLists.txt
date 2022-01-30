@@ -59,6 +59,8 @@ add_executable(generator    main.cpp
                             datainterpreter/tblfileinterpreter.h
                             datainterpreter/inifileinterpreter.cpp
                             datainterpreter/inifileinterpreter.h
+                            datainterpreter/butchinterpreter.cpp
+                            datainterpreter/butchinterpreter.h
                             system/abstractsystemproxy.h
                             system/winsystemproxy.cpp
                             system/winsystemproxy.h

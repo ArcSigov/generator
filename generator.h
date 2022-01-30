@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVector>
 #include <QDir>
+#include <QMap>
 #include "datastorage.h"
 #include "mainwindow.h"
 #include "filereader.h"
@@ -11,10 +12,17 @@
 #include "inifileinterpreter.h"
 #include "tablerowprop.h"
 #include "winsystemproxy.h"
+#include "butchinterpreter.h"
+
 
 class Generator : public QObject
 {
     Q_OBJECT
+    enum {
+        TBL,
+        INI,
+        BUTCH
+    };
 public:
     explicit Generator(QObject *parent = nullptr);
     ~Generator();    
@@ -25,9 +33,7 @@ private:
     QVector<DataStorage> s;
     MainWindow* window;
     FileManager* manager;
-    FileDataInterpreter* tblinterpreter;
-    FileDataInterpreter* iniinterpreter;
-    FileDataInterpreter* cfginterpreter;
+    QMap<size_t,FileDataInterpreter*> interpreter;
     AbstractSystemProxy* system;
 };
 

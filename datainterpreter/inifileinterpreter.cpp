@@ -15,13 +15,6 @@ IniDataInterpreter::~IniDataInterpreter()
 void IniDataInterpreter::readFileData(const QStringList &l)
 {
 
-
-
-
-
-
-
-
 }
 
 QStringList IniDataInterpreter::interpreteToFileData()
@@ -41,4 +34,3 @@ QStringList IniDataInterpreter::interpreteToFileData()
     }
     return list;
 }
-
