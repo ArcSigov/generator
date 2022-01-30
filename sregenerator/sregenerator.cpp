@@ -73,7 +73,7 @@ void SreGen::GenerateNewSre(const QString &input_file_name, const QString &outpu
             }
             if (!(input.size() % 32)) _write_bytes(rom_addr,nullptr,0,sre);
 
-            rom_addr = FileGen::GetNewSize(input.size()) - sizeof(ID_PO_TYPE)+4;
+            //rom_addr = FileGen::GetNewSize(input.size()) - sizeof(ID_PO_TYPE)+4;
             _write_bytes(rom_addr,   (unsigned char*)&id.identity,   32,sre);
             _write_bytes(rom_addr+32,(unsigned char*)&id.identity+32,32,sre);
             _write_bytes(rom_addr+64,(unsigned char*)&id.identity+64,16,sre,true);

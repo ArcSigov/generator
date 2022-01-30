@@ -8,7 +8,7 @@ Table::Table(QMainWindow *parent) :
     QMainWindow(parent),
     ui(new Ui::Table)
 {
-    ui->setupUi(this);
+ //   ui->setupUi(this);
 //    ui->label->setText(QDir::currentPath()+"/out/sre");
 //    ui->load_output_folder->setText(ui->label->text());
     Dialog = std::make_unique<QFileDialog>(this);
@@ -20,8 +20,8 @@ Table::Table(QMainWindow *parent) :
 //    ui->filestable->verticalHeader()->setStretchLastSection(true);
 }
 
-void IniGen::Run()
-{
+//void IniGen::Run()
+//{
 //    emit TaskCompleted(false);
 //    QTextCodec::setCodecForLocale(QTextCodec::codecForName( "Windows-1251" ));
 //    QDir dir;
@@ -91,7 +91,7 @@ void IniGen::Run()
 //    emit SetResult("Генерация загрузочных файлов и конфигурации завершена.\r\n");
 //    emit TaskCompleted(true);
 //    delete block;
-}
+//}
 
 Table::~Table()
 {
@@ -99,153 +99,6 @@ Table::~Table()
     delete ui;
 }
 
-void Table::InsertText(const QString& str)
-{
-   // ui->progressBar->setValue(ui->progressBar->value()+1);
-  //  ui->textBrowser->insertPlainText(str);
-}
-void Table::_enable_buttons()
-{
-  //  ui->save->setEnabled(true);
-  //  ui->Generate->setEnabled(true);
-  //  ui->remove->setEnabled(true);
-}
-
-void Table::_add_raw_to_table(std::vector<QString> str)
-{
-//  //  ui->filestable->setRowCount(ui->filestable->rowCount()+1);
-//    for (auto i = 0ull ; i < COLUMNS_COUNT;i++)
-//    {
-//      //  ui->filestable->setItem(ui->filestable->rowCount()-1,i,new QTableWidgetItem(str[i],0));
-//    }
-//  //  ui->filestable->sortByColumn(MODULE,Qt::SortOrder::AscendingOrder);
-//  //  ui->filestable->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
-//  //  ui->filestable->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
-}
-
-void Table::_update_path(const QString& path)
-{
-  //  ui->label->setText(path);
-  //  if (!ui->load_output_folder->isEnabled())
-  //      ui->load_output_folder->setText( ui->label->text());
-}
-
-void Table::on_add_clicked()
-{
-//    auto filename = Dialog->getOpenFileName(this,tr("Добавить файл"), "",tr("ius_types (*.mot *.elf)"));
-//    if (!filename.isEmpty())
-//    {
-//        QFileInfo file(filename);
-//        _enable_buttons();
-//        _add_raw_to_table({"",filename,file.completeSuffix() == "elf" ? "Бинарный" : "Загрузочный","","","","","",""});
-//    }
-}
-
-void Table::on_ChangeFolder_clicked()
-{
-    //_update_path(Dialog->getExistingDirectory(this));
-}
-
-void Table::on_load_clicked()
-{
-//    QFile file(Dialog->getOpenFileName(this,tr("Открыть таблицу"), " ",tr("table(*.tbl)")));
-//    std::vector<QString> vctr;
-//    if (file.open(QIODevice::ReadOnly))
-//    {
-//        QTextStream tbl(&file);
-//  //      ui->filestable->clearContents();
-//  //      ui->filestable->setRowCount(0);
-//        _enable_buttons();
-//  //      ui->label->setText(tbl.readLine());
-//  //      ui->load_output_folder->setText(tbl.readLine());
-//        auto pos = tbl.readLine();
-//  //      ui->bis->setChecked(pos == "1");
-//  //      ui->bcvm->setChecked(pos == "2");
-//  //      ui->bgs->setChecked(pos == "3");
-//        while(!tbl.atEnd())
-//        {
-//            _make_raw(tbl.readLine().toStdString(),vctr);
-//            _add_raw_to_table(vctr);
-//            vctr.clear();
-//        }
-//    }
-//    file.close();
-}
-
-void Table::on_save_clicked()
-{
-//    QFile file(Dialog->getSaveFileName(this,tr("Сохранить"),"",tr("table(*.tbl)")));
-//    if (file.open(QIODevice::ReadWrite | QIODevice::Truncate))
-//    {
-//        QTextStream out(&file);
-//        out.setCodec("Windows-1251");
-//        //out << ui->label->text() << "\r\n" << ui->load_output_folder->text()<<"\r\n";
-
-//   //     if      (ui->bis->isChecked())  out << "1";
-//  //      else if (ui->bcvm->isChecked()) out << "2";
-//  //      else if (ui->bgs->isChecked())  out << "3";
-//  //      else out << "0";
-
-//        out << "\r\n";
-////        for (auto i = 0 ; i < ui->filestable->rowCount();i++)
-////        {
-////            for (auto j = 0 ; j < ui->filestable->columnCount() ; j++)
-////            {
-////                out << ui->filestable->item(i,j)->text() << ";";
-////            }
-////            out<< "\r\n";
-////        }
-//        file.close();
-//    }
-}
-
-void Table::on_filestable_cellChanged([[maybe_unused]] int row ,[[maybe_unused]] int column)
-{
-   // ui->filestable->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
-   // ui->filestable->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
-
-}
-
-void Table::_make_raw(const std::string& str, std::vector<QString>& columns)
-{
-//    auto pos = str.begin();
-//    for (auto it = str.begin(); it!= str.end(); it++)
-//    {
-//        if (*it==';')
-//        {
-//            columns.emplace_back(QString::fromStdString(std::string(pos,it)));
-//            pos = it+1;
-//        }
-//    }
-}
-
-void Table::on_remove_clicked()
-{
-//    for (auto i = 0 ; i < ui->filestable->rowCount();i++)
-//    {
-//        if (ui->filestable->item(i,0)->isSelected())
-//        {
-//            ui->filestable->removeRow(i);
-//        }
-//    }
-}
-
-void Table::WriteToTable(const QString& str,int row, int column)
-{
-  //  ui->filestable->item(row,column)->setText(str);
-}
-
-void Table::on_dir_synchr_pressed()
-{
-  //  ui->load_output_folder->setEnabled(ui->dir_synchr->isChecked());
-  //  if (!ui->load_output_folder->isEnabled()) ui->load_output_folder->setText(ui->label->text());
-}
-
-void Table::EditItems(const bool& flag)
-{
-  //  ui->progressBar->setVisible(!flag);
-  //  ui->Generate->setEnabled(flag);
-}
 
 void Table::on_Generate_clicked()
 {
@@ -282,7 +135,4 @@ void Table::on_Generate_clicked()
 ////    thread->start();
 }
 
-void Table::on_filestable_doubleClicked(const QModelIndex &index)
-{
-}
 

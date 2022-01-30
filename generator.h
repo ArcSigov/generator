@@ -10,6 +10,7 @@
 #include "tblfileinterpreter.h"
 #include "inifileinterpreter.h"
 #include "tablerowprop.h"
+#include "winsystemproxy.h"
 
 class Generator : public QObject
 {
@@ -27,6 +28,7 @@ private:
     FileDataInterpreter* tblinterpreter;
     FileDataInterpreter* iniinterpreter;
     FileDataInterpreter* cfginterpreter;
+    AbstractSystemProxy* system;
 };
 
 #endif // GENERATOR_H

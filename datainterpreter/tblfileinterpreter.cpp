@@ -36,7 +36,7 @@ QStringList TblDataInterpreter::interpreteToFileData()
         {
             str += it->at(i).toString() + ";";
         }
-        data.push_back(str+"\r\n");
+        data.push_back(str);
     }
     return data;
 }

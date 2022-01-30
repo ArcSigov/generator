@@ -12,6 +12,8 @@ DataStorage::DataStorage()
    description= " ";
    ram_addr = 0;
    n_part = 0;
+   generic_name = " ";
+   generic_size = 0;
 }
 
 DataStorage::~DataStorage()
@@ -58,7 +60,6 @@ void DataStorage::set(const QVariant& v, int column)
     switch (column)
     {
         case MODULE_NUM:  m_num = v.toInt();          break;
-        case FILE_PATH:   f_path = v.toString();      break;
         case ID_DATE:     date   = v.toDate();        break;
         case VERSION:     version = v.toInt();        break;
         case REVISION:    revision = v.toInt();       break;
@@ -66,6 +67,15 @@ void DataStorage::set(const QVariant& v, int column)
         case DESCRIPTION: description = v.toString(); break;
         case RAM_ADDR:    ram_addr = v.toInt();       break;
         case PART_N:      n_part = v.toInt();         break;
+        case FILE_PATH:
+        {
+            f_path = v.toString();
+            info.setFile(f_path);
+            generic_size = info.size()+84;
+            while (generic_size % 4096 != 0 ) generic_size++;
+            generic_name = info.baseName() + info.completeSuffix() == "elf" ? "_sum.sre" : "_sum.mot";
+            break;
+        }
         default : break;
     }
 }
@@ -87,3 +97,16 @@ QString DataStorage::name(const int& column)
     }
     return QString();
 }
+
+QString DataStorage::genericName()
+{
+    return generic_name;
+}
+
+QString DataStorage::genericSize()
+{
+    auto str = QString::number(generic_size,16);
+    return str.rightJustified(8-str.size(),'0');
+}
+
+

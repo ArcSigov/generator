@@ -24,7 +24,8 @@ set                        (SEARCH_DIRS
                             gui/tablemodel
                             storage
                             filereader
-                            datainterpreter)
+                            datainterpreter
+                            system)
 
 add_executable(generator    main.cpp
                             cfggenerator/cfggenerator.cpp
@@ -58,6 +59,9 @@ add_executable(generator    main.cpp
                             datainterpreter/tblfileinterpreter.h
                             datainterpreter/inifileinterpreter.cpp
                             datainterpreter/inifileinterpreter.h
+                            system/abstractsystemproxy.h
+                            system/winsystemproxy.cpp
+                            system/winsystemproxy.h
                             )
 
 
