@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVector>
+#include "manager.h"
 
 class FileDataInterpreter : public QObject
 {
@@ -10,9 +11,15 @@ class FileDataInterpreter : public QObject
     public:
     explicit FileDataInterpreter(QObject *parent = nullptr) : QObject(parent){};
     ~FileDataInterpreter() {};
-public slots:
-    virtual void readFileData(const QStringList &l) = 0;
-    virtual QStringList interpreteToFileData() = 0;
+public:
+    virtual void read() = 0;
+    virtual void write() = 0;
+    void setFileManager(Manager* _manager) {m = _manager;}
+    Manager* manager() const {return m;}
+signals:
+    void status(const QString& status);
+protected:
+    Manager* m;
 };
 
 #endif // INTERPRETER_H

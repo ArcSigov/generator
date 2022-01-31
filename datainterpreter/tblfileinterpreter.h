@@ -12,8 +12,8 @@ class TblDataInterpreter : public FileDataInterpreter
 public:
     explicit TblDataInterpreter(QVector<DataStorage>* s = nullptr,QObject* parent = nullptr);
     ~TblDataInterpreter();
-    virtual void readFileData(const QStringList &l) override;
-    virtual QStringList interpreteToFileData() override;
+    virtual void read() override;
+    virtual void write() override;
 private:
     QVector<DataStorage>* v;
 };

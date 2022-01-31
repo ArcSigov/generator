@@ -68,6 +68,13 @@ bool TableModel::insertRows(int row, int count, const QModelIndex &parent)
     return true;
 }
 
+bool TableModel::updateRows(int row, int count, const QModelIndex &parent)
+{
+    beginInsertRows(parent,row,row+count-1);
+    endInsertRows();
+    return true;
+}
+
 bool TableModel::removeRows(int row, int count, const QModelIndex &parent)
 {
     if(!parent.isValid())

@@ -23,6 +23,7 @@ public:
     Q_INVOKABLE virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;    
     virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+    bool         updateRows(int row, int count, const QModelIndex &parent = QModelIndex());
 private:
     QVector<DataStorage>* storage; // данные по каждой ячейке таблицы
 };

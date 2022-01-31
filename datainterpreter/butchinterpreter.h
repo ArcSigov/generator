@@ -12,8 +12,8 @@ class ButchInterpreter : public FileDataInterpreter
 public:
     explicit ButchInterpreter(QVector<DataStorage> *s = nullptr, QObject* parent = nullptr);
     ~ButchInterpreter();
-    virtual void readFileData(const QStringList& l) override;
-    virtual QStringList interpreteToFileData() override;
+    virtual void read() override;
+    virtual void write() override;
 private:
     QVector<DataStorage> *v;
 };

@@ -12,11 +12,10 @@ class IniDataInterpreter : public FileDataInterpreter
 public:
     explicit IniDataInterpreter(QVector<DataStorage>* s = nullptr,QObject* parent = nullptr);
     ~IniDataInterpreter();
-    virtual void readFileData(const QStringList& l) override;
-    virtual QStringList interpreteToFileData() override;
+    virtual void read() override;
+    virtual void write() override;
 private:
     QVector<DataStorage>* v;
-    QString genResult;
 };
 
 #endif

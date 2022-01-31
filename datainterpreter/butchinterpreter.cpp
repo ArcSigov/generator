@@ -12,9 +12,8 @@ ButchInterpreter::~ButchInterpreter()
 
 }
 
-void ButchInterpreter::readFileData(const QStringList &l)
+void ButchInterpreter::read()
 {
-    Q_UNUSED(l);
 }
 
 //                     (QDir::currentPath().toStdString() + "/out/ini") +
@@ -23,15 +22,17 @@ void ButchInterpreter::readFileData(const QStringList &l)
 //                     (table->item(i,FILE_CRC)->text().isEmpty() ? " "  : "-cs " + table->item(i,FILE_CRC)->text().toStdString()+" ") +
 //                     (" > " + QDir::currentPath().toStdString() + "/out/log.crc")).c_str());
 
-QStringList ButchInterpreter::interpreteToFileData()
+void ButchInterpreter::write()
 {
-    if(!v) return{};
-    QStringList list;
+    if(!v) return;
+
     for (auto it = v->begin(); it!= v->end(); it++)
     {
         QString formatted;
 
-        list.push_back(formatted);        
+
+
+
+        m->write(QStringList(formatted));
     }
-    return list;
 }

@@ -23,7 +23,7 @@ set                        (SEARCH_DIRS
                             gui/window
                             gui/tablemodel
                             storage
-                            filereader
+                            manager
                             datainterpreter
                             system)
 
@@ -51,9 +51,11 @@ add_executable(generator    main.cpp
                             gui/tablemodel/itempathwidget.ui
                             generator.cpp
                             generator.h
-                            filereader/abstractfilereader.h
-                            filereader/filereader.h
-                            filereader/filereader.cpp
+                            manager/manager.h
+                            manager/filemanager.h
+                            manager/filemanager.cpp
+                            manager/butchmanager.h
+                            manager/butchmanager.cpp
                             datainterpreter/interpreter.h
                             datainterpreter/tblfileinterpreter.cpp
                             datainterpreter/tblfileinterpreter.h
@@ -61,9 +63,6 @@ add_executable(generator    main.cpp
                             datainterpreter/inifileinterpreter.h
                             datainterpreter/butchinterpreter.cpp
                             datainterpreter/butchinterpreter.h
-                            system/abstractsystemproxy.h
-                            system/winsystemproxy.cpp
-                            system/winsystemproxy.h
                             )
 
 

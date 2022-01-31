@@ -1,8 +1,9 @@
-#include "filereader.h"
+#include "filemanager.h"
 
 
 FileManager::FileManager(QObject* parent) :
-    AbstractFileManager(parent)
+    Manager(parent),
+    f(new QFile(this))
 {
 
 }
@@ -12,9 +13,10 @@ FileManager::~FileManager()
 
 }
 
-QStringList FileManager::readFile(const QString &path)
+QStringList FileManager::read(const QString &path)
 {
-    f->setFileName(path);
+    setFilePath(path);
+
     if (f->open(QIODevice::ReadOnly))
     {
         QStringList l;
@@ -29,7 +31,7 @@ QStringList FileManager::readFile(const QString &path)
     return {};
 }
 
-bool FileManager::writeToFile(const QStringList &data)
+bool FileManager::write(const QStringList &data)
 {
     if(!f->open(QIODevice::WriteOnly | QIODevice::Truncate))
         return false;
@@ -44,6 +46,5 @@ bool FileManager::writeToFile(const QStringList &data)
 
 void FileManager::setFilePath(const QString& path)
 {
-    if (!path.isEmpty())
-        f->setFileName(path);
+    if (!path.isEmpty())  f->setFileName(path);
 }

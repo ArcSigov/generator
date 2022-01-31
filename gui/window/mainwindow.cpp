@@ -50,7 +50,7 @@ void MainWindow::on_Open_triggered()
 void MainWindow::updateTable()
 {
     ui->tableView->model()->removeRows(0,ui->tableView->model()->rowCount());
-    ui->tableView->model()->insertRows(ui->tableView->model()->rowCount(),s->size());
+    static_cast<TableModel*>(ui->tableView->model())->updateRows(ui->tableView->model()->rowCount(),s->size());
 }
 
 void MainWindow::on_Save_triggered()
