@@ -8,12 +8,12 @@
 #include "datastorage.h"
 #include "mainwindow.h"
 #include "filemanager.h"
-#include "butchmanager.h"
+#include "batchmanager.h"
 #include "tblfileinterpreter.h"
 #include "inifileinterpreter.h"
 #include "cfginterpreter.h"
 #include "tablerowprop.h"
-#include "butchinterpreter.h"
+#include "batchinterpreter.h"
 
 
 class Generator : public QObject

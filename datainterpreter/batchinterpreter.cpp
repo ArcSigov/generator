@@ -1,24 +1,24 @@
-#include "butchinterpreter.h"
+#include "batchinterpreter.h"
 #include "tablerowprop.h"
 #include <QDir>
 
-ButchInterpreter::ButchInterpreter(QVector<DataStorage> *s, QObject* parent) :
+BatchInterpreter::BatchInterpreter(QVector<DataStorage> *s, QObject* parent) :
     FileDataInterpreter(parent),
     v(s)
 {
 
 }
 
-ButchInterpreter::~ButchInterpreter()
+BatchInterpreter::~BatchInterpreter()
 {
 
 }
 
-void ButchInterpreter::read()
+void BatchInterpreter::read()
 {
 }
 
-void ButchInterpreter::write()
+void BatchInterpreter::write()
 {
     if(!v) return;
 

@@ -54,15 +54,15 @@ add_executable(generator    main.cpp
                             manager/manager.h
                             manager/filemanager.h
                             manager/filemanager.cpp
-                            manager/butchmanager.h
-                            manager/butchmanager.cpp
+                            manager/batchmanager.h
+                            manager/batchmanager.cpp
                             datainterpreter/interpreter.h
                             datainterpreter/tblfileinterpreter.cpp
                             datainterpreter/tblfileinterpreter.h
                             datainterpreter/inifileinterpreter.cpp
                             datainterpreter/inifileinterpreter.h
-                            datainterpreter/butchinterpreter.cpp
-                            datainterpreter/butchinterpreter.h
+                            datainterpreter/batchinterpreter.cpp
+                            datainterpreter/batchinterpreter.h
                             datainterpreter/cfginterpreter.cpp
                             datainterpreter/cfginterpreter.h
                             )

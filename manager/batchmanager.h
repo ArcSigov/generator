@@ -5,12 +5,12 @@
 #include <QDebug>
 #include "manager.h"
 
-class ButchManager : public Manager
+class BatchManager : public Manager
 {
     Q_OBJECT
 public:
-    explicit ButchManager(QObject *parent = nullptr);
-    ~ButchManager();
+    explicit BatchManager(QObject *parent = nullptr);
+    ~BatchManager();
 public slots:
     virtual QStringList read(const QString& path = QString()) override;
     virtual bool write(const QStringList &data) override;

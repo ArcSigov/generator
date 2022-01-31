@@ -1,24 +1,24 @@
-#include "butchmanager.h"
+#include "batchmanager.h"
 
 
-ButchManager::ButchManager(QObject* parent) :
+BatchManager::BatchManager(QObject* parent) :
     Manager(parent)
 {
 
 }
 
-ButchManager::~ButchManager()
+BatchManager::~BatchManager()
 {
 
 }
 
-QStringList ButchManager::read(const QString &path)
+QStringList BatchManager::read(const QString &path)
 {
     Q_UNUSED(path)
     return {};
 }
 
-bool ButchManager::write(const QStringList &data)
+bool BatchManager::write(const QStringList &data)
 {
     for (const auto &it: data)
     {
@@ -28,7 +28,7 @@ bool ButchManager::write(const QStringList &data)
     return true;
 }
 
-void ButchManager::setFilePath(const QString& path)
+void BatchManager::setFilePath(const QString& path)
 {
    Q_UNUSED(path)
 }
