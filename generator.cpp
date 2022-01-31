@@ -5,14 +5,16 @@ Generator::Generator(QObject *parent) : QObject(parent),
 {
 
     Manager* filemanager = new FileManager(this);
+    Manager* butchmanager = new ButchManager(this);
 
-    interpreter[TBL] = new TblDataInterpreter(&s,this);
-    interpreter[INI] = new IniDataInterpreter(&s,this);
+    interpreter[TBL]   = new TblDataInterpreter(&s,this);
+    interpreter[INI]   = new IniDataInterpreter(&s,this);
     interpreter[BUTCH] = new ButchInterpreter(&s,this);
+    interpreter[CFG]   = new CfgDataInterpreter(&s,this);
 
     interpreter[TBL]->setFileManager(filemanager);
     interpreter[INI]->setFileManager(filemanager);
-    interpreter[BUTCH]->setFileManager(new ButchManager(this));
+    interpreter[BUTCH]->setFileManager(butchmanager);
 
     connect(window,&MainWindow::filePathSetted,this,&Generator::readTblFile);
     connect(window,&MainWindow::saveFilePath,this,&Generator::saveTblFile);
@@ -30,8 +32,12 @@ void Generator::run(bool flag)
 {
     if (!flag) return;
 
-    for (auto i = interpreter.begin()+1; i != interpreter.end(); i++)
-        i.value()->write();
+    for (auto _interpreter = interpreter.begin()+1; _interpreter != interpreter.end(); _interpreter++)
+    {
+        if (_interpreter != interpreter.begin()+1) interpreter[INI]->read();
+
+        _interpreter.value()->write();
+    }
 }
 
 void Generator::readTblFile(const QString &path)

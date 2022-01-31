@@ -32,7 +32,7 @@ void TblDataInterpreter::write()
     QStringList data;
     for (auto it = v->begin(); it != v->end() ; it++)
     {
-        if (it != v->begin()) data.push_back("\n");
+        if (it != v->begin()) data.push_back("\r\n");
 
         QString str;
         for (auto i = 0 ; i < COLUMN_COUNT; i++)

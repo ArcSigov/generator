@@ -1,5 +1,5 @@
-#ifndef BUTCHINTERPRETER_H
-#define BUTCHINTERPRETER_H
+#ifndef BUTCHDATAINTERPRETER_H
+#define BUTCHDATAINTERPRETER_H
 
 #include <QObject>
 #include <QDebug>

@@ -11,6 +11,7 @@
 #include "butchmanager.h"
 #include "tblfileinterpreter.h"
 #include "inifileinterpreter.h"
+#include "cfginterpreter.h"
 #include "tablerowprop.h"
 #include "butchinterpreter.h"
 
@@ -21,7 +22,8 @@ class Generator : public QObject
     enum {
         TBL,
         INI,
-        BUTCH
+        BUTCH,
+        CFG
     };
 public:
     explicit Generator(QObject *parent = nullptr);

@@ -1,18 +1,18 @@
 #include "datastorage.h"
 #include "tablerowprop.h"
-
+#include <QDebug>
 DataStorage::DataStorage()
 {
    m_num = 0;
-   f_path = "";
+   f_path.clear();
    date = QDate::currentDate();
    version = 0;
    revision = 0;
    crc = 0;
-   description= " ";
+   description.clear();
    ram_addr = 0;
    n_part = 0;
-   generic_name = " ";
+   generic_name.clear();
    generic_size = 0;
 }
 
@@ -73,7 +73,8 @@ void DataStorage::set(const QVariant& v, int column)
             info.setFile(f_path);
             generic_size = info.size()+84;
             while (generic_size % 4096 != 0 ) generic_size++;
-            generic_name = info.baseName() + info.completeSuffix() == "elf" ? "_sum.sre" : "_sum.mot";
+            generic_name.push_back(info.baseName());
+            generic_name.push_back(info.completeSuffix() == "elf" ? "_sum.sre" : "_sum.mot");
             break;
         }
         default : break;
@@ -103,10 +104,14 @@ QString DataStorage::genericName()
     return generic_name;
 }
 
+size_t  DataStorage::genericType()
+{
+    return info.completeSuffix() == "elf" ? 0 : 1;
+}
+
 QString DataStorage::genericSize()
 {
-    auto str = QString::number(generic_size,16);
-    return str.rightJustified(8-str.size(),'0');
+    return QString::number(generic_size-4,16).rightJustified(8,'0');
 }
 
 

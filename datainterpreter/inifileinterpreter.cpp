@@ -14,7 +14,8 @@ IniDataInterpreter::~IniDataInterpreter()
 
 void IniDataInterpreter::read()
 {
-
+    auto log = m->read("log.ini");
+    emit status(log.at(2));
 }
 
 void IniDataInterpreter::write()
@@ -29,7 +30,7 @@ void IniDataInterpreter::write()
         formatted.push_back(it->at(FILE_PATH).toString()+"\r\n");
         formatted.push_back(it->genericName()+"\r\n"+" "+"\r\n");
         formatted.push_back(it->at(DESCRIPTION).toString()+"\r\n");
-        formatted.push_back(it->at(VERSION).toString() + " " + it->at(REVISION).toString() + "\r\n");
+        formatted.push_back(it->at(VERSION).toString().rightJustified(2,'0') + " " + it->at(REVISION).toString().rightJustified(2,'0') + "\r\n");
         m->write(QStringList(formatted));
     }
 }

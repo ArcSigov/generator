@@ -28,6 +28,7 @@ public:
     static QString  name(const int &column);
     QString genericName();
     QString genericSize();
+    size_t  genericType();
 private:
     QFileInfo info;
 };

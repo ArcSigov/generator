@@ -20,8 +20,11 @@ QStringList ButchManager::read(const QString &path)
 
 bool ButchManager::write(const QStringList &data)
 {
-    QString command = "cmd.exe /C ";
-    std::system(command.toStdString().c_str());
+    for (const auto &it: data)
+    {
+        QString command = "cmd.exe /C " + it;
+        std::system(command.toStdString().c_str());
+    }
     return true;
 }
 

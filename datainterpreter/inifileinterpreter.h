@@ -1,5 +1,5 @@
-#ifndef INIFILEINTERPRETER_H
-#define INIFILEINTERPRETER_H
+#ifndef INIDATAINTERPRETER_H
+#define INIDATAINTERPRETER_H
 
 #include <QObject>
 #include <QDebug>

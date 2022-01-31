@@ -1,5 +1,5 @@
-#ifndef TBLFILEINTERPRETER_H
-#define TBLFILEINTERPRETER_H
+#ifndef TBLDATAINTERPRETER_H
+#define TBLDATAINTERPRETER_H
 
 #include <QObject>
 #include <QDebug>
