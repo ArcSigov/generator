@@ -9,12 +9,12 @@ Generator::Generator(QObject *parent) : QObject(parent),
 
     interpreter[TBL]   = new TblDataInterpreter(&s,this);
     interpreter[INI]   = new IniDataInterpreter(&s,this);
-    interpreter[BUTCH] = new BatchInterpreter(&s,this);
+    interpreter[BATCH] = new BatchInterpreter(&s,this);
     interpreter[CFG]   = new CfgDataInterpreter(&s,this);
 
     interpreter[TBL]->setFileManager(filemanager);
     interpreter[INI]->setFileManager(filemanager);
-    interpreter[BUTCH]->setFileManager(batchmanager);
+    interpreter[BATCH]->setFileManager(batchmanager);
 
     connect(window,&MainWindow::filePathSetted,this,&Generator::readTblFile);
     connect(window,&MainWindow::saveFilePath,this,&Generator::saveTblFile);

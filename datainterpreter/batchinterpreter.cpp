@@ -32,7 +32,7 @@ void BatchInterpreter::write()
 
         formatted.push_back(it->genericType() ? " " : "-bs ");
         formatted.push_back(date.isEmpty() ? " " : " -d " + date);
-        formatted.push_back(crc > 0  ? "-cs " + it->at(CRC).toString() + " " : " ");
+        formatted.push_back(crc > 0  ? "-cs " + it->at(CRC).toString(): " ");
         formatted.push_back(out_result);
         m->write(QStringList(formatted));
     }

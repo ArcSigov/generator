@@ -22,7 +22,7 @@ class Generator : public QObject
     enum {
         TBL,
         INI,
-        BUTCH,
+        BATCH,
         CFG
     };
 public:

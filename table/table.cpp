@@ -8,16 +8,7 @@ Table::Table(QMainWindow *parent) :
     QMainWindow(parent),
     ui(new Ui::Table)
 {
- //   ui->setupUi(this);
-//    ui->label->setText(QDir::currentPath()+"/out/sre");
-//    ui->load_output_folder->setText(ui->label->text());
-    Dialog = std::make_unique<QFileDialog>(this);
-//    ui->save->setEnabled(false);
-//    ui->Generate->setEnabled(false);
-//    ui->remove->setEnabled(false);
-//    ui->progressBar->setVisible(false);
-//    ui->filestable->horizontalHeader()->setStretchLastSection(true);
-//    ui->filestable->verticalHeader()->setStretchLastSection(true);
+
 }
 
 //void IniGen::Run()
@@ -34,34 +25,7 @@ Table::Table(QMainWindow *parent) :
 //        auto outputformat = fileinfo.completeSuffix() == "elf" ? "_sum.sre" : "_sum.mot";
 //        QFile  file(QString("out/ini.ini"));
 //        QTextStream text(&file);
-//        if (file.open(QIODevice::ReadWrite | QIODevice::Truncate))
-//        {
-//            auto str = QString::number(FileGen::GetNewSize(fileinfo.size())-4,16);
-//            while (str.length() != 8) str.push_front('0');
 
-//            text << "00000000" << "\r\n";
-//            text << str        << "\r\n";
-//            text << table->item(i,FILE_PATH)->text() << "\r\n";
-//            text << folder+"/" + fileinfo.baseName()+outputformat << "\r\n";
-//            text << " " << "\r\n";
-//            text << (table->item(i,FILE_DESCRIPTION)->text().isEmpty() ? QString("Нет описания") : table->item(i,FILE_DESCRIPTION)->text()) << "\r\n";
-//            text << (table->item(i,FILE_VERREV)->text().isEmpty()      ? QString("00 00")        : table->item(i,FILE_VERREV)->text()) << "\r\n";
-//            file.close();
-//        }
-//        std::system(("cmd.exe /C " + QDir::currentPath().toStdString() + "/ID_Info_con.exe " +
-//                     (QDir::currentPath().toStdString() + "/out/ini") +
-//                     (table->item(i,FILE_TYPE)->text() == "Бинарный" ?   " -bs " :" ")   +
-//                     (table->item(i,FILE_DATE)->text().isEmpty() ? " " : "-d " + table->item(i,FILE_DATE)->text().toStdString()+" ") +
-//                     (table->item(i,FILE_CRC)->text().isEmpty() ? " "  : "-cs " + table->item(i,FILE_CRC)->text().toStdString()+" ") +
-//                     (" > " + QDir::currentPath().toStdString() + "/out/log.crc")).c_str());
-
-//        file.setFileName(QDir::currentPath() + "/out/log.crc");
-//        if (file.open(QIODevice::ReadOnly))
-//        {
-//            name_po.clear();
-//            while (!text.atEnd()) name_po.push_back(text.readLine());
-//            file.close();
-//        }
 
 //        if (name_po.size() == 11)
 //        {
