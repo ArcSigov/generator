@@ -8,9 +8,9 @@ Generator::Generator(QObject *parent) : QObject(parent),
     Manager* batchmanager = new BatchManager(this);
 
     interpreter[TBL]   = new TblDataInterpreter(&s,this);
-    interpreter[INI]   = new IniDataInterpreter(&s,this);
-    interpreter[BATCH] = new BatchInterpreter(&s,this);
-    interpreter[CFG]   = new CfgDataInterpreter(&s,this);
+    interpreter[INI]   = new IniDataInterpreter(this);
+    interpreter[BATCH] = new BatchInterpreter(this);
+    interpreter[CFG]   = new CfgDataInterpreter(this);
 
     interpreter[TBL]->setFileManager(filemanager);
     interpreter[INI]->setFileManager(filemanager);
@@ -32,11 +32,14 @@ void Generator::run(bool flag)
 {
     if (!flag) return;
 
-    for (auto _interpreter = interpreter.begin()+1; _interpreter != interpreter.end(); _interpreter++)
+    for (auto it = s.begin(); it != s.end(); it++)
     {
-        if (_interpreter != interpreter.begin()+1) interpreter[INI]->read();
+        for (auto _interpreter = interpreter.begin()+1; _interpreter != interpreter.end(); _interpreter++)
+        {
+            if (_interpreter != interpreter.begin()+1) interpreter[INI]->read();
 
-        _interpreter.value()->write();
+            _interpreter.value()->write(it);
+        }
     }
 }
 

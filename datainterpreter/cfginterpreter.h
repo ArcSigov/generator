@@ -9,12 +9,10 @@ class CfgDataInterpreter : public FileDataInterpreter
 {
     Q_OBJECT
 public:
-    explicit CfgDataInterpreter(QVector<DataStorage>* s,QObject* parent = nullptr);
+    explicit CfgDataInterpreter(QObject* parent = nullptr);
     ~CfgDataInterpreter();
     virtual void read() override;
-    virtual void write() override;
-private:
-    QVector<DataStorage>* v;
+    virtual void write(DataStorage* storage = nullptr) override;
 };
 
 #endif

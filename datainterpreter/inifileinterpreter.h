@@ -10,10 +10,10 @@ class IniDataInterpreter : public FileDataInterpreter
 {
     Q_OBJECT
 public:
-    explicit IniDataInterpreter(QVector<DataStorage>* s = nullptr,QObject* parent = nullptr);
+    explicit IniDataInterpreter(QObject* parent = nullptr);
     ~IniDataInterpreter();
     virtual void read() override;
-    virtual void write() override;
+    virtual void write(DataStorage* storage = nullptr) override;
 private:
     QVector<DataStorage>* v;
 };

@@ -13,7 +13,7 @@ public:
     explicit TblDataInterpreter(QVector<DataStorage>* s = nullptr,QObject* parent = nullptr);
     ~TblDataInterpreter();
     virtual void read() override;
-    virtual void write() override;
+    virtual void write(DataStorage *storage = nullptr) override;
 private:
     QVector<DataStorage>* v;
 };

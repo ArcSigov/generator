@@ -1,8 +1,7 @@
 #include "inifileinterpreter.h"
 #include "tablerowprop.h"
-IniDataInterpreter::IniDataInterpreter(QVector<DataStorage>* s,QObject* parent) :
-    FileDataInterpreter(parent) ,
-    v(s)
+IniDataInterpreter::IniDataInterpreter(QObject* parent) :
+    FileDataInterpreter(parent)
 {
 
 }
@@ -18,19 +17,19 @@ void IniDataInterpreter::read()
     emit status(log.at(2));
 }
 
-void IniDataInterpreter::write()
+void IniDataInterpreter::write(DataStorage * storage)
 {
-    if(!v) return;
+    if(!storage) return;
+
     m->setFilePath("conf.ini");
-    for (auto it = v->begin(); it!= v->end(); it++)
-    {
-        QString formatted;
-        formatted.push_back("00000000\r\n");
-        formatted.push_back(it->genericSize() + "\r\n");
-        formatted.push_back(it->at(FILE_PATH).toString()+"\r\n");
-        formatted.push_back(it->genericName()+"\r\n"+" "+"\r\n");
-        formatted.push_back(it->at(DESCRIPTION).toString()+"\r\n");
-        formatted.push_back(it->at(VERSION).toString().rightJustified(2,'0') + " " + it->at(REVISION).toString().rightJustified(2,'0') + "\r\n");
-        m->write(QStringList(formatted));
-    }
+
+    QString formatted;
+    formatted.push_back("00000000\r\n");
+    formatted.push_back(storage->genericSize() + "\r\n");
+    formatted.push_back(storage->at(FILE_PATH).toString()+"\r\n");
+    formatted.push_back(storage->genericName()+"\r\n"+" "+"\r\n");
+    formatted.push_back(storage->at(DESCRIPTION).toString()+"\r\n");
+    formatted.push_back(storage->at(VERSION).toString().rightJustified(2,'0') + " " + storage->at(REVISION).toString().rightJustified(2,'0') + "\r\n");
+    m->write(QStringList(formatted));
+
 }

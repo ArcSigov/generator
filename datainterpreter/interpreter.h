@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVector>
 #include "manager.h"
+#include "datastorage.h"
 
 class FileDataInterpreter : public QObject
 {
@@ -13,7 +14,7 @@ class FileDataInterpreter : public QObject
     ~FileDataInterpreter() {};
 public:
     virtual void read() = 0;
-    virtual void write() = 0;
+    virtual void write(DataStorage* storage = nullptr) = 0;
     void setFileManager(Manager* _manager) {m = _manager;}
     Manager* manager() const {return m;}
 signals:

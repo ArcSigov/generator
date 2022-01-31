@@ -10,12 +10,10 @@ class BatchInterpreter : public FileDataInterpreter
 {
     Q_OBJECT
 public:
-    explicit BatchInterpreter(QVector<DataStorage> *s = nullptr, QObject* parent = nullptr);
+    explicit BatchInterpreter(QObject* parent = nullptr);
     ~BatchInterpreter();
     virtual void read() override;
-    virtual void write() override;
-private:
-    QVector<DataStorage> *v;
+    virtual void write(DataStorage* storage = nullptr) override;
 };
 
 #endif

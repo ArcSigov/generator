@@ -25,7 +25,7 @@ void TblDataInterpreter::read()
     }
 }
 
-void TblDataInterpreter::write()
+void TblDataInterpreter::write(DataStorage* storage)
 {
     if( !v) return;
 
