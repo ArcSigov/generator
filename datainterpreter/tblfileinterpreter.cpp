@@ -1,7 +1,8 @@
 #include "tblfileinterpreter.h"
 #include "tablerowprop.h"
-TblDataInterpreter::TblDataInterpreter(QVector<DataStorage>* s,QObject* parent) :
-    FileDataInterpreter(parent) ,
+
+
+TblDataInterpreter::TblDataInterpreter(QVector<DataStorage>* s) :
     v(s)
 {
 
@@ -25,7 +26,7 @@ void TblDataInterpreter::read()
     }
 }
 
-void TblDataInterpreter::write(DataStorage* storage)
+void TblDataInterpreter::write([[maybe_unused]] DataStorage* storage)
 {
     if( !v) return;
 

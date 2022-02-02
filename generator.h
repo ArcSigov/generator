@@ -4,16 +4,14 @@
 #include <QObject>
 #include <QVector>
 #include <QDir>
-#include <QMap>
 #include "datastorage.h"
 #include "mainwindow.h"
 #include "filemanager.h"
 #include "batchmanager.h"
 #include "tblfileinterpreter.h"
-#include "inifileinterpreter.h"
 #include "cfginterpreter.h"
 #include "tablerowprop.h"
-#include "batchinterpreter.h"
+#include "batchiniinterpreter.h"
 
 
 class Generator : public QObject
@@ -21,8 +19,7 @@ class Generator : public QObject
     Q_OBJECT
     enum {
         TBL,
-        INI,
-        BATCH,
+        BATCHINI,
         CFG
     };
 public:
@@ -34,7 +31,8 @@ private:
     void saveTblFile(const QString& path);
     QVector<DataStorage> s;
     MainWindow* window;
-    QMap<size_t,FileDataInterpreter*> interpreter;
+    std::vector<std::unique_ptr<FileDataInterpreter>> interpreter;
+    std::vector<std::shared_ptr<Manager>> managers;
 };
 
 #endif // GENERATOR_H

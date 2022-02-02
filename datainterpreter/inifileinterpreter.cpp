@@ -1,7 +1,7 @@
 #include "inifileinterpreter.h"
 #include "tablerowprop.h"
-IniDataInterpreter::IniDataInterpreter(QObject* parent) :
-    FileDataInterpreter(parent)
+
+IniDataInterpreter::IniDataInterpreter()
 {
 
 }
@@ -14,10 +14,10 @@ IniDataInterpreter::~IniDataInterpreter()
 void IniDataInterpreter::read()
 {
     auto log = m->read("log.ini");
-    emit status(log.at(2));
+    //emit status(log.at(2));
 }
 
-void IniDataInterpreter::write(DataStorage * storage)
+void IniDataInterpreter::write(DataStorage* storage)
 {
     if(!storage) return;
 
@@ -31,5 +31,4 @@ void IniDataInterpreter::write(DataStorage * storage)
     formatted.push_back(storage->at(DESCRIPTION).toString()+"\r\n");
     formatted.push_back(storage->at(VERSION).toString().rightJustified(2,'0') + " " + storage->at(REVISION).toString().rightJustified(2,'0') + "\r\n");
     m->write(QStringList(formatted));
-
 }

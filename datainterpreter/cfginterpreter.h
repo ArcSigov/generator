@@ -3,16 +3,24 @@
 
 #include "interpreter.h"
 #include <QVector>
-#include "datastorage.h"
+
+
+
+enum class BlockType
+{
+    undef,
+    bis,
+    bgs,
+    bcvm
+};
 
 class CfgDataInterpreter : public FileDataInterpreter
 {
-    Q_OBJECT
 public:
-    explicit CfgDataInterpreter(QObject* parent = nullptr);
+    explicit CfgDataInterpreter(BlockType block = BlockType::undef);
     ~CfgDataInterpreter();
-    virtual void read() override;
     virtual void write(DataStorage* storage = nullptr) override;
+    void setBlockType(const BlockType& = BlockType::undef);
 };
 
 #endif

@@ -1,19 +1,20 @@
 #ifndef BATCHDATAINTERPRETER_H
 #define BATCHDATAINTERPRETER_H
 
-#include <QObject>
+
 #include <QDebug>
 #include "interpreter.h"
 #include "datastorage.h"
 
 class BatchInterpreter : public FileDataInterpreter
 {
-    Q_OBJECT
 public:
-    explicit BatchInterpreter(QObject* parent = nullptr);
+    explicit BatchInterpreter();
     ~BatchInterpreter();
-    virtual void read() override;
-    virtual void write(DataStorage* storage = nullptr) override;
+    virtual void write(DataStorage* storage) override;
+private:
+    QString cur_id_path;
+    QString result_path;
 };
 
 #endif

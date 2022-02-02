@@ -1,16 +1,15 @@
 #ifndef MANAGER_H
 #define MANAGER_H
 
-#include <QObject>
+
 #include <QFile>
 #include <QDebug>
 
-class Manager : public QObject
+class Manager
 {
-    Q_OBJECT
         public:
-    explicit Manager(QObject *parent = nullptr) : QObject(parent){};
-            ~Manager(){};
+     Manager(){};
+            virtual ~Manager(){};
 public slots:
         virtual QStringList read(const QString& path = QString()) = 0;
         virtual bool write(const QStringList& data) = 0;

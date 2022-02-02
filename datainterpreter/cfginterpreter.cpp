@@ -1,9 +1,18 @@
 #include "cfginterpreter.h"
 
-CfgDataInterpreter::CfgDataInterpreter(QObject* parent) :
-        FileDataInterpreter(parent)
+CfgDataInterpreter::CfgDataInterpreter(BlockType block)
 {
-
+    switch (block)
+    {
+    case BlockType::bis:
+        break;
+    case BlockType::bgs:
+        break;
+    case BlockType::bcvm:
+        break;
+    case BlockType::undef:
+        break;
+    }
 }
 
 CfgDataInterpreter::~CfgDataInterpreter()
@@ -11,13 +20,13 @@ CfgDataInterpreter::~CfgDataInterpreter()
 
 }
 
-
-void CfgDataInterpreter::read()
+void CfgDataInterpreter::write([[maybe_unused]] DataStorage* storage)
 {
 
 }
 
-void CfgDataInterpreter::write(DataStorage* storage)
+void CfgDataInterpreter::setBlockType(const BlockType& block)
 {
-
+    *this = CfgDataInterpreter(block);
 }
+

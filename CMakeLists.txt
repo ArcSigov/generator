@@ -63,6 +63,8 @@ add_executable(generator    main.cpp
                             datainterpreter/inifileinterpreter.h
                             datainterpreter/batchinterpreter.cpp
                             datainterpreter/batchinterpreter.h
+                            datainterpreter/batchiniinterpreter.cpp
+                            datainterpreter/batchiniinterpreter.h
                             datainterpreter/cfginterpreter.cpp
                             datainterpreter/cfginterpreter.h
                             )

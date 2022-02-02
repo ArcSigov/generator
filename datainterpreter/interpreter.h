@@ -1,26 +1,23 @@
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
-#include <QObject>
 #include <QVector>
 #include "manager.h"
 #include "datastorage.h"
+#include <memory>
 
-class FileDataInterpreter : public QObject
+class FileDataInterpreter
 {
-    Q_OBJECT
     public:
-    explicit FileDataInterpreter(QObject *parent = nullptr) : QObject(parent){};
-    ~FileDataInterpreter() {};
+    explicit FileDataInterpreter(){};
+    virtual ~FileDataInterpreter() {};
 public:
-    virtual void read() = 0;
+    virtual void read(){};
     virtual void write(DataStorage* storage = nullptr) = 0;
-    void setFileManager(Manager* _manager) {m = _manager;}
-    Manager* manager() const {return m;}
-signals:
-    void status(const QString& status);
+    void setFileManager(std::shared_ptr<Manager>& _manager) {m = _manager;}
+    std::shared_ptr<Manager>& manager() {return m;}
 protected:
-    Manager* m;
+    std::shared_ptr<Manager> m;
 };
 
 #endif // INTERPRETER_H

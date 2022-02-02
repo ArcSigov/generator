@@ -1,26 +1,25 @@
 #include "generator.h"
 #include <QDebug>
+
 Generator::Generator(QObject *parent) : QObject(parent),
     window(new MainWindow(&s))
 {
 
-    Manager* filemanager = new FileManager(this);
-    Manager* batchmanager = new BatchManager(this);
+    managers.emplace_back(std::make_shared<FileManager>());
+    managers.emplace_back(std::make_shared<BatchManager>());
 
-    interpreter[TBL]   = new TblDataInterpreter(&s,this);
-    interpreter[INI]   = new IniDataInterpreter(this);
-    interpreter[BATCH] = new BatchInterpreter(this);
-    interpreter[CFG]   = new CfgDataInterpreter(this);
+    interpreter.emplace_back(std::make_unique<TblDataInterpreter>(&s));
+    interpreter.emplace_back(std::make_unique<BatchIniInterpreter>(managers[0],managers[1]));
+    interpreter.emplace_back(std::make_unique<CfgDataInterpreter>(BlockType::undef));
 
-    interpreter[TBL]->setFileManager(filemanager);
-    interpreter[INI]->setFileManager(filemanager);
-    interpreter[BATCH]->setFileManager(batchmanager);
+    interpreter[TBL]->setFileManager(managers[0]);
 
     connect(window,&MainWindow::filePathSetted,this,&Generator::readTblFile);
     connect(window,&MainWindow::saveFilePath,this,&Generator::saveTblFile);
     connect(window,&MainWindow::generateActive,this,&Generator::run);
 
     window->show();
+
 }
 
 Generator::~Generator()
@@ -32,13 +31,12 @@ void Generator::run(bool flag)
 {
     if (!flag) return;
 
-    for (auto it = s.begin(); it != s.end(); it++)
-    {
-        for (auto _interpreter = interpreter.begin()+1; _interpreter != interpreter.end(); _interpreter++)
-        {
-            if (_interpreter != interpreter.begin()+1) interpreter[INI]->read();
+    for (auto data = s.begin(); data != s.end(); data++) {
 
-            _interpreter.value()->write(it);
+        if (data != s.begin()) interpreter[BATCHINI]->read();
+
+        for (auto i = 1ull ; i < interpreter.size(); i++){
+            interpreter[i]->write(data);
         }
     }
 }

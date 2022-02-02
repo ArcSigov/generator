@@ -1,16 +1,13 @@
 #include "filemanager.h"
 
 
-FileManager::FileManager(QObject* parent) :
-    Manager(parent),
-    f(new QFile(this))
+FileManager::FileManager() : f(std::make_unique<QFile>())
 {
 
 }
 
 FileManager::~FileManager()
 {
-
 }
 
 QStringList FileManager::read(const QString &path)
@@ -20,7 +17,7 @@ QStringList FileManager::read(const QString &path)
     if (f->open(QIODevice::ReadOnly))
     {
         QStringList l;
-        QTextStream s(f);
+        QTextStream s(f.get());
         while (!s.atEnd())
         {
             l.push_back(s.readLine());
@@ -36,7 +33,7 @@ bool FileManager::write(const QStringList &data)
     if(!f->open(QIODevice::WriteOnly | QIODevice::Truncate))
         return false;
 
-    QTextStream stream(f);
+    QTextStream stream(f.get());
     for (const auto& it: data)
         stream << it;
 

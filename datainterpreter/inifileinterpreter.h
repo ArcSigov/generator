@@ -8,14 +8,11 @@
 
 class IniDataInterpreter : public FileDataInterpreter
 {
-    Q_OBJECT
 public:
-    explicit IniDataInterpreter(QObject* parent = nullptr);
+    explicit IniDataInterpreter();
     ~IniDataInterpreter();
     virtual void read() override;
-    virtual void write(DataStorage* storage = nullptr) override;
-private:
-    QVector<DataStorage>* v;
+    virtual void write(DataStorage* storage) override;
 };
 
 #endif

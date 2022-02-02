@@ -1,8 +1,7 @@
 #include "batchmanager.h"
 
 
-BatchManager::BatchManager(QObject* parent) :
-    Manager(parent)
+BatchManager::BatchManager()
 {
 
 }
