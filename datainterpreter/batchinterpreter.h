@@ -10,8 +10,8 @@ class BatchInterpreter : public FileDataInterpreter
 {
 public:
     explicit BatchInterpreter();
-    ~BatchInterpreter();
-    virtual void write(DataStorage* storage) override;
+    ~BatchInterpreter() = default;
+    virtual void write(const DataStorage &storage = DataStorage()) override;
 private:
     QString cur_id_path;
     QString result_path;

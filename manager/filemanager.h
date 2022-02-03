@@ -10,7 +10,7 @@ class FileManager : public Manager
 {
 public:
     explicit FileManager();
-    ~FileManager();
+    ~FileManager() = default;
 public:
     virtual QStringList read(const QString& path = QString()) override;
     virtual bool write(const QStringList &data) override;

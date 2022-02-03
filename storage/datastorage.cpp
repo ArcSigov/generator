@@ -21,7 +21,7 @@ DataStorage::~DataStorage()
 
 }
 
-QVariant DataStorage::at(const int& column)
+QVariant DataStorage::at(const int& column) const noexcept
 {
     switch (column)
     {
@@ -69,6 +69,7 @@ void DataStorage::set(const QVariant& v, int column)
         case PART_N:      n_part = v.toInt();         break;
         case FILE_PATH:
         {
+            generic_name.clear();
             f_path = v.toString();
             info.setFile(f_path);
             generic_size = info.size()+84;
@@ -99,17 +100,17 @@ QString DataStorage::name(const int& column)
     return QString();
 }
 
-QString DataStorage::genericName()
+QString DataStorage::genericName() const noexcept
 {
     return generic_name;
 }
 
-size_t  DataStorage::genericType()
+size_t  DataStorage::genericType() const noexcept
 {
     return info.completeSuffix() == "elf" ? 0 : 1;
 }
 
-QString DataStorage::genericSize()
+QString DataStorage::genericSize() const noexcept
 {
     return QString::number(generic_size-4,16).rightJustified(8,'0');
 }

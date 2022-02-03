@@ -8,11 +8,6 @@ TblDataInterpreter::TblDataInterpreter(QVector<DataStorage>* s) :
 
 }
 
-TblDataInterpreter::~TblDataInterpreter()
-{
-
-}
-
 void TblDataInterpreter::read()
 {
     auto tbldata = m->read();
@@ -26,7 +21,7 @@ void TblDataInterpreter::read()
     }
 }
 
-void TblDataInterpreter::write([[maybe_unused]] DataStorage* storage)
+void TblDataInterpreter::write([[maybe_unused]] const DataStorage& storage)
 {
     if( !v) return;
 

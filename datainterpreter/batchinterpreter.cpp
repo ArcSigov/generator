@@ -8,22 +8,15 @@ BatchInterpreter::BatchInterpreter()
     result_path = " > " + QDir::currentPath() + "/log.ini";
 }
 
-BatchInterpreter::~BatchInterpreter()
+void BatchInterpreter::write(const DataStorage& storage)
 {
-
-}
-
-void BatchInterpreter::write(DataStorage* storage)
-{
-    if(!storage) return;
-
     QString formatted = cur_id_path;
-    auto crc = storage->at(CRC).toInt();
-    auto date = storage->at(ID_DATE).toDate().toString(Qt::SystemLocaleShortDate).replace(".",":");
+    auto crc = storage.at(CRC).toInt();
+    auto date = storage.at(ID_DATE).toDate().toString(Qt::SystemLocaleShortDate).replace(".",":");
 
-    formatted.push_back(storage->genericType() ? " " : "-bs ");
+    formatted.push_back(storage.genericType() ? " " : "-bs ");
     formatted.push_back(date.isEmpty() ? " " : " -d " + date);
-    formatted.push_back(crc > 0  ? "-cs " + storage->at(CRC).toString(): " ");
+    formatted.push_back(crc > 0  ? "-cs " + storage.at(CRC).toString(): " ");
     formatted.push_back(result_path);
     m->write(QStringList(formatted));
 }

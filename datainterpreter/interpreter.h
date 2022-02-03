@@ -9,13 +9,14 @@
 class FileDataInterpreter
 {
     public:
-    explicit FileDataInterpreter(){};
-    virtual ~FileDataInterpreter() {};
+    FileDataInterpreter()  = default;
+    virtual ~FileDataInterpreter()  = default;
 public:
     virtual void read(){};
-    virtual void write(DataStorage* storage = nullptr) = 0;
+    virtual void write(const DataStorage& storage = DataStorage()) = 0;
+    virtual void done(){};
     void setFileManager(std::shared_ptr<Manager>& _manager) {m = _manager;}
-    std::shared_ptr<Manager>& manager() {return m;}
+    Manager& manager() {return *m;}
 protected:
     std::shared_ptr<Manager> m;
 };

@@ -8,8 +8,8 @@
 class BatchManager : public Manager
 {
 public:
-    explicit BatchManager();
-    ~BatchManager();
+    explicit BatchManager() = default;
+    ~BatchManager()  = default;
 public slots:
     virtual QStringList read(const QString& path = QString()) override;
     virtual bool write(const QStringList &data) override;

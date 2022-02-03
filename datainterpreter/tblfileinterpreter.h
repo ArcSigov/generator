@@ -10,9 +10,9 @@ class TblDataInterpreter : public FileDataInterpreter
 {
 public:
     explicit TblDataInterpreter(QVector<DataStorage>* s = nullptr);
-    ~TblDataInterpreter();
+    ~TblDataInterpreter() = default;
     virtual void read() override;
-    virtual void write(DataStorage *storage = nullptr) override;
+    virtual void write(const DataStorage &storage = DataStorage()) override;
 private:
     QVector<DataStorage>* v;
 };

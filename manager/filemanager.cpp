@@ -6,14 +6,10 @@ FileManager::FileManager() : f(std::make_unique<QFile>())
 
 }
 
-FileManager::~FileManager()
-{
-}
 
 QStringList FileManager::read(const QString &path)
 {
     setFilePath(path);
-
     if (f->open(QIODevice::ReadOnly))
     {
         QStringList l;

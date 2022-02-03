@@ -19,7 +19,6 @@ Generator::Generator(QObject *parent) : QObject(parent),
     connect(window,&MainWindow::generateActive,this,&Generator::run);
 
     window->show();
-
 }
 
 Generator::~Generator()
@@ -31,21 +30,23 @@ void Generator::run(bool flag)
 {
     if (!flag) return;
 
-    for (auto data = s.begin(); data != s.end(); data++) {
-
-        if (data != s.begin()) interpreter[BATCHINI]->read();
-
+    for (const auto& data : qAsConst(s))
+    {
+        interpreter[BATCHINI]->read();
         for (auto i = 1ull ; i < interpreter.size(); i++){
             interpreter[i]->write(data);
         }
     }
+
+    for (auto& _interpreter : interpreter)
+        _interpreter->done();
 }
 
 void Generator::readTblFile(const QString &path)
 {
     if (path.isEmpty()) return;
 
-    interpreter[TBL]->manager()->setFilePath(path);
+    interpreter[TBL]->manager().setFilePath(path);
     interpreter[TBL]->read();
     window->updateTable();
 }
@@ -54,7 +55,11 @@ void Generator::saveTblFile(const QString &path)
 {
     if (path.isEmpty()) return;
 
-    interpreter[TBL]->manager()->setFilePath(path);
-    interpreter[TBL]->write();
+    interpreter[TBL]->manager().setFilePath(path);
+
+    for (const auto& data : qAsConst(s))
+        interpreter[TBL]->write(data);
+
+    interpreter[TBL]->done();
     window->showSaveFileResult(true);
 }

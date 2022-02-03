@@ -1,16 +1,5 @@
 #include "batchmanager.h"
 
-
-BatchManager::BatchManager()
-{
-
-}
-
-BatchManager::~BatchManager()
-{
-
-}
-
 QStringList BatchManager::read(const QString &path)
 {
     Q_UNUSED(path)

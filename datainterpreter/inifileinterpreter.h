@@ -10,9 +10,9 @@ class IniDataInterpreter : public FileDataInterpreter
 {
 public:
     explicit IniDataInterpreter();
-    ~IniDataInterpreter();
+    ~IniDataInterpreter() = default;
     virtual void read() override;
-    virtual void write(DataStorage* storage) override;
+    virtual void write(const DataStorage &storage = DataStorage()) override;
 };
 
 #endif
