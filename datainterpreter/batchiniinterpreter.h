@@ -8,16 +8,17 @@
 #include "filemanager.h"
 
 
-class BatchIniInterpreter : public FileDataInterpreter
+class BatchIniProcessor : public DataProcessor
 {
 public:
-    explicit BatchIniInterpreter(std::shared_ptr<Manager>& m1, std::shared_ptr<Manager>& m2);
-    ~BatchIniInterpreter() = default;
-    void read() override;
-    void write(const DataStorage &storage = DataStorage()) override;
+     BatchIniProcessor(Manager*, Manager*);
+    ~BatchIniProcessor() = default;
+    void process() override;
+    QString quittance() override;
 private:
-    std::unique_ptr<FileDataInterpreter>   iniinterpreter;
-    std::unique_ptr<FileDataInterpreter>   batchinterpreter;
+    std::unique_ptr<DataProcessor>   iniprocessor;
+    std::unique_ptr<DataProcessor>   batchprocessor;
+    QVector<DataStorage> store;
 };
 
 

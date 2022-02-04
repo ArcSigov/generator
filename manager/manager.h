@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QDebug>
 
+
 class Manager
 {
 public:

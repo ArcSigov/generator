@@ -6,15 +6,16 @@
 #include "interpreter.h"
 #include "datastorage.h"
 
-class TblDataInterpreter : public FileDataInterpreter
+class TblDataProcessor : public DataProcessor
 {
 public:
-    explicit TblDataInterpreter(QVector<DataStorage>* s = nullptr);
-    ~TblDataInterpreter() = default;
-    virtual void read() override;
-    virtual void write(const DataStorage &storage = DataStorage()) override;
+     TblDataProcessor() = default;
+    ~TblDataProcessor() = default;
+    virtual QString quittance() override;
+    virtual void process() override;
+    virtual void lock(bool) override;
 private:
-    QVector<DataStorage>* v;
+    bool locked = false;
 };
 
 #endif

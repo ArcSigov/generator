@@ -21,7 +21,7 @@ DataStorage::~DataStorage()
 
 }
 
-QVariant DataStorage::at(const int& column) const noexcept
+QVariant DataStorage::at(const int& column)
 {
     switch (column)
     {
@@ -100,17 +100,17 @@ QString DataStorage::name(const int& column)
     return QString();
 }
 
-QString DataStorage::genericName() const noexcept
+QString DataStorage::genericName()
 {
     return generic_name;
 }
 
-size_t  DataStorage::genericType() const noexcept
+size_t  DataStorage::genericType()
 {
     return info.completeSuffix() == "elf" ? 0 : 1;
 }
 
-QString DataStorage::genericSize() const noexcept
+QString DataStorage::genericSize()
 {
     return QString::number(generic_size-4,16).rightJustified(8,'0');
 }

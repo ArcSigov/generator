@@ -19,4 +19,6 @@ private:
     std::unique_ptr<QFile> f;
 };
 
+
+
 #endif

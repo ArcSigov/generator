@@ -5,14 +5,18 @@ Generator::Generator(QObject *parent) : QObject(parent),
     window(new MainWindow(&s))
 {
 
-    managers.emplace_back(std::make_shared<FileManager>());
-    managers.emplace_back(std::make_shared<BatchManager>());
+    managers.emplace_back(std::make_unique<FileManager>());
+    managers.emplace_back(std::make_unique<BatchManager>());
 
-    interpreter.emplace_back(std::make_unique<TblDataInterpreter>(&s));
-    interpreter.emplace_back(std::make_unique<BatchIniInterpreter>(managers[0],managers[1]));
-    interpreter.emplace_back(std::make_unique<CfgDataInterpreter>(BlockType::undef));
+    processors.emplace_back(std::make_unique<TblDataProcessor>());
+    processors.emplace_back(std::make_unique<BatchIniProcessor>(managers[0].get(),managers[1].get()));
+    processors.emplace_back(std::make_unique<CfgDataProcessor>(BlockType::undef));
 
-    interpreter[TBL]->setFileManager(managers[0]);
+    for (auto& it: processors)
+    {
+        it->setStorage(&s);
+        it->setFileManager(managers[0].get());
+    }
 
     connect(window,&MainWindow::filePathSetted,this,&Generator::readTblFile);
     connect(window,&MainWindow::saveFilePath,this,&Generator::saveTblFile);
@@ -30,36 +34,26 @@ void Generator::run(bool flag)
 {
     if (!flag) return;
 
-    for (const auto& data : qAsConst(s))
+    processors[TBL]->lock(true);
+    for (auto& processor : processors)
     {
-        interpreter[BATCHINI]->read();
-        for (auto i = 1ull ; i < interpreter.size(); i++){
-            interpreter[i]->write(data);
-        }
+        processor->process();
+        auto res = processor->quittance();
     }
-
-    for (auto& _interpreter : interpreter)
-        _interpreter->done();
+    processors[TBL]->lock(false);
 }
+
 
 void Generator::readTblFile(const QString &path)
 {
-    if (path.isEmpty()) return;
-
-    interpreter[TBL]->manager().setFilePath(path);
-    interpreter[TBL]->read();
+    processors[TBL]->manager()->setFilePath(path);
+    processors[TBL]->quittance();
     window->updateTable();
 }
 
 void Generator::saveTblFile(const QString &path)
 {
-    if (path.isEmpty()) return;
-
-    interpreter[TBL]->manager().setFilePath(path);
-
-    for (const auto& data : qAsConst(s))
-        interpreter[TBL]->write(data);
-
-    interpreter[TBL]->done();
+    processors[TBL]->manager()->setFilePath(path);
+    processors[TBL]->process();
     window->showSaveFileResult(true);
 }

@@ -31,8 +31,8 @@ private:
     void saveTblFile(const QString& path);
     QVector<DataStorage> s;
     MainWindow* window;
-    std::vector<std::unique_ptr<FileDataInterpreter>> interpreter;
-    std::vector<std::shared_ptr<Manager>> managers;
+    std::vector<std::unique_ptr<DataProcessor>> processors;
+    std::vector<std::unique_ptr<Manager>> managers;
 };
 
 #endif // GENERATOR_H

@@ -6,19 +6,22 @@
 #include "datastorage.h"
 #include <memory>
 
-class FileDataInterpreter
+class DataProcessor
 {
     public:
-    FileDataInterpreter()  = default;
-    virtual ~FileDataInterpreter()  = default;
+    DataProcessor()  = default;
+    virtual ~DataProcessor()  = default;
 public:
-    virtual void read(){};
-    virtual void write(const DataStorage& storage = DataStorage()) = 0;
-    virtual void done(){};
-    void setFileManager(std::shared_ptr<Manager>& _manager) {m = _manager;}
-    Manager& manager() {return *m;}
+    virtual QString quittance(){}
+    virtual void process() = 0;
+    virtual void setFileManager(Manager* _m) {m = _m;}
+    virtual void setStorage(QVector<DataStorage>* _s) {s = _s;}
+    virtual void lock(bool){}
+    Manager* manager() {return m;}
 protected:
-    std::shared_ptr<Manager> m;
+    Manager* m;
+    QVector<DataStorage>* s;
 };
+
 
 #endif // INTERPRETER_H

@@ -68,13 +68,13 @@ protected:
     QList<QStringList> list;
 };
 
-class CfgDataInterpreter : public FileDataInterpreter
+class CfgDataProcessor : public DataProcessor
 {
 public:
-    CfgDataInterpreter() = default;
-    CfgDataInterpreter(const BlockType& block = BlockType::undef);
-    ~CfgDataInterpreter() = default;
-    virtual void write(const DataStorage& storage = DataStorage()) override;
+    CfgDataProcessor() = default;
+    CfgDataProcessor(const BlockType& block = BlockType::undef);
+    ~CfgDataProcessor() = default;
+    virtual void process() override;
     void setBlockType(const BlockType& = BlockType::undef);
 protected:
     size_t flash_offset;

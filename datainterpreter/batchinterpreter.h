@@ -6,12 +6,12 @@
 #include "interpreter.h"
 #include "datastorage.h"
 
-class BatchInterpreter : public FileDataInterpreter
+class BatchProcessor : public DataProcessor
 {
 public:
-    explicit BatchInterpreter();
-    ~BatchInterpreter() = default;
-    virtual void write(const DataStorage &storage = DataStorage()) override;
+    explicit BatchProcessor();
+    ~BatchProcessor() = default;
+    virtual void process() override;
 private:
     QString cur_id_path;
     QString result_path;

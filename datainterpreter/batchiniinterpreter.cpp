@@ -1,20 +1,28 @@
 #include "batchiniinterpreter.h"
 
-BatchIniInterpreter::BatchIniInterpreter(std::shared_ptr<Manager> &m1, std::shared_ptr<Manager> &m2) :
-    iniinterpreter(std::make_unique<IniDataInterpreter>()),
-    batchinterpreter(std::make_unique<BatchInterpreter>())
+BatchIniProcessor::BatchIniProcessor(Manager* to_ini, Manager* to_batch) :
+    iniprocessor(std::make_unique<IniDataProcessor>()),
+    batchprocessor(std::make_unique<BatchProcessor>())
 {
-    iniinterpreter->setFileManager(m1);
-    batchinterpreter->setFileManager(m2);
+    store.resize(1);
+    iniprocessor->setStorage(&store);
+    batchprocessor->setStorage(&store);
+    iniprocessor->setFileManager(to_ini);
+    batchprocessor->setFileManager(to_batch);
 }
 
-void BatchIniInterpreter::read()
+
+QString BatchIniProcessor::quittance()
 {
-    iniinterpreter->read();
+    return iniprocessor->quittance();
 }
 
-void BatchIniInterpreter::write(const DataStorage& storage)
+void BatchIniProcessor::process()
 {
-    iniinterpreter->write(storage);
-    batchinterpreter->write(storage);
+    for (auto it = s->begin(); it != s->end(); it++)
+    {
+        store[0] = *it;
+        iniprocessor->process();
+        batchprocessor->process();
+    }
 }

@@ -1,6 +1,6 @@
 #include "cfginterpreter.h"
 
-CfgDataInterpreter::CfgDataInterpreter(const BlockType &block)
+CfgDataProcessor::CfgDataProcessor(const BlockType &block)
 {
     switch (block)
     {
@@ -15,12 +15,12 @@ CfgDataInterpreter::CfgDataInterpreter(const BlockType &block)
     }
 }
 
-void CfgDataInterpreter::write([[maybe_unused]] const DataStorage &storage)
+void CfgDataProcessor::process()
 {
 
 }
 
-void CfgDataInterpreter::setBlockType(const BlockType& block)
+void CfgDataProcessor::setBlockType(const BlockType& block)
 {
     //*this = CfgDataInterpreter();
 }

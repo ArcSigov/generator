@@ -22,13 +22,13 @@ class DataStorage
 public:
     DataStorage();
     ~DataStorage();
-    QVariant at(const int &column) const noexcept;
+    QVariant at(const int &column);
     void     set(const QVariant &v, int column);
     bool     isValid(const int& column);
     static QString  name(const int &column);
-    QString genericName() const noexcept;
-    QString genericSize() const noexcept;
-    size_t  genericType() const noexcept;
+    QString genericName();
+    QString genericSize();
+    size_t  genericType();
 private:
     QFileInfo info;
 };

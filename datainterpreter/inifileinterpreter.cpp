@@ -1,27 +1,26 @@
 #include "inifileinterpreter.h"
 #include "tablerowprop.h"
 
-IniDataInterpreter::IniDataInterpreter()
-{
 
-}
-
-void IniDataInterpreter::read()
+QString IniDataProcessor::quittance()
 {
-    auto log = m->read("log.ini");
+    //return{ m->read("log.ini").at(2);}}
     //emit status(log.at(2));
+    return {};
 }
 
-void IniDataInterpreter::write(const DataStorage& storage)
+void IniDataProcessor::process()
 {
     m->setFilePath("conf.ini");
-
-    QString formatted;
-    formatted.push_back("00000000\r\n");
-    formatted.push_back(storage.genericSize() + "\r\n");
-    formatted.push_back(storage.at(FILE_PATH).toString()+"\r\n");
-    formatted.push_back(storage.genericName()+"\r\n"+" "+"\r\n");
-    formatted.push_back(storage.at(DESCRIPTION).toString()+"\r\n");
-    formatted.push_back(storage.at(VERSION).toString().rightJustified(2,'0') + " " + storage.at(REVISION).toString().rightJustified(2,'0') + "\r\n");
-    m->write(QStringList(formatted));
+    QStringList formatted;
+    for (auto it = s->begin(); it != s->end() ; it++)
+    {
+        formatted.push_back("00000000\r\n");
+        formatted.push_back(it->genericSize() + "\r\n");
+        formatted.push_back(it->at(FILE_PATH).toString()+"\r\n");
+        formatted.push_back(it->genericName()+"\r\n"+" "+"\r\n");
+        formatted.push_back(it->at(DESCRIPTION).toString()+"\r\n");
+        formatted.push_back(it->at(VERSION).toString().rightJustified(2,'0') + " " + it->at(REVISION).toString().rightJustified(2,'0') + "\r\n");
+    }
+    m->write(formatted);
 }

@@ -6,13 +6,13 @@
 #include "interpreter.h"
 #include "datastorage.h"
 
-class IniDataInterpreter : public FileDataInterpreter
+class IniDataProcessor : public DataProcessor
 {
 public:
-    explicit IniDataInterpreter();
-    ~IniDataInterpreter() = default;
-    virtual void read() override;
-    virtual void write(const DataStorage &storage = DataStorage()) override;
+    IniDataProcessor() = default;
+    ~IniDataProcessor() = default;
+    virtual void process() override;
+    virtual QString quittance() override;
 };
 
 #endif
