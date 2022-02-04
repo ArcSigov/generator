@@ -2,8 +2,8 @@
 #define BATCHINIDATAINTERPRETER
 
 
-#include "inifileinterpreter.h"
-#include "batchinterpreter.h"
+#include "iniprocessor.h"
+#include "batchprocessor.h"
 #include "batchmanager.h"
 #include "filemanager.h"
 

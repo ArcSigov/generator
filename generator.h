@@ -8,10 +8,10 @@
 #include "mainwindow.h"
 #include "filemanager.h"
 #include "batchmanager.h"
-#include "tblfileinterpreter.h"
-#include "cfginterpreter.h"
+#include "tblprocessor.h"
+#include "cfgprocessor.h"
 #include "tablerowprop.h"
-#include "batchiniinterpreter.h"
+#include "batchiniprocessor.h"
 
 
 class Generator : public QObject

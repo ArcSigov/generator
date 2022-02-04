@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QDebug>
-#include "interpreter.h"
+#include "dataprocessor.h"
 #include "datastorage.h"
 
 class IniDataProcessor : public DataProcessor

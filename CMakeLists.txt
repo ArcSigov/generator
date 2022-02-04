@@ -24,7 +24,12 @@ set                        (SEARCH_DIRS
                             gui/tablemodel
                             storage
                             manager
-                            datainterpreter
+                            dataprocessor
+                            dataprocessor/tbl
+                            dataprocessor/ini
+                            dataprocessor/cfg
+                            dataprocessor/batch
+                            dataprocessor/batchini
                             system)
 
 add_executable(generator    main.cpp
@@ -56,17 +61,17 @@ add_executable(generator    main.cpp
                             manager/filemanager.cpp
                             manager/batchmanager.h
                             manager/batchmanager.cpp
-                            datainterpreter/interpreter.h
-                            datainterpreter/tblfileinterpreter.cpp
-                            datainterpreter/tblfileinterpreter.h
-                            datainterpreter/inifileinterpreter.cpp
-                            datainterpreter/inifileinterpreter.h
-                            datainterpreter/batchinterpreter.cpp
-                            datainterpreter/batchinterpreter.h
-                            datainterpreter/batchiniinterpreter.cpp
-                            datainterpreter/batchiniinterpreter.h
-                            datainterpreter/cfginterpreter.cpp
-                            datainterpreter/cfginterpreter.h
+                            dataprocessor/dataprocessor.h
+                            dataprocessor/tbl/tblprocessor.cpp
+                            dataprocessor/tbl/tblprocessor.h
+                            dataprocessor/ini/iniprocessor.cpp
+                            dataprocessor/ini/iniprocessor.h
+                            dataprocessor/batch/batchprocessor.cpp
+                            dataprocessor/batch/batchprocessor.h
+                            dataprocessor/batchini/batchiniprocessor.cpp
+                            dataprocessor/batchini/batchiniprocessor.h
+                            dataprocessor/cfg/cfgprocessor.cpp
+                            dataprocessor/cfg/cfgprocessor.h
                             )
 
 

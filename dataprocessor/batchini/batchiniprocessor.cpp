@@ -1,4 +1,4 @@
-#include "batchiniinterpreter.h"
+#include "batchiniprocessor.h"
 
 BatchIniProcessor::BatchIniProcessor(Manager* to_ini, Manager* to_batch) :
     iniprocessor(std::make_unique<IniDataProcessor>()),

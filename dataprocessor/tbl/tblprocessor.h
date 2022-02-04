@@ -3,8 +3,7 @@
 
 
 #include <QDebug>
-#include "interpreter.h"
-#include "datastorage.h"
+#include "dataprocessor.h"
 
 class TblDataProcessor : public DataProcessor
 {

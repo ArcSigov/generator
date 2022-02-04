@@ -1,4 +1,4 @@
-#include "tblfileinterpreter.h"
+#include "tblprocessor.h"
 #include "tablerowprop.h"
 
 

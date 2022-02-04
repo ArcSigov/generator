@@ -1,7 +1,7 @@
 #ifndef CFGINTERPRETER_H
 #define CFGINTERPRETER_H
 
-#include "interpreter.h"
+#include "dataprocessor.h"
 #include <QVector>
 
 enum class BlockType

@@ -1,4 +1,4 @@
-#include "cfginterpreter.h"
+#include "cfgprocessor.h"
 
 CfgDataProcessor::CfgDataProcessor(const BlockType &block)
 {

@@ -1,4 +1,4 @@
-#include "inifileinterpreter.h"
+#include "iniprocessor.h"
 #include "tablerowprop.h"
 
 

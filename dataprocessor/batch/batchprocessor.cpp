@@ -1,4 +1,4 @@
-#include "batchinterpreter.h"
+#include "batchprocessor.h"
 #include "tablerowprop.h"
 #include <QDir>
 
