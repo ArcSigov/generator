@@ -11,8 +11,7 @@ BatchProcessor::BatchProcessor() :
 
 void BatchProcessor::process()
 {
-    QStringList formatted;
-    formatted.push_back(cur_id_path);
+    QString formatted = cur_id_path;
     for (auto it = s->begin(); it != s->end(); it++)
     {
         auto crc = it->at(CRC).toUInt();
@@ -23,6 +22,5 @@ void BatchProcessor::process()
         formatted.push_back(crc > 0  ? "-cs " + it->at(CRC).toString(): " ");
         formatted.push_back(result_path);
     }
-    qDebug() << formatted;
-    m->write(formatted);
+    m->write(QStringList(formatted));
 }

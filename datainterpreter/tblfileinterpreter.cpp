@@ -17,7 +17,7 @@ QString TblDataProcessor::quittance()
             s->push_back(d);
         }
     }
-    return {};
+    return QString();
 }
 
 void TblDataProcessor::process()

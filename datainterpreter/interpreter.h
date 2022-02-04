@@ -12,7 +12,7 @@ class DataProcessor
     DataProcessor()  = default;
     virtual ~DataProcessor()  = default;
 public:
-    virtual QString quittance(){}
+    virtual QString quittance(){ return QString();}
     virtual void process() = 0;
     virtual void setFileManager(Manager* _m) {m = _m;}
     virtual void setStorage(QVector<DataStorage>* _s) {s = _s;}
