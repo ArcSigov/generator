@@ -38,6 +38,24 @@ QVariant DataStorage::at(const int& column)
     }
 }
 
+
+QVariant DataStorage::at(const int& column) const
+{
+    switch (column)
+    {
+    case MODULE_NUM:  return m_num;
+    case FILE_PATH:   return f_path;
+    case ID_DATE:     return date;
+    case VERSION:     return version;
+    case REVISION:    return revision;
+    case CRC:         return crc;
+    case DESCRIPTION: return description;
+    case RAM_ADDR:    return ram_addr;
+    case PART_N:      return n_part;
+    default :         return 0;
+    }
+}
+
 bool DataStorage::isValid(const int &column)
 {
     switch (column)
@@ -115,4 +133,17 @@ QString DataStorage::genericSize()
     return QString::number(generic_size-4,16).rightJustified(8,'0');
 }
 
+QString DataStorage::genericName() const
+{
+    return generic_name;
+}
 
+size_t  DataStorage::genericType() const
+{
+    return info.completeSuffix() == "elf" ? 0 : 1;
+}
+
+QString DataStorage::genericSize() const
+{
+    return QString::number(generic_size-4,16).rightJustified(8,'0');
+}

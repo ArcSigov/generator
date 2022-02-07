@@ -24,13 +24,15 @@ class Generator : public QObject
     };
 public:
     explicit Generator(QObject *parent = nullptr);
-    ~Generator();    
+    ~Generator() = default;
+signals:
+    void workStatus(const QString& result);
 private:
     void run(bool);
     void readTblFile(const QString& path);
     void saveTblFile(const QString& path);
     QVector<DataStorage> s;
-    MainWindow* window;
+    std::unique_ptr<MainWindow> window;
     std::vector<std::unique_ptr<DataProcessor>> processors;
     std::vector<std::unique_ptr<Manager>> managers;
 };

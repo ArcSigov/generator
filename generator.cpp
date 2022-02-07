@@ -2,7 +2,7 @@
 #include <QDebug>
 
 Generator::Generator(QObject *parent) : QObject(parent),
-    window(new MainWindow(&s))
+    window(std::make_unique<MainWindow>(&s))
 {
 
     managers.emplace_back(std::make_unique<FileManager>());
@@ -10,7 +10,7 @@ Generator::Generator(QObject *parent) : QObject(parent),
 
     processors.emplace_back(std::make_unique<TblDataProcessor>());
     processors.emplace_back(std::make_unique<BatchIniProcessor>(managers[0].get(),managers[1].get()));
-    processors.emplace_back(std::make_unique<CfgDataProcessor>(BlockType::undef));
+    processors.emplace_back(std::make_unique<CfgDataProcessor>());
 
     for (auto& it: processors)
     {
@@ -18,16 +18,11 @@ Generator::Generator(QObject *parent) : QObject(parent),
         it->setFileManager(managers[0].get());
     }
 
-    connect(window,&MainWindow::filePathSetted,this,&Generator::readTblFile);
-    connect(window,&MainWindow::saveFilePath,this,&Generator::saveTblFile);
-    connect(window,&MainWindow::generateActive,this,&Generator::run);
+    connect(window.get(),&MainWindow::filePathSetted,this,&Generator::readTblFile);
+    connect(window.get(),&MainWindow::saveFilePath,this,&Generator::saveTblFile);
+    connect(window.get(),&MainWindow::generateActive,this,&Generator::run);
 
     window->show();
-}
-
-Generator::~Generator()
-{
-    delete window;
 }
 
 void Generator::run(bool flag)
@@ -38,7 +33,7 @@ void Generator::run(bool flag)
     for (auto& processor : processors)
     {
         processor->process();
-        auto res = processor->quittance();
+        emit workStatus(processor->quittance());
     }
     processors[TBL]->lock(false);
 }

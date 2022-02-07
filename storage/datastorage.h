@@ -23,12 +23,16 @@ public:
     DataStorage();
     ~DataStorage();
     QVariant at(const int &column);
+    QVariant at(const int &column) const;
     void     set(const QVariant &v, int column);
     bool     isValid(const int& column);
     static QString  name(const int &column);
     QString genericName();
     QString genericSize();
     size_t  genericType();
+    QString genericName() const;
+    QString genericSize() const;
+    size_t  genericType() const;
 private:
     QFileInfo info;
 };
