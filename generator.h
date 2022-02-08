@@ -6,6 +6,7 @@
 #include <QDir>
 #include "datastorage.h"
 #include "mainwindow.h"
+#include "optionwindow.h"
 #include "filemanager.h"
 #include "batchmanager.h"
 #include "tblprocessor.h"
@@ -31,8 +32,9 @@ private:
     void run(bool);
     void readTblFile(const QString& path);
     void saveTblFile(const QString& path);
+    void updateSettings(const Settings &);
     QVector<DataStorage> s;
-    std::unique_ptr<MainWindow> window;
+    std::unique_ptr<MainWindow> mainwindow;
     std::vector<std::unique_ptr<DataProcessor>> processors;
     std::vector<std::unique_ptr<Manager>> managers;
 };

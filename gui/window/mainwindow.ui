@@ -65,6 +65,7 @@
      <string>Помощь</string>
     </property>
     <addaction name="about"/>
+    <addaction name="options"/>
    </widget>
    <addaction name="MainMenu"/>
    <addaction name="HelpMenu"/>
@@ -160,6 +161,11 @@
   <action name="action">
    <property name="text">
     <string>Генерировать</string>
+   </property>
+  </action>
+  <action name="options">
+   <property name="text">
+    <string>Настройки</string>
    </property>
   </action>
  </widget>

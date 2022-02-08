@@ -14,6 +14,7 @@ public:
      BatchIniProcessor(Manager*, Manager*);
     ~BatchIniProcessor() = default;
     void process() override;
+    void setSettings(const Settings&) override;
     QString quittance() override;
 private:
     std::unique_ptr<DataProcessor>   iniprocessor;

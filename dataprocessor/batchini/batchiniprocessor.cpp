@@ -26,3 +26,8 @@ void BatchIniProcessor::process()
         batchprocessor->process();
     }
 }
+
+void BatchIniProcessor::setSettings(const Settings& _settings)
+{
+    iniprocessor->setSettings(_settings);
+}

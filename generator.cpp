@@ -2,7 +2,7 @@
 #include <QDebug>
 
 Generator::Generator(QObject *parent) : QObject(parent),
-    window(std::make_unique<MainWindow>(&s))
+    mainwindow(std::make_unique<MainWindow>(&s))
 {
 
     managers.emplace_back(std::make_unique<FileManager>());
@@ -18,11 +18,11 @@ Generator::Generator(QObject *parent) : QObject(parent),
         it->setFileManager(managers[0].get());
     }
 
-    connect(window.get(),&MainWindow::filePathSetted,this,&Generator::readTblFile);
-    connect(window.get(),&MainWindow::saveFilePath,this,&Generator::saveTblFile);
-    connect(window.get(),&MainWindow::generateActive,this,&Generator::run);
-
-    window->show();
+    connect(mainwindow.get(),&MainWindow::filePathSetted, this,&Generator::readTblFile);
+    connect(mainwindow.get(),&MainWindow::saveFilePath,   this,&Generator::saveTblFile);
+    connect(mainwindow.get(),&MainWindow::generateActive, this,&Generator::run);
+    connect(mainwindow.get(),&MainWindow::settingsUpdated,this,&Generator::updateSettings);
+    mainwindow->show();
 }
 
 void Generator::run(bool flag)
@@ -43,12 +43,18 @@ void Generator::readTblFile(const QString &path)
 {
     processors[TBL]->manager()->setFilePath(path);
     processors[TBL]->quittance();
-    window->updateTable();
+    mainwindow->updateTable();
 }
 
 void Generator::saveTblFile(const QString &path)
 {
     processors[TBL]->manager()->setFilePath(path);
     processors[TBL]->process();
-    window->showSaveFileResult(true);
+    mainwindow->showSaveFileResult(true);
+}
+
+void Generator::updateSettings(const Settings& _settings)
+{
+    for (auto& processor: processors)
+        processor->setSettings(_settings);
 }

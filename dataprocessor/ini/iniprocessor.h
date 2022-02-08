@@ -12,7 +12,10 @@ public:
     IniDataProcessor() = default;
     ~IniDataProcessor() = default;
     virtual void process() override;
+    virtual void setSettings(const Settings&) override;
     virtual QString quittance() override;
+private:
+    QString output_directory;
 };
 
 #endif

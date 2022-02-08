@@ -5,6 +5,7 @@
 #include "manager.h"
 #include "datastorage.h"
 #include <memory>
+#include "options.h"
 
 class DataProcessor
 {
@@ -17,6 +18,7 @@ public:
     virtual void setFileManager(Manager* _m) {m = _m;}
     virtual void setStorage(QVector<DataStorage>* _s) {s = _s;}
     virtual void lock(bool){}
+    virtual void setSettings(const Settings&) {}
     Manager* manager() {return m;}
 protected:
     Manager* m;

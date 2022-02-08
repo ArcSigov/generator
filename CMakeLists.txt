@@ -21,6 +21,7 @@ set                        (SEARCH_DIRS
                             table
                             gui
                             gui/window
+                            gui/optionwindow
                             gui/tablemodel
                             storage
                             manager
@@ -72,6 +73,12 @@ add_executable(generator    main.cpp
                             dataprocessor/batchini/batchiniprocessor.h
                             dataprocessor/cfg/cfgprocessor.cpp
                             dataprocessor/cfg/cfgprocessor.h
+                            dataprocessor/cfg/blockcfg.h
+                            dataprocessor/cfg/blockcfg.cpp
+                            gui/optionwindow/optionwindow.h
+                            gui/optionwindow/optionwindow.cpp
+                            gui/optionwindow/optionwindow.ui
+                            options.h
                             )
 
 
