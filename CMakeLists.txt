@@ -16,9 +16,6 @@ find_package(Qt5 REQUIRED Widgets Gui Core)
 
 
 set                        (SEARCH_DIRS
-                            cfggenerator
-                            sregenerator
-                            table
                             gui
                             gui/window
                             gui/optionwindow
@@ -30,16 +27,9 @@ set                        (SEARCH_DIRS
                             dataprocessor/ini
                             dataprocessor/cfg
                             dataprocessor/batch
-                            dataprocessor/batchini
-                            system)
+                            dataprocessor/batchini)
 
 add_executable(generator    main.cpp
-                            cfggenerator/cfggenerator.cpp
-                            cfggenerator/cfggenerator.h
-                            sregenerator/sregenerator.cpp
-                            sregenerator/sregenerator.h
-                            table/table.cpp
-                            table/table.h
                             gui/window/mainwindow.cpp
                             gui/tablemodel/tableview.cpp
                             gui/tablemodel/dialogitemdelegate.cpp
