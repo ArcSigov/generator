@@ -26,6 +26,7 @@ public:
     SoftLoad& operator[] (const size_t& pos);
     SoftLoad& at(const size_t& pos);
     const SoftLoad& at(const size_t& pos) const;
+    void clear();
 protected:
     std::vector<SoftLoad> blockcfg;
 };

@@ -32,7 +32,7 @@ private slots:
     void readSettings(const Settings&);
 public slots:
     void updateTable();
-    void showSaveFileResult(bool);
+    void notify(const QString& quittance);
 private:
     Ui::MainWindow *ui;
     QVector<DataStorage> *s;

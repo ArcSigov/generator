@@ -84,5 +84,16 @@ const SoftLoad& BlockCfg::at(const size_t& pos) const
     return blockcfg[pos];
 }
 
-
+void BlockCfg::clear()
+{
+    for (auto it : blockcfg)
+    {
+        for (auto i = 0 ; i < 4 ; i++)
+        {
+            it.part_addr_ram[i] = 0xffffffff;
+            it.part_addr_rom[i] = 0xffffffff;
+            it.part_size[i]     = 0xffffffff;
+        }
+    }
+}
 

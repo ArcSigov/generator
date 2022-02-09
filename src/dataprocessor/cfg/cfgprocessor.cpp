@@ -14,6 +14,8 @@ void CfgDataProcessor::process()
     if (!s) return;
 
     QStringList str(file_header);
+    block->clear();
+
     for (auto it = s->begin(); it != s->end(); it++)
         block->insert(it->at(MODULE_NUM).toUInt(),it->genericSize().toUInt(), it->at(RAM_ADDR).toUInt(), it->genericType(), it->at(PART_N).toUInt());
 
@@ -43,6 +45,7 @@ void CfgDataProcessor::process()
         m->write(str);
     }
 }
+
 /*!
 Устанавливает процессору генерации cfg файлов путь для сохранения сгенерированного конфигурационного файла и инициализирует объект шаблона конфигурационного файла
 \param[in] &_settings ссылка на настройки программы

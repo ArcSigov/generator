@@ -65,9 +65,9 @@ void MainWindow::on_Save_triggered()
     emit saveFilePath(QFileDialog::getSaveFileName(this, tr("Сохранить файл"), "", tr("table(*.tbl)")));
 }
 
-void MainWindow::showSaveFileResult(bool flag)
+void MainWindow::notify(const QString& result)
 {
-    box->setText( flag ? "blablabla" : "olalalalal");
+    box->setText(result);
     box->exec();
 }
 

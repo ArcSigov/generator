@@ -17,10 +17,10 @@ Generator::Generator(QObject *parent) : QObject(parent),
     processors.emplace_back(std::make_unique<FlashRsTxtDataProcessor>());
 
     ///< Установка процессорам адреса хранилища данных и менеджеров
-    for (auto& it: processors)
+    for (auto& processor: processors)
     {
-        it->setStorage(&s);
-        it->setFileManager(managers[0].get());
+        processor->setStorage(&s);
+        processor->setFileManager(managers[0].get());
     }
 
     connect(mainwindow.get(),&MainWindow::filePathSetted, this,&Generator::readTblFile);        ///< Соединенение главного окна с генератором с уведомлением о выборе файла для чтения
@@ -61,10 +61,10 @@ void Generator::readTblFile(const QString &path)
         {
             processor->manager()->setFilePath(path);
             processor->quittance();
+            mainwindow->updateTable();
             break;
         }
     }
-    mainwindow->updateTable();
 }
 
 /*!
@@ -79,10 +79,10 @@ void Generator::saveTblFile(const QString &path)
         {
             processor->manager()->setFilePath(path);
             processor->process();
+            mainwindow->notify("Файл: "+ path + " сохранён");
             break;
         }
     }
-    mainwindow->showSaveFileResult(true);
 }
 
 /*!
