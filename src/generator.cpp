@@ -79,7 +79,7 @@ void Generator::saveTblFile(const QString &path)
         {
             processor->manager()->setFilePath(path);
             processor->process();
-            mainwindow->notify("Файл: "+ path + " сохранён");
+            mainwindow->notify("Файл: "+ path +" сохранён");
             break;
         }
     }

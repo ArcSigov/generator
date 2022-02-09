@@ -10,11 +10,24 @@ QString TblDataProcessor::quittance()
     auto tbldata = m->read();
     for (const auto& it:tbldata)
     {
-        auto list = it.split(";");
-        DataStorage d;
-        for (auto i = 0 ; i < list.size(); i++)
-            d.set(list.at(i),i);
-        s->push_back(d);
+        if (it.contains("OUTPUT_FOLDER:"))
+        {
+            settings.abspath = it.section(":",1);
+        }
+        if (it.contains("BLOCK_TYPE:"))
+        {
+            settings.type  = it.contains("BIS")   ?  BlockType::bis :
+                             it.contains("BGS")   ?  BlockType::bgs :
+                             it.contains("BCVM")  ?  BlockType::bcvm : BlockType::undef;
+        }
+        else
+        {
+            auto list = it.split(";");
+            DataStorage d;
+            for (auto i = 0 ; i < list.size(); i++)
+                d.set(list.at(i),i);
+            s->push_back(d);
+        }
     }
     return QString();
 }
@@ -31,9 +44,8 @@ void TblDataProcessor::process()
 
         QString str;
         for (auto i = 0 ; i < COLUMN_COUNT; i++)
-        {
             str += it->at(i).toString() + ";";
-        }
+
         data.push_back(str);
     }
     m->write(data);

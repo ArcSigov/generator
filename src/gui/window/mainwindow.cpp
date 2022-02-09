@@ -14,9 +14,6 @@ MainWindow::MainWindow(QVector<DataStorage> *_s, QWidget *parent):
     box(new QMessageBox(this)),
     options(new OptionWindow())
 {
-
-
-
     TableModel* t = new TableModel(this,s);
 
     ui->setupUi(this);
