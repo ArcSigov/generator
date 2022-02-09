@@ -10,7 +10,6 @@ OptionWindow::OptionWindow(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->ok,       &QPushButton::clicked,       this, &OptionWindow::updateSettings);
     connect(ui->ok,       &QPushButton::clicked,       this, &OptionWindow::close);
-
     ui->lineEdit->setText(s.abspath);
 }
 
@@ -21,7 +20,6 @@ OptionWindow::~OptionWindow()
 
 void OptionWindow::updateSettings()
 {
-    s.type = BlockType::undef;
     s.abspath = ui->lineEdit->text();
 
     if (ui->bgs->isChecked())
@@ -30,7 +28,8 @@ void OptionWindow::updateSettings()
         s.type = BlockType::bis;
     else if (ui->bcvm->isChecked())
         s.type = BlockType::bcvm;
-
+    else
+        s.type = BlockType::undef;
 
     emit settingsUpdated(s);
 }

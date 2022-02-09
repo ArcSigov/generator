@@ -11,12 +11,17 @@ BatchIniProcessor::BatchIniProcessor(Manager* to_ini, Manager* to_batch) :
     batchprocessor->setFileManager(to_batch);
 }
 
-
+/*!
+Возвращает сформированную процессором ini файлов квитанцию о результататах генерации программой Id_Info_con.exe загрузочных образов для ПЗУ
+*/
 QString BatchIniProcessor::quittance()
 {
     return iniprocessor->quittance();
 }
 
+/*!
+Выполняет одновременную генерацию ini файла и генерацию batch скрипта для программы Id_Info_con.exe
+*/
 void BatchIniProcessor::process()
 {
     for (auto it = s->begin(); it != s->end(); it++)
@@ -27,6 +32,10 @@ void BatchIniProcessor::process()
     }
 }
 
+/*!
+Устанавливает процессору ini файлов путь для сохранения сгенерированного программой Id_Info_con.exe загрузочного образа
+\param[in] &_settings ссылка на настройки программы
+*/
 void BatchIniProcessor::setSettings(const Settings& _settings)
 {
     iniprocessor->setSettings(_settings);

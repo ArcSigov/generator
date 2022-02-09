@@ -1,10 +1,16 @@
-#ifndef INTERPRETER_H
-#define INTERPRETER_H
+/*!
+\file dataprocessor.h
+\brief Заголовочный файл с описанием интерфейсов абстрактного класса DataProcessor
+\authors Аркадий Сигов
+Данный файл содержит в себе определения методов класса, используемых при работе с интерфейсом класса DataProcessor
+*/
+
+#pragma once
 
 #include <QVector>
+#include <QDebug>
 #include "manager.h"
 #include "datastorage.h"
-#include <memory>
 #include "options.h"
 
 class DataProcessor
@@ -24,6 +30,3 @@ protected:
     Manager* m;
     QVector<DataStorage>* s;
 };
-
-
-#endif // INTERPRETER_H

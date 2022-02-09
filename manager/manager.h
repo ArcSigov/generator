@@ -1,5 +1,4 @@
-#ifndef MANAGER_H
-#define MANAGER_H
+#pragma once
 
 
 #include <QFile>
@@ -15,6 +14,3 @@ public:
     virtual bool write(const QStringList &data) = 0;
     virtual void setFilePath(const QString& path) = 0;
 };
-
-
-#endif

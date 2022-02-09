@@ -26,6 +26,7 @@ set                        (SEARCH_DIRS
                             dataprocessor/tbl
                             dataprocessor/ini
                             dataprocessor/cfg
+                            dataprocessor/txt
                             dataprocessor/batch
                             dataprocessor/batchini)
 
@@ -69,6 +70,9 @@ add_executable(generator    main.cpp
                             gui/optionwindow/optionwindow.cpp
                             gui/optionwindow/optionwindow.ui
                             options.h
+                            dataprocessor/txt/txtdataprocessor.h
+                            dataprocessor/txt/swtxtdataprocessor.cpp
+                            dataprocessor/txt/rstxtdataprocessor.cpp
                             )
 
 

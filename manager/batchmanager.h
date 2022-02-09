@@ -1,5 +1,4 @@
-#ifndef BUTCHMANAGER_H
-#define BUTCHMANAGER_H
+#pragma once
 
 
 #include <QDebug>
@@ -15,5 +14,3 @@ public slots:
     virtual bool write(const QStringList &data) override;
     virtual void setFilePath(const QString& path) override;
 };
-
-#endif

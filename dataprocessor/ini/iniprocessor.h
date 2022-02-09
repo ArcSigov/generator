@@ -1,5 +1,12 @@
-#ifndef INIDATAINTERPRETER_H
-#define INIDATAINTERPRETER_H
+/*!
+\file iniprocessor.h
+\brief Заголовочный файл с описанием методов класса IniDataProcessor (формирует информацию для генерации файлов в программе ID_Info_Con.exe)
+\authors Аркадий Сигов
+Данный файл содержит в себе определения методов класса, используемых в программе
+*/
+
+
+#pragma once
 
 #include <QObject>
 #include <QDebug>
@@ -17,5 +24,3 @@ public:
 private:
     QString output_directory;
 };
-
-#endif

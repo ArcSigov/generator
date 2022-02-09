@@ -1,8 +1,10 @@
 #include "tblprocessor.h"
-#include "tablerowprop.h"
 
 
-
+/*!
+Читает tbl файл и выставляет результат чтения файла
+\param[out] QString результат чтения tbl файла
+*/
 QString TblDataProcessor::quittance()
 {
     if (!locked)
@@ -20,6 +22,9 @@ QString TblDataProcessor::quittance()
     return QString();
 }
 
+/*!
+Выполняет генерацию tbl файла для сохранения конфигурации и данных таблицы программы
+*/
 void TblDataProcessor::process()
 {
     if (locked) return;
@@ -39,6 +44,10 @@ void TblDataProcessor::process()
     m->write(data);
 }
 
+/*!
+Устанавливает процессору tbl файлов признак запрета на выполнение работы
+\param[in] _locked флаг установки запрета на работу процессора
+*/
 void TblDataProcessor::lock(bool _locked)
 {
     locked = _locked;

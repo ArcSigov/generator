@@ -2,6 +2,10 @@
 #include "tablerowprop.h"
 
 
+/*!
+Читает результат выполнения программы ID_Info_Con.exe
+\param[out] QString результат выполнения программы
+*/
 QString IniDataProcessor::quittance()
 {
     if (m)
@@ -13,6 +17,9 @@ QString IniDataProcessor::quittance()
     return {};
 }
 
+/*!
+Выполняет генерацию ini скрипта для ID_Info_Con.exe
+*/
 void IniDataProcessor::process()
 {
     QString formatted;
@@ -33,6 +40,10 @@ void IniDataProcessor::process()
     }
 }
 
+/*!
+Устанавливает процессору ini файлов путь для помещения сгенерированного программой ID_Info_Con.exe файла
+\param[in] &_settings ссылка на настройки программы
+*/
 void IniDataProcessor::setSettings(const Settings& _settings)
 {
     output_directory = _settings.abspath;

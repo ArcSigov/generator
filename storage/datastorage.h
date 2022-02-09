@@ -1,10 +1,10 @@
-#ifndef DATASTORAGE_H
-#define DATASTORAGE_H
+#pragma once
 
 #include <QString>
 #include <QVariant>
 #include <QDate>
 #include <QFileInfo>
+#include "tablerowprop.h"
 
 class DataStorage
 {
@@ -36,5 +36,3 @@ public:
 private:
     QFileInfo info;
 };
-
-#endif // DATASTORAGE_H

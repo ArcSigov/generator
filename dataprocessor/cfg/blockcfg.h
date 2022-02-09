@@ -1,5 +1,4 @@
-#ifndef BLOCKCFGINCLUDED
-#define BLOCKCFGINCLUDED
+#pragma once
 
 #include <vector>
 #include "options.h"
@@ -14,7 +13,7 @@ struct SoftLoad
     unsigned long part_addr_rom[4]{0xffffffff,0xffffffff,0xffffffff,0xffffffff};
     unsigned long part_addr_ram[4]{0xa00a0000,0xffffffff,0xffffffff,0xffffffff};
     unsigned long part_size[4]{0xffffffff,0xffffffff,0xffffffff,0xffffffff};
-    SoftLoad(const unsigned short& _GA,const unsigned short& _LA, const unsigned short& _kernel_addr_rom) : GA(_GA), LA(_LA), kernel_addr_rom(_kernel_addr_rom) {}
+    SoftLoad(const unsigned short& _GA,const unsigned short& _LA, const unsigned long& _kernel_addr_rom) : GA(_GA), LA(_LA), kernel_addr_rom(_kernel_addr_rom) {}
 };
 
 class BlockCfg
@@ -51,5 +50,3 @@ public:
     BgsCfg();
     ~BgsCfg() = default;
 };
-
-#endif

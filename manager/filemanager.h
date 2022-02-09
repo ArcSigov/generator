@@ -1,5 +1,4 @@
-#ifndef FILEMANAGER_H
-#define FILEMANAGER_H
+#pragma once
 
 
 #include <QFile>
@@ -19,7 +18,3 @@ public:
 private:
     std::unique_ptr<QFile> f;
 };
-
-
-
-#endif

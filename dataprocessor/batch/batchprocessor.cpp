@@ -1,5 +1,4 @@
 #include "batchprocessor.h"
-#include "tablerowprop.h"
 #include <QDir>
 
 BatchProcessor::BatchProcessor() :
@@ -9,6 +8,9 @@ BatchProcessor::BatchProcessor() :
 
 }
 
+/*!
+Выполняет генерацию флагов работы программы Id_Info_Con.exe и передает его менеджеру командной строки на выполнение
+*/
 void BatchProcessor::process()
 {
     QString formatted = cur_id_path;

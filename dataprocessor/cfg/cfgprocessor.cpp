@@ -6,6 +6,9 @@ CfgDataProcessor::CfgDataProcessor() : block (std::make_unique<BlockCfg>())
 
 }
 
+/*!
+Выполняет генерацию конфигурационного блока для выбранного блока
+*/
 void CfgDataProcessor::process()
 {
     if (!s) return;
@@ -40,23 +43,24 @@ void CfgDataProcessor::process()
         m->write(str);
     }
 }
-
+/*!
+Устанавливает процессору генерации cfg файлов путь для сохранения сгенерированного конфигурационного файла и инициализирует объект шаблона конфигурационного файла
+\param[in] &_settings ссылка на настройки программы
+*/
 void CfgDataProcessor::setSettings(const Settings& _settings)
 {
-    outcfgname.clear();
-    outcfgname.push_back(_settings.abspath+"/");
     switch (_settings.type)
     {
     case BlockType::bis:
-        outcfgname.push_back("cfg_bis.c");
+        outcfgname = _settings.abspath+"/cfg_bis.c";
         block = std::make_unique<BisCfg>();
         break;
     case BlockType::bcvm:
-        outcfgname.push_back("cfg_bcvm.c");
+        outcfgname = _settings.abspath+"/cfg_bcvm.c";
         block = std::make_unique<BcvmCfg>();
         break;
     case BlockType::bgs:
-        outcfgname.push_back("cfg_bgs.c");
+        outcfgname = _settings.abspath+"/cfg_bgs.c";
         block = std::make_unique<BgsCfg>();
         break;
     case BlockType::undef:
