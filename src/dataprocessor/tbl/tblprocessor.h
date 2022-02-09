@@ -17,7 +17,4 @@ public:
     ~TblDataProcessor() = default;
     virtual QString quittance() override;
     virtual void process() override;
-    virtual void lock(bool) override;
-private:
-    bool locked = false;
 };

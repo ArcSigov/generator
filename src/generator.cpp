@@ -39,13 +39,14 @@ void Generator::run(bool flag)
 {
     if (!flag) return;
 
-    processors[TBL]->lock(true);
     for (auto& processor : processors)
     {
-        processor->process();
-        emit workStatus(processor->quittance());
+        if(!dynamic_cast<TblDataProcessor*>(processor.get()))
+        {
+            processor->process();
+            emit workStatus(processor->quittance());
+        }
     }
-    processors[TBL]->lock(false);
 }
 
 /*!
@@ -54,8 +55,15 @@ void Generator::run(bool flag)
 */
 void Generator::readTblFile(const QString &path)
 {
-    processors[TBL]->manager()->setFilePath(path);
-    processors[TBL]->quittance();
+    for (auto& processor : processors)
+    {
+        if (dynamic_cast<TblDataProcessor*>(processor.get()))
+        {
+            processor->manager()->setFilePath(path);
+            processor->quittance();
+            break;
+        }
+    }
     mainwindow->updateTable();
 }
 
@@ -65,8 +73,15 @@ void Generator::readTblFile(const QString &path)
 */
 void Generator::saveTblFile(const QString &path)
 {
-    processors[TBL]->manager()->setFilePath(path);
-    processors[TBL]->process();
+    for (auto& processor : processors)
+    {
+        if (dynamic_cast<TblDataProcessor*>(processor.get()))
+        {
+            processor->manager()->setFilePath(path);
+            processor->process();
+            break;
+        }
+    }
     mainwindow->showSaveFileResult(true);
 }
 

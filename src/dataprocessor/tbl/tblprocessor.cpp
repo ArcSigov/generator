@@ -7,17 +7,14 @@
 */
 QString TblDataProcessor::quittance()
 {
-    if (!locked)
+    auto tbldata = m->read();
+    for (const auto& it:tbldata)
     {
-        auto tbldata = m->read();
-        for (const auto& it:tbldata)
-        {
-            auto list = it.split(";");
-            DataStorage d;
-            for (auto i = 0 ; i < list.size(); i++)
-                d.set(list.at(i),i);
-            s->push_back(d);
-        }
+        auto list = it.split(";");
+        DataStorage d;
+        for (auto i = 0 ; i < list.size(); i++)
+            d.set(list.at(i),i);
+        s->push_back(d);
     }
     return QString();
 }
@@ -27,8 +24,6 @@ QString TblDataProcessor::quittance()
 */
 void TblDataProcessor::process()
 {
-    if (locked) return;
-
     QStringList data;
     for (auto it = s->begin(); it != s->end() ; it++)
     {
@@ -42,13 +37,4 @@ void TblDataProcessor::process()
         data.push_back(str);
     }
     m->write(data);
-}
-
-/*!
-Устанавливает процессору tbl файлов признак запрета на выполнение работы
-\param[in] _locked флаг установки запрета на работу процессора
-*/
-void TblDataProcessor::lock(bool _locked)
-{
-    locked = _locked;
 }
