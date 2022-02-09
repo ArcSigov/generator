@@ -33,7 +33,7 @@ Generator::Generator(QObject *parent) : QObject(parent),
 
 /*!
 Выполняет запуск процессов генерации исходного кода, загрузочных файлов, файлов конфигурации
-\param[in] flag Разрешение работат
+\param[in] flag Разрешение работать
 */
 void Generator::run(bool flag)
 {
