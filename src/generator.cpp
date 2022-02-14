@@ -57,10 +57,13 @@ void Generator::readTblFile(const QString &path)
 {
     for (auto& processor : processors)
     {
-        if (dynamic_cast<TblDataProcessor*>(processor.get()))
+        auto tbl = dynamic_cast<TblDataProcessor*>(processor.get());
+        if (tbl)
         {
-            processor->manager()->setFilePath(path);
-            processor->quittance();
+            tbl->manager()->setFilePath(path);
+            tbl->setMode(TblMode::read);
+            tbl->process();
+            updateSettings(tbl->getSettings());
             mainwindow->updateTable();
             break;
         }
@@ -75,10 +78,12 @@ void Generator::saveTblFile(const QString &path)
 {
     for (auto& processor : processors)
     {
-        if (dynamic_cast<TblDataProcessor*>(processor.get()))
+        auto tbl = dynamic_cast<TblDataProcessor*>(processor.get());
+        if (tbl)
         {
-            processor->manager()->setFilePath(path);
-            processor->process();
+            tbl->manager()->setFilePath(path);
+            tbl->setMode(TblMode::write);
+            tbl->process();
             mainwindow->notify("Файл: "+ path +" сохранён");
             break;
         }

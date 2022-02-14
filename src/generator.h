@@ -21,11 +21,6 @@
 class Generator : public QObject
 {
     Q_OBJECT
-    enum {
-        TBL,
-        BATCHINI,
-        CFG
-    };
 public:
     explicit Generator(QObject *parent = nullptr);
     ~Generator() = default;

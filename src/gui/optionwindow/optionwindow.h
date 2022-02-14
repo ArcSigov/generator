@@ -15,7 +15,8 @@ class OptionWindow : public QWidget
 public:
     explicit OptionWindow(QWidget *parent = nullptr);
     ~OptionWindow();
-signals:
+
+signals :
     void settingsUpdated(const Settings&);
 private slots:
     void on_pushButton_clicked();

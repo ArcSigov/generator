@@ -10,13 +10,26 @@
 #include <QDebug>
 #include "dataprocessor.h"
 
+enum class TblMode
+{
+    write,
+    read
+};
+
 class TblDataProcessor : public DataProcessor
 {
 public:
      TblDataProcessor() = default;
     ~TblDataProcessor() = default;
-    virtual QString quittance() override;
+    void         setMode(const TblMode&);
+    Settings     getSettings();
     virtual void process() override;
+    virtual void setSettings(const Settings&) override;
 private:
+    void writeTbl();
+    void readTbl();
     Settings settings;
+    TblMode  mode;
+    QString outputfolder;
+    QString blocktype;
 };
