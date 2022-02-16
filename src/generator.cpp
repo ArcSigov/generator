@@ -2,7 +2,8 @@
 #include <QDebug>
 
 Generator::Generator(QObject *parent) : QObject(parent),
-    mainwindow(std::make_unique<MainWindow>(&s))
+    mainwindow(std::make_unique<MainWindow>(&storage)),
+    optionwindow(std::make_unique<OptionWindow>(&settings))
 {
 
     ///< Создание пула менеджеров для сохранения результатов программы, выполнения пакетных команд
@@ -19,17 +20,19 @@ Generator::Generator(QObject *parent) : QObject(parent),
     ///< Установка процессорам адреса хранилища данных и менеджеров
     for (auto& processor: processors)
     {
-        processor->setStorage(&s);
+        processor->setSettings(&settings);
+        processor->setStorage(&storage);
         processor->setFileManager(managers[0].get());
     }
 
-    connect(mainwindow.get(),&MainWindow::filePathSetted, this,&Generator::readTblFile);        ///< Соединенение главного окна с генератором с уведомлением о выборе файла для чтения
-    connect(mainwindow.get(),&MainWindow::saveFilePath,   this,&Generator::saveTblFile);        ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
-    connect(mainwindow.get(),&MainWindow::generateActive, this,&Generator::run);                ///< Соединенение главного окна с генератором с уведомлением о начале работы
-    connect(mainwindow.get(),&MainWindow::settingsUpdated,this,&Generator::updateSettings);     ///< Соединенение главного окна с генератором с уведомлением о изменении пользовательских настроек
+    connect(mainwindow.get(),&MainWindow::filePathSetted, this,&Generator::readTblFile);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для чтения
+    connect(mainwindow.get(),&MainWindow::saveFilePath,   this,&Generator::saveTblFile);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
+    connect(mainwindow.get(),&MainWindow::generateActive, this,&Generator::run);                               ///< Соединенение главного окна с генератором с уведомлением о начале работы
+    connect(mainwindow.get(),&MainWindow::settingsClicked, optionwindow.get(),&OptionWindow::show);            ///< Соединенение главного окна с генератором с уведомлением о начале работы
+    connect(optionwindow.get(),&OptionWindow::settingsUpdated,this,&Generator::update);                        ///< Соединенение главного окна с генератором с уведомлением о изменении пользовательских настроек
+//    connect(mainwindow.get(),&MainWindow::clo,optionwindow.get(),&OptionWindow::close);
     mainwindow->show();
 }
-
 
 /*!
 Выполняет запуск процессов генерации исходного кода, загрузочных файлов, файлов конфигурации
@@ -48,7 +51,6 @@ void Generator::run(bool flag)
         }
     }
 }
-
 /*!
 Выполняет чтение файла с настройками и данными для работы
 \param[in] &path ссылка на местоположение файла
@@ -60,16 +62,15 @@ void Generator::readTblFile(const QString &path)
         auto tbl = dynamic_cast<TblDataProcessor*>(processor.get());
         if (tbl)
         {
-            tbl->manager()->setFilePath(path);
-            tbl->setMode(TblMode::read);
+            tbl->setMode(path,TblMode::read);
             tbl->process();
-            updateSettings(tbl->getSettings());
+            optionwindow->setSettings();
             mainwindow->updateTable();
             break;
         }
     }
+    update();
 }
-
 /*!
 Выполняет сохранение файла с настройками и данными
 \param[in] &path ссылка на место сохранения файла
@@ -81,21 +82,18 @@ void Generator::saveTblFile(const QString &path)
         auto tbl = dynamic_cast<TblDataProcessor*>(processor.get());
         if (tbl)
         {
-            tbl->manager()->setFilePath(path);
-            tbl->setMode(TblMode::write);
+            tbl->setMode(path,TblMode::write);
             tbl->process();
             mainwindow->notify("Файл: "+ path +" сохранён");
             break;
         }
     }
 }
-
 /*!
-Выполняет настройки процессов обработки данных в зависимости от пользовательской установки
-\param[in] &_settings ссылка на настройки программы
+Выполняет обновление процессов обработки
 */
-void Generator::updateSettings(const Settings& _settings)
+void Generator::update()
 {
-    for (auto& processor: processors)
-        processor->setSettings(_settings);
+    for (auto& processor : processors)
+        processor->update();
 }

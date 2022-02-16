@@ -10,6 +10,7 @@
 #include <QObject>
 #include "datastorage.h"
 #include "mainwindow.h"
+#include "optionwindow.h"
 #include "filemanager.h"
 #include "batchmanager.h"
 #include "tblprocessor.h"
@@ -26,13 +27,16 @@ public:
     ~Generator() = default;
 signals:
     void workStatus(const QString& result);
+    void settingsUpdated();
 private:
     void run(bool);
     void readTblFile(const QString& path);
     void saveTblFile(const QString& path);
-    void updateSettings(const Settings &);
-    QVector<DataStorage> s;
+    void update();
+    QVector<DataStorage> storage;
+    Settings settings;
     std::unique_ptr<MainWindow> mainwindow;
+    std::unique_ptr<OptionWindow> optionwindow;
     std::vector<std::unique_ptr<DataProcessor>> processors;
     std::vector<std::unique_ptr<Manager>> managers;
 };

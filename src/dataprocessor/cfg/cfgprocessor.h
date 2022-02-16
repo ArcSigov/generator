@@ -40,7 +40,7 @@ public:
     CfgDataProcessor();
     ~CfgDataProcessor() = default;
     virtual void process() override;
-    virtual void setSettings(const Settings&) override;
+    virtual void update() override;
 private:
     std::unique_ptr<BlockCfg>                     block;
     QString outcfgname;

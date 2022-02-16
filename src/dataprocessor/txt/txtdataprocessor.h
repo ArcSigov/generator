@@ -17,9 +17,8 @@ public:
     FlashSwTxtDataProcessor();
     ~FlashSwTxtDataProcessor() = default;
     virtual void process() override;
-    virtual void setSettings(const Settings&) override;
+    virtual void update() override;
 private:
-    Settings settings;
     QString  filename;
     std::unordered_map<BlockType,QStringList> header;
 };
@@ -30,7 +29,7 @@ public:
     FlashRsTxtDataProcessor()  = default;
     ~FlashRsTxtDataProcessor() = default;
     virtual void process() override;
-    virtual void setSettings(const Settings&) override;
+    virtual void update() override;
 private:
     //QString  cfg_rom_addr;
     QString  filename;

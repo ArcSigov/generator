@@ -21,14 +21,12 @@ class TblDataProcessor : public DataProcessor
 public:
      TblDataProcessor() = default;
     ~TblDataProcessor() = default;
-    void         setMode(const TblMode&);
-    Settings     getSettings();
+    void         setMode(const QString&,const TblMode&);
     virtual void process() override;
-    virtual void setSettings(const Settings&) override;
+    virtual void update() override;
 private:
     void writeTbl();
     void readTbl();
-    Settings settings;
     TblMode  mode;
     QString outputfolder;
     QString blocktype;

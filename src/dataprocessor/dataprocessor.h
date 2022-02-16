@@ -21,11 +21,12 @@ class DataProcessor
 public:
     virtual QString quittance(){ return QString();}
     virtual void process() = 0;
-    virtual void setFileManager(Manager* _m) {m = _m;}
-    virtual void setStorage(QVector<DataStorage>* _s) {s = _s;}
-    virtual void setSettings(const Settings&) {}
-    Manager* manager() {return m;}
+    virtual void update() = 0;
+    virtual void setFileManager(Manager* _manager) {manager = _manager;}
+    virtual void setStorage(QVector<DataStorage>* _storage) {storage = _storage;}
+    virtual void setSettings(Settings* _settings) {settings = _settings;}
 protected:
-    Manager* m;
-    QVector<DataStorage>* s;
+    Manager* manager;
+    QVector<DataStorage>* storage;
+    Settings* settings;
 };

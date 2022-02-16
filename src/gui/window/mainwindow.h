@@ -22,14 +22,15 @@ signals:
     void filePathSetted(const QString& path);
     void saveFilePath(const QString& path);
     void generateActive(bool);
-    void settingsUpdated(const Settings&);
+    void settingsClicked();
 private slots:
     void on_rem_triggered();
     void on_dob_triggered();
     void on_Open_triggered();
     void on_Save_triggered();
     void on_generate_triggered();
-    void readSettings(const Settings&);
+    void on_options_triggered();
+
 public slots:
     void updateTable();
     void notify(const QString& quittance);
@@ -37,7 +38,6 @@ private:
     Ui::MainWindow *ui;
     QVector<DataStorage> *s;
     QMessageBox* box;
-    OptionWindow* options;
 };
 
 #endif // MAINWINDOW_H

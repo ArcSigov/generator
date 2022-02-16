@@ -24,7 +24,7 @@ QString BatchIniProcessor::quittance()
 */
 void BatchIniProcessor::process()
 {
-    for (auto it = s->begin(); it != s->end(); it++)
+    for (auto it = storage->begin(); it != storage->end(); it++)
     {
         store[0] = *it;
         iniprocessor->process();
@@ -36,7 +36,7 @@ void BatchIniProcessor::process()
 Устанавливает процессору ini файлов путь для сохранения сгенерированного программой Id_Info_con.exe загрузочного образа
 \param[in] &_settings ссылка на настройки программы
 */
-void BatchIniProcessor::setSettings(const Settings& _settings)
+void BatchIniProcessor::update()
 {
-    iniprocessor->setSettings(_settings);
+    iniprocessor->setSettings(settings);
 }

@@ -11,12 +11,12 @@ CfgDataProcessor::CfgDataProcessor() : block (std::make_unique<BlockCfg>())
 */
 void CfgDataProcessor::process()
 {
-    if (!s) return;
+    if (!storage) return;
 
     QStringList str(file_header);
     block->clear();
 
-    for (auto it = s->begin(); it != s->end(); it++)
+    for (auto it = storage->begin(); it != storage->end(); it++)
         block->insert(it->at(MODULE_NUM).toUInt(),it->genericSize().toUInt(), it->at(RAM_ADDR).toUInt(), it->genericType(), it->at(PART_N).toUInt());
 
     for (auto i = 0ull; i < block->size(); i++)
@@ -39,10 +39,10 @@ void CfgDataProcessor::process()
     }
     str.push_back("};");
 
-    if (m)
+    if (manager)
     {
-        m->setFilePath(outcfgname);
-        m->write(str);
+        manager->setFilePath(outcfgname);
+        manager->write(str);
     }
 }
 
@@ -50,25 +50,28 @@ void CfgDataProcessor::process()
 Устанавливает процессору генерации cfg файлов путь для сохранения сгенерированного конфигурационного файла и инициализирует объект шаблона конфигурационного файла
 \param[in] &_settings ссылка на настройки программы
 */
-void CfgDataProcessor::setSettings(const Settings& _settings)
+void CfgDataProcessor::update()
 {
-    switch (_settings.type)
+    if (settings)
     {
-    case BlockType::bis:
-        outcfgname = _settings.abspath+"/cfg_bis.c";
-        block = std::make_unique<BisCfg>();
-        break;
-    case BlockType::bcvm:
-        outcfgname = _settings.abspath+"/cfg_bcvm.c";
-        block = std::make_unique<BcvmCfg>();
-        break;
-    case BlockType::bgs:
-        outcfgname = _settings.abspath+"/cfg_bgs.c";
-        block = std::make_unique<BgsCfg>();
-        break;
-    case BlockType::undef:
-        block = std::make_unique<BlockCfg>();
-        break;
-    default:break;
+        switch (settings->type)
+        {
+        case BlockType::bis:
+            outcfgname = settings->abspath+"/cfg_bis.c";
+            block = std::make_unique<BisCfg>();
+            break;
+        case BlockType::bcvm:
+            outcfgname = settings->abspath+"/cfg_bcvm.c";
+            block = std::make_unique<BcvmCfg>();
+            break;
+        case BlockType::bgs:
+            outcfgname = settings->abspath+"/cfg_bgs.c";
+            block = std::make_unique<BgsCfg>();
+            break;
+        case BlockType::undef:
+            block = std::make_unique<BlockCfg>();
+            break;
+        default:break;
+        }
     }
 }

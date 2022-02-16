@@ -16,6 +16,7 @@ public:
     explicit BatchProcessor();
     ~BatchProcessor() = default;
     virtual void process() override;
+    virtual void update() override{}
 private:
     QString cur_id_path;    ///< путь, по которому Id_Info_Con.exe выполнит запуск скрипта .ini файла
     QString result_path;    ///< путь, по которому необходимо сохранить результат выполнения скрипта

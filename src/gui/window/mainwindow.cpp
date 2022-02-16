@@ -11,8 +11,7 @@ MainWindow::MainWindow(QVector<DataStorage> *_s, QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     s(_s),
-    box(new QMessageBox(this)),
-    options(new OptionWindow())
+    box(new QMessageBox(this))
 {
     TableModel* t = new TableModel(this,s);
 
@@ -26,9 +25,6 @@ MainWindow::MainWindow(QVector<DataStorage> *_s, QWidget *parent):
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setModel(t);
-
-    connect(ui->options,&QAction::triggered,options,&OptionWindow::show);
-    connect(options, &OptionWindow::settingsUpdated,this,&MainWindow::readSettings);
 }
 
 MainWindow::~MainWindow()
@@ -73,7 +69,8 @@ void MainWindow::on_generate_triggered()
     emit generateActive(true);
 }
 
-void MainWindow::readSettings(const Settings& _settings)
+void MainWindow::on_options_triggered()
 {
-    emit settingsUpdated(_settings);
+    emit settingsClicked();
 }
+

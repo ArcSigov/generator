@@ -8,20 +8,20 @@
 void TblDataProcessor::writeTbl()
 {
     QStringList data;
-    data.push_back(outputfolder+"\r\n");
-    data.push_back(blocktype+"\r\n");
+    data.push_back(outputfolder);
+    data.push_back(blocktype);
 
-    for (auto it = s->begin(); it != s->end() ; it++)
+    for (auto it = storage->begin(); it != storage->end() ; it++)
     {
-        if (it != s->begin()) data.push_back("\r\n");
+        if (it != storage->begin()) data.push_back("\r\n");
 
-        QString str;
+        QString str = "TABLE_ROW:";
         for (auto i = 0 ; i < COLUMN_COUNT; i++)
             str += it->at(i).toString() + ";";
 
         data.push_back(str);
     }
-    m->write(data);
+    manager->write(data);
 }
 
 /*!
@@ -37,54 +37,53 @@ void TblDataProcessor::process()
     }
 }
 
-void TblDataProcessor::setMode(const TblMode &_mode)
+void TblDataProcessor::setMode(const QString& path,const TblMode &_mode)
 {
     mode = _mode;
+    if (manager)
+        manager->setFilePath(path);
 }
 
-Settings TblDataProcessor::getSettings()
-{
-    return settings;
-}
 
 void TblDataProcessor::readTbl()
 {
-    auto tbldata = m->read();
+    auto tbldata = manager->read();
     for (const auto& it:tbldata)
     {
         if (it.contains("OUTPUT_FOLDER:"))
         {
-            settings.abspath = it.section(":",1);
+            settings->abspath = it.section(":",1);
         }
         else if (it.contains("BLOCK_TYPE:"))
         {
-            settings.type  = it.contains("BIS")   ?  BlockType::bis :
-                             it.contains("BGS")   ?  BlockType::bgs :
-                             it.contains("BCVM")  ?  BlockType::bcvm : BlockType::undef;
+            settings->type  = it.contains("BIS")   ?  BlockType::bis :
+                              it.contains("BGS")   ?  BlockType::bgs :
+                              it.contains("BCVM")  ?  BlockType::bcvm : BlockType::undef;
         }
-        else
+        else if (it.contains("TABLE_ROW:"))
         {
-            auto list = it.split(";");
+            auto list = it.section(":",1).split(";");
             DataStorage d;
             for (auto i = 0 ; i < list.size(); i++)
                 d.set(list.at(i),i);
-            s->push_back(d);
+            storage->push_back(d);
         }
     }
 }
-void TblDataProcessor::setSettings(const Settings &_settings)
+
+void TblDataProcessor::update()
 {
-    outputfolder = _settings.abspath;
-    switch (settings.type)
+    outputfolder = "OUTPUT_FOLDER:"+settings->abspath + "\r\n";
+    switch (settings->type)
     {
     case BlockType::bis:
-        blocktype = "BLOCK:BIS\r\n";
+        blocktype = "BLOCK_TYPE:BIS\r\n";
         break;
     case BlockType::bcvm:
-        blocktype = "BLOCK:BCVM\r\n";
+        blocktype = "BLOCK_TYPE:BCVM\r\n";
         break;
     case BlockType::bgs:
-        blocktype = "BLOCK:BGS\r\n";
+        blocktype = "BLOCK_TYPE:BGS\r\n";
         break;
     default:break;
     }

@@ -14,7 +14,7 @@ BatchProcessor::BatchProcessor() :
 void BatchProcessor::process()
 {
     QString formatted = cur_id_path;
-    for (auto it = s->begin(); it != s->end(); it++)
+    for (auto it = storage->begin(); it != storage->end(); it++)
     {
         auto crc = it->at(CRC).toUInt();
         auto date = it->at(ID_DATE).toDate().toString(Qt::SystemLocaleShortDate).replace(".",":");
@@ -24,5 +24,7 @@ void BatchProcessor::process()
         formatted.push_back(crc > 0  ? "-cs " + it->at(CRC).toString(): " ");
         formatted.push_back(result_path);
     }
-    m->write(QStringList(formatted));
+    if (manager)
+        manager->write(QStringList(formatted));
 }
+
