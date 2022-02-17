@@ -1,11 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "generator.h"
 #include <QMainWindow>
 #include <QAbstractTableModel>
 #include <QMessageBox>
 #include "datastorage.h"
 #include "optionwindow.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -15,28 +17,26 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit MainWindow(QVector<DataStorage> *_s = nullptr, QWidget *parent = nullptr);
+    explicit MainWindow(Generator *_gen, QWidget *parent = nullptr);
     ~MainWindow();
-
 signals:
     void filePathSetted(const QString& path);
     void saveFilePath(const QString& path);
-    void generateActive(bool);
-    void settingsClicked();
+    void generateActive();
 private slots:
     void on_rem_triggered();
     void on_dob_triggered();
     void on_Open_triggered();
     void on_Save_triggered();
     void on_generate_triggered();
-    void on_options_triggered();
-
 public slots:
-    void updateTable();
+    void update();
     void notify(const QString& quittance);
 private:
     Ui::MainWindow *ui;
-    QVector<DataStorage> *s;
+    OptionWindow *optionWindow;
+    QVector<DataStorage> *storage;
+    Settings* settings;
     QMessageBox* box;
 };
 

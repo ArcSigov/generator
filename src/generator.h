@@ -8,35 +8,32 @@
 #pragma once
 
 #include <QObject>
+#include <QMainWindow>
 #include "datastorage.h"
-#include "mainwindow.h"
-#include "optionwindow.h"
+#include "dataprocessor.h"
 #include "filemanager.h"
-#include "batchmanager.h"
-#include "tblprocessor.h"
-#include "cfgprocessor.h"
-#include "tablerowprop.h"
-#include "batchiniprocessor.h"
-#include "txtdataprocessor.h"
+
 
 class Generator : public QObject
 {
     Q_OBJECT
+    QVector<DataStorage> storage;
+    Settings settings;
+    std::unique_ptr<QMainWindow> mainwindow;
+    std::vector<std::unique_ptr<DataProcessor>> processors;
+    std::vector<std::unique_ptr<Manager>> managers;
 public:
     explicit Generator(QObject *parent = nullptr);
     ~Generator() = default;
+    void run();
+    void readTblFile(const QString& path);
+    void saveTblFile(const QString& path);
+    void update();
+    QVector<DataStorage>* getStorage();
+    Settings* getSettings();
 signals:
     void workStatus(const QString& result);
     void settingsUpdated();
 private:
-    void run(bool);
-    void readTblFile(const QString& path);
-    void saveTblFile(const QString& path);
-    void update();
-    QVector<DataStorage> storage;
-    Settings settings;
-    std::unique_ptr<MainWindow> mainwindow;
-    std::unique_ptr<OptionWindow> optionwindow;
-    std::vector<std::unique_ptr<DataProcessor>> processors;
-    std::vector<std::unique_ptr<Manager>> managers;
+    void calcRomAddr();
 };

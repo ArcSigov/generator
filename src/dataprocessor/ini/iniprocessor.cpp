@@ -26,7 +26,7 @@ void IniDataProcessor::process()
     for (auto it = storage->begin(); it != storage->end() ; it++)
     {
         formatted.push_back("00000000\r\n");
-        formatted.push_back(it->genericSize() + "\r\n");
+        formatted.push_back(it->genericIniSize() + "\r\n");
         formatted.push_back(it->at(FILE_PATH).toString()+"\r\n");
         formatted.push_back(settings->abspath + "/"+it->genericName()+"\r\n"+" "+"\r\n");
         formatted.push_back(it->at(DESCRIPTION).toString()+"\r\n");

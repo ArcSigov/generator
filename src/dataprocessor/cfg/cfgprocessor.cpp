@@ -17,7 +17,8 @@ void CfgDataProcessor::process()
     block->clear();
 
     for (auto it = storage->begin(); it != storage->end(); it++)
-        block->insert(it->at(MODULE_NUM).toUInt(),it->genericSize().toUInt(), it->at(RAM_ADDR).toUInt(), it->genericType(), it->at(PART_N).toUInt());
+                        // LA                           // RAM                  //ROM           //SIZE              //NPART
+        block->insert(it->at(MODULE_NUM).toUInt(),it->at(RAM_ADDR).toUInt(),it->romAddr(), it->fileSize(), it->at(PART_N).toUInt());
 
     for (auto i = 0ull; i < block->size(); i++)
     {

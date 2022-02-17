@@ -1,25 +1,6 @@
 #include "datastorage.h"
 #include "tablerowprop.h"
 #include <QDebug>
-DataStorage::DataStorage()
-{
-   m_num = 0;
-   f_path.clear();
-   date = QDate::currentDate();
-   version = 0;
-   revision = 0;
-   crc = 0;
-   description.clear();
-   ram_addr = 0;
-   n_part = 0;
-   generic_name.clear();
-   generic_size = 0;
-}
-
-DataStorage::~DataStorage()
-{
-
-}
 
 QVariant DataStorage::at(const int& column)
 {
@@ -128,7 +109,7 @@ size_t  DataStorage::genericType()
     return info.completeSuffix() == "elf" ? 0 : 1;
 }
 
-QString DataStorage::genericSize()
+QString DataStorage::genericIniSize()
 {
     return QString::number(generic_size-4,16).rightJustified(8,'0');
 }
@@ -143,7 +124,32 @@ size_t  DataStorage::genericType() const
     return info.completeSuffix() == "elf" ? 0 : 1;
 }
 
-QString DataStorage::genericSize() const
+QString DataStorage::genericIniSize() const
 {
     return QString::number(generic_size-4,16).rightJustified(8,'0');
+}
+
+void DataStorage::setRomAddr(const size_t &_addr)
+{
+    rom_addr = _addr;
+}
+
+size_t DataStorage::romAddr()
+{
+    return rom_addr;
+}
+
+size_t DataStorage::romAddr() const
+{
+    return rom_addr;
+}
+
+size_t DataStorage::fileSize()
+{
+    return generic_size;
+}
+
+size_t DataStorage::fileSize() const
+{
+    return generic_size;
 }

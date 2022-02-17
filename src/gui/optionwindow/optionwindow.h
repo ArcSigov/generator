@@ -15,13 +15,14 @@ class OptionWindow : public QWidget
 public:
     explicit OptionWindow(Settings*,QWidget *parent = nullptr);
     ~OptionWindow();
-public slots:
-    void setSettings();
+public:
+
+    void updateSettings();
 signals:
     void settingsUpdated();
 private slots:
     void on_pushButton_clicked();
-    void updateSettings();
+    void editSettings();
 private:
     Ui::OptionWindow *ui;
     Settings* s;

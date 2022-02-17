@@ -8,7 +8,7 @@ OptionWindow::OptionWindow(Settings* _s,QWidget *parent) :
     s(_s)
 {
     ui->setupUi(this);
-    connect(ui->ok,       &QPushButton::clicked,       this, &OptionWindow::updateSettings);
+    connect(ui->ok,       &QPushButton::clicked,       this, &OptionWindow::editSettings);
     connect(ui->ok,       &QPushButton::clicked,       this, &OptionWindow::close);
     if (s) ui->lineEdit->setText(s->abspath);
 }
@@ -18,7 +18,7 @@ OptionWindow::~OptionWindow()
     delete ui;
 }
 
-void OptionWindow::updateSettings()
+void OptionWindow::editSettings()
 {
     if (s)
     {
@@ -36,7 +36,7 @@ void OptionWindow::updateSettings()
     }
 }
 
-void OptionWindow::setSettings()
+void OptionWindow::updateSettings()
 {
     if (s)
     {
@@ -49,6 +49,7 @@ void OptionWindow::setSettings()
         case BlockType::undef:
             default: break;
         }
+        emit settingsUpdated();
     }
 }
 

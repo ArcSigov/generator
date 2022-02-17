@@ -20,11 +20,11 @@ void FlashSwTxtDataProcessor::process()
     QStringList formatted;
     for (auto it = storage->begin(); it != storage->end(); it++)
     {
-        auto str = settings->abspath + "/" + it->genericName() + "\r\n";
+        auto str = QString::number(it->romAddr(),16) + " " + settings->abspath + "/" + it->genericName() + "\r\n";
         for (const auto& h: qAsConst(header[settings->type]))
         {
+            formatted.push_back(h + " f " + str);
             formatted.push_back(h + " 0 " + str);
-            formatted.push_back(h + ""+ it->genericType() +"" + str);
         }
     }
 

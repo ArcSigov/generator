@@ -7,13 +7,17 @@
 #include <QDebug>
 #include <QStyle>
 
-MainWindow::MainWindow(QVector<DataStorage> *_s, QWidget *parent):
+MainWindow::MainWindow(Generator* _gen, QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    s(_s),
     box(new QMessageBox(this))
 {
-    TableModel* t = new TableModel(this,s);
+    settings = _gen->getSettings();
+    storage  = _gen->getStorage();
+
+    optionWindow = new OptionWindow(settings);
+    TableModel* t = new TableModel(this,storage);
+
 
     ui->setupUi(this);
     ui->progressBar->setVisible(false);
@@ -25,11 +29,18 @@ MainWindow::MainWindow(QVector<DataStorage> *_s, QWidget *parent):
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setModel(t);
+
+    connect(ui->options, &QAction::triggered,optionWindow,&OptionWindow::show);
+    connect(optionWindow,&OptionWindow::settingsUpdated,_gen,&Generator::update);
+    connect(this        ,&MainWindow::filePathSetted,   _gen,&Generator::readTblFile);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для чтения
+    connect(this        ,&MainWindow::saveFilePath,     _gen,&Generator::saveTblFile);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
+    connect(this        ,&MainWindow::generateActive,   _gen,&Generator::run);                               ///< Соединенение главного окна с генератором с уведомлением о начале работы
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete optionWindow;
 }
 
 void MainWindow::on_rem_triggered()
@@ -47,10 +58,11 @@ void MainWindow::on_Open_triggered()
     emit filePathSetted(QFileDialog::getOpenFileName(this, tr("Открыть файл"), " ", tr("table(*.tbl)")));
 }
 
-void MainWindow::updateTable()
+void MainWindow::update()
 {
+    optionWindow->updateSettings();
     ui->tableView->model()->removeRows(0,ui->tableView->model()->rowCount());
-    static_cast<TableModel*>(ui->tableView->model())->updateRows(ui->tableView->model()->rowCount(),s->size());
+    static_cast<TableModel*>(ui->tableView->model())->updateRows(ui->tableView->model()->rowCount(),storage->size());
 }
 
 void MainWindow::on_Save_triggered()
@@ -66,11 +78,5 @@ void MainWindow::notify(const QString& result)
 
 void MainWindow::on_generate_triggered()
 {
-    emit generateActive(true);
+    emit generateActive();
 }
-
-void MainWindow::on_options_triggered()
-{
-    emit settingsClicked();
-}
-

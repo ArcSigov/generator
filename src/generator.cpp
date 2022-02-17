@@ -1,11 +1,16 @@
 #include "generator.h"
+#include "batchmanager.h"
+#include "tblprocessor.h"
+#include "cfgprocessor.h"
+#include "tablerowprop.h"
+#include "batchiniprocessor.h"
+#include "txtdataprocessor.h"
+#include "mainwindow.h"
 #include <QDebug>
 
 Generator::Generator(QObject *parent) : QObject(parent),
-    mainwindow(std::make_unique<MainWindow>(&storage)),
-    optionwindow(std::make_unique<OptionWindow>(&settings))
+    mainwindow(std::make_unique<MainWindow>(this))
 {
-
     ///< Создание пула менеджеров для сохранения результатов программы, выполнения пакетных команд
     managers.emplace_back(std::make_unique<FileManager>());
     managers.emplace_back(std::make_unique<BatchManager>());
@@ -24,13 +29,6 @@ Generator::Generator(QObject *parent) : QObject(parent),
         processor->setStorage(&storage);
         processor->setFileManager(managers[0].get());
     }
-
-    connect(mainwindow.get(),&MainWindow::filePathSetted, this,&Generator::readTblFile);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для чтения
-    connect(mainwindow.get(),&MainWindow::saveFilePath,   this,&Generator::saveTblFile);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
-    connect(mainwindow.get(),&MainWindow::generateActive, this,&Generator::run);                               ///< Соединенение главного окна с генератором с уведомлением о начале работы
-    connect(mainwindow.get(),&MainWindow::settingsClicked, optionwindow.get(),&OptionWindow::show);            ///< Соединенение главного окна с генератором с уведомлением о начале работы
-    connect(optionwindow.get(),&OptionWindow::settingsUpdated,this,&Generator::update);                        ///< Соединенение главного окна с генератором с уведомлением о изменении пользовательских настроек
-//    connect(mainwindow.get(),&MainWindow::clo,optionwindow.get(),&OptionWindow::close);
     mainwindow->show();
 }
 
@@ -38,10 +36,8 @@ Generator::Generator(QObject *parent) : QObject(parent),
 Выполняет запуск процессов генерации исходного кода, загрузочных файлов, файлов конфигурации
 \param[in] flag Разрешение работать
 */
-void Generator::run(bool flag)
+void Generator::run()
 {
-    if (!flag) return;
-
     for (auto& processor : processors)
     {
         if(!dynamic_cast<TblDataProcessor*>(processor.get()))
@@ -64,8 +60,7 @@ void Generator::readTblFile(const QString &path)
         {
             tbl->setMode(path,TblMode::read);
             tbl->process();
-            optionwindow->setSettings();
-            mainwindow->updateTable();
+            static_cast<MainWindow*>(mainwindow.get())->update();
             break;
         }
     }
@@ -77,6 +72,8 @@ void Generator::readTblFile(const QString &path)
 */
 void Generator::saveTblFile(const QString &path)
 {
+    if (path.isEmpty()) return;
+
     for (auto& processor : processors)
     {
         auto tbl = dynamic_cast<TblDataProcessor*>(processor.get());
@@ -84,16 +81,65 @@ void Generator::saveTblFile(const QString &path)
         {
             tbl->setMode(path,TblMode::write);
             tbl->process();
-            mainwindow->notify("Файл: "+ path +" сохранён");
+            static_cast<MainWindow*>(mainwindow.get())->notify("Файл: "+ path +" сохранён");
             break;
         }
     }
 }
 /*!
-Выполняет обновление процессов обработки
+Выполняет обновление настроек генератора
 */
 void Generator::update()
 {
+    calcRomAddr();
     for (auto& processor : processors)
         processor->update();
+}
+
+/*!
+Выполняет расчет адресов ПЗУ для исполняемых файлов
+*/
+void Generator::calcRomAddr()
+{
+    size_t rom_addr = 0;
+    switch (settings.type)
+    {
+    case BlockType::bis:
+    case BlockType::bcvm:
+        rom_addr = 0xb0200000;
+        break;
+    case BlockType::bgs:
+        rom_addr = 0xbc200000;
+        break;
+    case BlockType::undef:
+    default: return;
+    }
+    qDebug() << "calc";
+    for (auto it = storage.begin(); it != storage.end(); it++)
+    {
+        it->setRomAddr(rom_addr);
+        if (it->fileSize() < 0x40000)
+        {
+            rom_addr+=0x40000;
+        }
+        else
+        {
+            int _size = it->fileSize();
+            while (_size > 0)
+            {
+                rom_addr+=0x40000;
+                _size-=0x40000;
+            }
+        }
+    }
+}
+
+QVector<DataStorage>* Generator::getStorage()
+{
+    return &storage;
+}
+
+Settings* Generator::getSettings()
+{
+    return &settings;
 }
