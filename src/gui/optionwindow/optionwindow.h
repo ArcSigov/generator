@@ -21,8 +21,10 @@ public:
 signals:
     void settingsUpdated();
 private slots:
-    void on_pushButton_clicked();
     void editSettings();
+    void on_kernelbtn_clicked();
+    void on_loadbtn_clicked();
+
 private:
     Ui::OptionWindow *ui;
     Settings* s;

@@ -28,7 +28,7 @@ void IniDataProcessor::process()
         formatted.push_back("00000000\r\n");
         formatted.push_back(it->genericIniSize() + "\r\n");
         formatted.push_back(it->at(FILE_PATH).toString()+"\r\n");
-        formatted.push_back(settings->abspath + "/"+it->genericName()+"\r\n"+" "+"\r\n");
+        formatted.push_back(settings->loadpath + "/"+it->genericName()+"\r\n"+" "+"\r\n");
         formatted.push_back(it->at(DESCRIPTION).toString()+"\r\n");
         formatted.push_back(it->at(VERSION).toString().rightJustified(2,'0') + " " + it->at(REVISION).toString().rightJustified(2,'0') + "\r\n");
     }

@@ -14,7 +14,7 @@ class TableModel : public QAbstractTableModel
     Q_OBJECT
 public:
     explicit TableModel(QObject* parent = nullptr,QVector<DataStorage>* _hash = nullptr);
-    ~TableModel();
+    ~TableModel() = default;
     Q_INVOKABLE virtual int rowCount(const QModelIndex &parent = QModelIndex())             const override;
     Q_INVOKABLE virtual int columnCount(const QModelIndex &parent = QModelIndex())          const override;
     Q_INVOKABLE virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -23,7 +23,9 @@ public:
     Q_INVOKABLE virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;    
     virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
-    bool         updateRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    void resetModel();
+signals:
+    void tableUpdated();
 private:
     QVector<DataStorage>* storage; // данные по каждой ячейке таблицы
 };

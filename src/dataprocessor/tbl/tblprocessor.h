@@ -30,4 +30,5 @@ private:
     TblMode  mode;
     QString outputfolder;
     QString blocktype;
+    QString kernelfolder;
 };

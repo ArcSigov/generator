@@ -9,6 +9,7 @@ void TblDataProcessor::writeTbl()
 {
     QStringList data;
     data.push_back(outputfolder);
+    data.push_back(kernelfolder);
     data.push_back(blocktype);
 
     for (auto it = storage->begin(); it != storage->end() ; it++)
@@ -52,7 +53,11 @@ void TblDataProcessor::readTbl()
     {
         if (it.contains("OUTPUT_FOLDER:"))
         {
-            settings->abspath = it.section(":",1);
+            settings->loadpath = it.section(":",1);
+        }
+        else if (it.contains("KERNEL_FOLDER:"))
+        {
+            settings->kernelpath = it.section(":",1);
         }
         else if (it.contains("BLOCK_TYPE:"))
         {
@@ -63,17 +68,18 @@ void TblDataProcessor::readTbl()
         else if (it.contains("TABLE_ROW:"))
         {
             auto list = it.section(":",1).split(";");
-            DataStorage d;
-            for (auto i = 0 ; i < list.size(); i++)
-                d.set(list.at(i),i);
-            storage->push_back(d);
+                DataStorage d;
+                for (auto i = 0 ; i < list.size(); i++)
+                    d.set(list.at(i),i);
+                storage->push_back(d);
         }
     }
 }
 
 void TblDataProcessor::update()
 {
-    outputfolder = "OUTPUT_FOLDER:"+settings->abspath + "\r\n";
+    outputfolder = "OUTPUT_FOLDER:"+settings->loadpath + "\r\n";
+    kernelfolder = "KERNEL_FOLDER:"+settings->kernelpath + "\r\n";
     switch (settings->type)
     {
     case BlockType::bis:

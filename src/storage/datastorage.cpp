@@ -41,7 +41,7 @@ bool DataStorage::isValid(const int &column)
 {
     switch (column)
     {
-        case MODULE_NUM:    return m_num < 25 || m_num > 49;
+        case MODULE_NUM:    return m_num < 0x25 || m_num > 0x49;
         case FILE_PATH:     return f_path.isEmpty();
         case ID_DATE:       return date.isNull();
         case VERSION:       return false;
@@ -49,7 +49,7 @@ bool DataStorage::isValid(const int &column)
         case CRC:           return crc == 0;
         case DESCRIPTION:   return description.isEmpty();
         case RAM_ADDR:      return ram_addr == 0;
-        case PART_N:        return n_part < 1 || n_part > 3;
+        case PART_N:        return n_part > 3;
         default :           return 0;
     }
 }
@@ -58,14 +58,14 @@ void DataStorage::set(const QVariant& v, int column)
 {
     switch (column)
     {
-        case MODULE_NUM:  m_num = v.toInt();          break;
-        case ID_DATE:     date   = v.toDate();        break;
-        case VERSION:     version = v.toInt();        break;
-        case REVISION:    revision = v.toInt();       break;
-        case CRC:         crc = v.toInt();            break;
-        case DESCRIPTION: description = v.toString(); break;
-        case RAM_ADDR:    ram_addr = v.toInt();       break;
-        case PART_N:      n_part = v.toInt();         break;
+        case MODULE_NUM:  m_num = v.toUInt();          break;
+        case ID_DATE:     date   = v.toDate();         break;
+        case VERSION:     version = v.toUInt();        break;
+        case REVISION:    revision = v.toUInt();       break;
+        case CRC:         crc = v.toUInt();            break;
+        case DESCRIPTION: description = v.toString();  break;
+        case RAM_ADDR:    ram_addr = v.toUInt();       break;
+        case PART_N:      n_part = v.toUInt();         break;
         case FILE_PATH:
         {
             generic_name.clear();

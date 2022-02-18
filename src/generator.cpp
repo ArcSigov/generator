@@ -38,6 +38,7 @@ Generator::Generator(QObject *parent) : QObject(parent),
 */
 void Generator::run()
 {
+    calcRomAddr();
     for (auto& processor : processors)
     {
         if(!dynamic_cast<TblDataProcessor*>(processor.get()))
@@ -46,6 +47,7 @@ void Generator::run()
             emit workStatus(processor->quittance());
         }
     }
+    static_cast<MainWindow*>(mainwindow.get())->update();
 }
 /*!
 Выполняет чтение файла с настройками и данными для работы
@@ -58,8 +60,10 @@ void Generator::readTblFile(const QString &path)
         auto tbl = dynamic_cast<TblDataProcessor*>(processor.get());
         if (tbl)
         {
+            storage.clear();
             tbl->setMode(path,TblMode::read);
             tbl->process();
+            sortStorage();
             static_cast<MainWindow*>(mainwindow.get())->update();
             break;
         }
@@ -91,11 +95,9 @@ void Generator::saveTblFile(const QString &path)
 */
 void Generator::update()
 {
-    calcRomAddr();
     for (auto& processor : processors)
         processor->update();
 }
-
 /*!
 Выполняет расчет адресов ПЗУ для исполняемых файлов
 */
@@ -114,22 +116,16 @@ void Generator::calcRomAddr()
     case BlockType::undef:
     default: return;
     }
-    qDebug() << "calc";
+
     for (auto it = storage.begin(); it != storage.end(); it++)
     {
         it->setRomAddr(rom_addr);
-        if (it->fileSize() < 0x40000)
+
+        int _size = it->fileSize();
+        while (_size > 0)
         {
             rom_addr+=0x40000;
-        }
-        else
-        {
-            int _size = it->fileSize();
-            while (_size > 0)
-            {
-                rom_addr+=0x40000;
-                _size-=0x40000;
-            }
+            _size   -=0x40000;
         }
     }
 }
@@ -142,4 +138,24 @@ QVector<DataStorage>* Generator::getStorage()
 Settings* Generator::getSettings()
 {
     return &settings;
+}
+
+void Generator::sortStorage()
+{
+    //сортировка при окончании чтения
+    std::sort(storage.begin(),storage.end(),[](const auto& e1, const auto&e2)
+    {
+        if (e1.at(MODULE_NUM) == e2.at(MODULE_NUM))
+        {
+            if (e1.genericType() == e2.genericType())
+            {
+                return e1.at(PART_N) < e2.at(PART_N);
+            }
+            else
+            {
+                return e1.genericType() > e2.genericType();
+            }
+        }
+        else return e1.at(MODULE_NUM) < e2.at(MODULE_NUM);
+    });
 }

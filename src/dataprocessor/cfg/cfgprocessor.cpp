@@ -17,7 +17,6 @@ void CfgDataProcessor::process()
     block->clear();
 
     for (auto it = storage->begin(); it != storage->end(); it++)
-                        // LA                           // RAM                  //ROM           //SIZE              //NPART
         block->insert(it->at(MODULE_NUM).toUInt(),it->at(RAM_ADDR).toUInt(),it->romAddr(), it->fileSize(), it->at(PART_N).toUInt());
 
     for (auto i = 0ull; i < block->size(); i++)
@@ -32,7 +31,7 @@ void CfgDataProcessor::process()
         {
             str.push_back(", 0x"  + QString::number(p.part_addr_ram[j],16));
             str.push_back(", 0x"  + QString::number(p.part_addr_rom[j],16));
-            str.push_back(", 0x"  + QString::number(p.part_size[j],16));
+            str.push_back(", 0x"  + QString::number(p.part_size[j],16).rightJustified(8,'0'));
         }
         str.push_back("}");
         if (i+1 != block->size()) str.push_back(",");
@@ -58,15 +57,15 @@ void CfgDataProcessor::update()
         switch (settings->type)
         {
         case BlockType::bis:
-            outcfgname = settings->abspath+"/cfg_bis.c";
+            outcfgname = settings->loadpath+"/cfg_bis.c";
             block = std::make_unique<BisCfg>();
             break;
         case BlockType::bcvm:
-            outcfgname = settings->abspath+"/cfg_bcvm.c";
+            outcfgname = settings->loadpath+"/cfg_bcvm.c";
             block = std::make_unique<BcvmCfg>();
             break;
         case BlockType::bgs:
-            outcfgname = settings->abspath+"/cfg_bgs.c";
+            outcfgname = settings->loadpath+"/cfg_bgs.c";
             block = std::make_unique<BgsCfg>();
             break;
         case BlockType::undef:

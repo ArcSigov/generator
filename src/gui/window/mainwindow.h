@@ -28,7 +28,6 @@ private slots:
     void on_dob_triggered();
     void on_Open_triggered();
     void on_Save_triggered();
-    void on_generate_triggered();
 public slots:
     void update();
     void notify(const QString& quittance);

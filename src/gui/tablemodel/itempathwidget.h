@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QFileDialog>
+#include <QDir>
 
 namespace Ui {
 class ItemPathWidget;

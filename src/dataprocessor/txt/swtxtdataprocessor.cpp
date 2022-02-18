@@ -20,7 +20,7 @@ void FlashSwTxtDataProcessor::process()
     QStringList formatted;
     for (auto it = storage->begin(); it != storage->end(); it++)
     {
-        auto str = QString::number(it->romAddr(),16) + " " + settings->abspath + "/" + it->genericName() + "\r\n";
+        auto str = QString::number(it->romAddr(),16) + " " + settings->loadpath + "/" + it->genericName() + "\r\n";
         for (const auto& h: qAsConst(header[settings->type]))
         {
             formatted.push_back(h + " f " + str);
@@ -45,13 +45,13 @@ void FlashSwTxtDataProcessor::update()
     switch(settings->type)
     {
         case BlockType::bis:
-            filename = settings->abspath+"/sw_load_bis.txt";
+            filename = settings->loadpath+"/sw_load_bis.txt";
             break;
         case BlockType::bcvm:
-            filename = settings->abspath+"/sw_load_bcvm.txt";
+            filename = settings->loadpath+"/sw_load_bcvm.txt";
             break;
         case BlockType::bgs:
-            filename = settings->abspath+"/sw_load_bgs.txt";
+            filename = settings->loadpath+"/sw_load_bgs.txt";
             break;
         case BlockType::undef:
         default:

@@ -32,9 +32,10 @@ MainWindow::MainWindow(Generator* _gen, QWidget *parent):
 
     connect(ui->options, &QAction::triggered,optionWindow,&OptionWindow::show);
     connect(optionWindow,&OptionWindow::settingsUpdated,_gen,&Generator::update);
+    connect(t,           &TableModel::tableUpdated,     _gen,&Generator::sortStorage);
     connect(this        ,&MainWindow::filePathSetted,   _gen,&Generator::readTblFile);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для чтения
     connect(this        ,&MainWindow::saveFilePath,     _gen,&Generator::saveTblFile);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
-    connect(this        ,&MainWindow::generateActive,   _gen,&Generator::run);                               ///< Соединенение главного окна с генератором с уведомлением о начале работы
+    connect(ui->generate,&QAction::triggered,           _gen,&Generator::run);                               ///< Соединенение главного окна с генератором с уведомлением о начале работы
 }
 
 MainWindow::~MainWindow()
@@ -45,7 +46,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_rem_triggered()
 {
-    //ui->tableView->model()->removeRows(ui->tableView->model().,1);
+    auto list = ui->tableView->selectionModel()->selection().indexes();
+    for (auto it = list.begin(); it != list.end() ; it++)
+    {
+        if (it->column() == 0)  ui->tableView->model()->removeRows(it->row(),1,*it);
+    }
 }
 
 void MainWindow::on_dob_triggered()
@@ -61,8 +66,7 @@ void MainWindow::on_Open_triggered()
 void MainWindow::update()
 {
     optionWindow->updateSettings();
-    ui->tableView->model()->removeRows(0,ui->tableView->model()->rowCount());
-    static_cast<TableModel*>(ui->tableView->model())->updateRows(ui->tableView->model()->rowCount(),storage->size());
+    static_cast<TableModel*>(ui->tableView->model())->resetModel();
 }
 
 void MainWindow::on_Save_triggered()
@@ -74,9 +78,4 @@ void MainWindow::notify(const QString& result)
 {
     box->setText(result);
     box->exec();
-}
-
-void MainWindow::on_generate_triggered()
-{
-    emit generateActive();
 }

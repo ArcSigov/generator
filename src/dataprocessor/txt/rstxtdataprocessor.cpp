@@ -28,13 +28,13 @@ void FlashRsTxtDataProcessor::update()
     switch(settings->type)
     {
         case BlockType::bis:
-        filename = settings->abspath+"/rs_load_bis.txt";
+        filename = settings->loadpath+"/rs_load_bis.txt";
             break;
         case BlockType::bcvm:
-            filename = settings->abspath+"/rs_load_bcvm.txt";
+            filename = settings->loadpath+"/rs_load_bcvm.txt";
             break;
         case BlockType::bgs:
-            filename = settings->abspath+"/rs_load_bgs.txt";
+            filename = settings->loadpath+"/rs_load_bgs.txt";
             break;
         case BlockType::undef:
         default:

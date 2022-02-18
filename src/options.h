@@ -16,7 +16,8 @@ enum class BlockType
 struct Settings
 {
     BlockType type{BlockType::undef};
-    QString   abspath{QDir::currentPath()};
+    QString   loadpath{QDir::currentPath()};
+    QString   kernelpath{QDir::currentPath()};
 };
 
 

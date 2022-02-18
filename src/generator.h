@@ -29,6 +29,7 @@ public:
     void readTblFile(const QString& path);
     void saveTblFile(const QString& path);
     void update();
+    void sortStorage();
     QVector<DataStorage>* getStorage();
     Settings* getSettings();
 signals:

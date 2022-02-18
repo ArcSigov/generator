@@ -10,7 +10,12 @@ OptionWindow::OptionWindow(Settings* _s,QWidget *parent) :
     ui->setupUi(this);
     connect(ui->ok,       &QPushButton::clicked,       this, &OptionWindow::editSettings);
     connect(ui->ok,       &QPushButton::clicked,       this, &OptionWindow::close);
-    if (s) ui->lineEdit->setText(s->abspath);
+
+    if (s)
+    {
+        ui->loadPath->setText(s->loadpath);
+        ui->kernelPath->setText(s->kernelpath);
+    }
 }
 
 OptionWindow::~OptionWindow()
@@ -22,8 +27,8 @@ void OptionWindow::editSettings()
 {
     if (s)
     {
-        s->abspath = ui->lineEdit->text();
-
+        s->loadpath = ui->loadPath->text();
+        s->kernelpath = ui->kernelPath->text();
         if (ui->bgs->isChecked())
             s->type = BlockType::bgs;
         else if (ui->bis->isChecked())
@@ -40,7 +45,8 @@ void OptionWindow::updateSettings()
 {
     if (s)
     {
-        ui->lineEdit->setText(s->abspath);
+        ui->loadPath->setText(s->loadpath);
+        ui->kernelPath->setText(s->kernelpath);
         switch(s->type)
         {
         case BlockType::bis:        ui->bis->setChecked(true); break;
@@ -53,8 +59,13 @@ void OptionWindow::updateSettings()
     }
 }
 
-void OptionWindow::on_pushButton_clicked()
+void OptionWindow::on_kernelbtn_clicked()
 {
-    ui->lineEdit->setText(QFileDialog::getExistingDirectory(this,"Путь для сохранения"));
+    ui->kernelPath->setText(QFileDialog::getExistingDirectory(this,"Путь к ядрам"));
+}
+
+void OptionWindow::on_loadbtn_clicked()
+{
+    ui->loadPath->setText(QFileDialog::getExistingDirectory(this,"Путь для сохранения"));
 }
 
