@@ -1,5 +1,4 @@
-#ifndef TABLE_ROW_PROPS_H
-#define TABLE_ROW_PROPS_H
+#pragma once
 
 
 enum ColumnProp
@@ -15,9 +14,3 @@ enum ColumnProp
     PART_N,
     COLUMN_COUNT
 };
-
-
-
-
-
-#endif

@@ -15,7 +15,6 @@ void CfgDataProcessor::process()
 
     QStringList str(file_header);
     block->clear();
-
     for (auto it = storage->begin(); it != storage->end(); it++)
         block->insert(it->at(MODULE_NUM).toUInt(),it->at(RAM_ADDR).toUInt(),it->romAddr(), it->fileSize(), it->at(PART_N).toUInt());
 

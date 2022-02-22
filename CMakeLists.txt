@@ -29,7 +29,9 @@ set                        (SEARCH_DIRS
                             src/dataprocessor/cfg
                             src/dataprocessor/txt
                             src/dataprocessor/batch
-                            src/dataprocessor/batchini)
+                            src/dataprocessor/batchini
+                            src/dataprocessor/batchcfg
+                            )
 
 add_executable(generator    src/main.cpp
                             src/gui/window/mainwindow.cpp
@@ -67,6 +69,8 @@ add_executable(generator    src/main.cpp
                             src/dataprocessor/cfg/cfgprocessor.h
                             src/dataprocessor/cfg/blockcfg.h
                             src/dataprocessor/cfg/blockcfg.cpp
+                            src/dataprocessor/batchcfg/batchcfgprocessor.cpp
+                            src/dataprocessor/batchcfg/batchcfgprocessor.h
                             src/gui/optionwindow/optionwindow.h
                             src/gui/optionwindow/optionwindow.cpp
                             src/gui/optionwindow/optionwindow.ui

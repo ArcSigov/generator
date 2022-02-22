@@ -45,16 +45,65 @@ void FlashSwTxtDataProcessor::update()
     switch(settings->type)
     {
         case BlockType::bis:
-            filename = settings->loadpath+"/sw_load_bis.txt";
+            filename = settings->loadpath+"/sw_load_bis_rom.txt";
             break;
         case BlockType::bcvm:
-            filename = settings->loadpath+"/sw_load_bcvm.txt";
+            filename = settings->loadpath+"/sw_load_bcvm_rom.txt";
             break;
         case BlockType::bgs:
-            filename = settings->loadpath+"/sw_load_bgs.txt";
+            filename = settings->loadpath+"/sw_load_bgs_rom.txt";
             break;
         case BlockType::undef:
         default:
+        break;
+    }
+}
+
+/*!
+Выполняет генерацию загрузочного файла для интерфейса SW в ОЗУ
+*/
+void RamSwTxtDataProcessor::process()
+{
+    QStringList formatted;
+    auto counter = 1;
+    for (auto it = storage->begin(); it != storage->end(); it++)
+    {
+        formatted.push_back(QString::number(counter++) +                        //module
+                            " 1 " +                                             //always 1
+                            QString::number(it->at(MODULE_NUM).toUInt(),16) +   //la
+                            " a0040000 "+                                       //start ram addr always const
+                            QString::number(!it->genericType()) +               // mot or elf
+                            " " + QString::number(it->at(RAM_ADDR).toUInt(),16) +
+                            " " +
+                            it->at(FILE_PATH).toString() + "\r\n");             //abs path
+    }
+    if (manager)
+    {
+        manager->setFilePath(filename);
+        manager->write(formatted);
+    }
+}
+
+
+/*!
+Устанавливает настройки для сохранения выходного файла с наименованием файла в зависимости от выбранного блока
+\param[in] &_settings ссылка на настройки программы
+*/
+void RamSwTxtDataProcessor::update()
+{
+    switch(settings->type)
+    {
+    case BlockType::bis:
+        filename = settings->loadpath+"/sw_load_bis_ram.txt";
+        break;
+    case BlockType::bcvm:
+        filename = settings->loadpath+"/sw_load_bcvm_ram.txt";
+        break;
+    case BlockType::bgs:
+        filename = settings->loadpath+"/sw_load_bgs_ram.txt";
+        break;
+    case BlockType::undef:
+    default:
         break;
     }
 }

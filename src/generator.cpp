@@ -1,9 +1,9 @@
 #include "generator.h"
 #include "batchmanager.h"
 #include "tblprocessor.h"
-#include "cfgprocessor.h"
 #include "tablerowprop.h"
 #include "batchiniprocessor.h"
+#include "batchcfgprocessor.h"
 #include "txtdataprocessor.h"
 #include "mainwindow.h"
 #include <QDebug>
@@ -18,9 +18,10 @@ Generator::Generator(QObject *parent) : QObject(parent),
     ///< Создание пула процессов-обработчиков
     processors.emplace_back(std::make_unique<TblDataProcessor>());
     processors.emplace_back(std::make_unique<BatchIniProcessor>(managers[0].get(),managers[1].get()));
-    processors.emplace_back(std::make_unique<CfgDataProcessor>());
+    processors.emplace_back(std::make_unique<BatchCfgMotProcessor>(managers[0].get(),managers[1].get()));
     processors.emplace_back(std::make_unique<FlashSwTxtDataProcessor>());
     processors.emplace_back(std::make_unique<FlashRsTxtDataProcessor>());
+    processors.emplace_back(std::make_unique<RamSwTxtDataProcessor>());
 
     ///< Установка процессорам адреса хранилища данных и менеджеров
     for (auto& processor: processors)
@@ -49,6 +50,7 @@ void Generator::run()
     }
     static_cast<MainWindow*>(mainwindow.get())->update();
 }
+
 /*!
 Выполняет чтение файла с настройками и данными для работы
 \param[in] &path ссылка на местоположение файла
@@ -70,6 +72,7 @@ void Generator::readTblFile(const QString &path)
     }
     update();
 }
+
 /*!
 Выполняет сохранение файла с настройками и данными
 \param[in] &path ссылка на место сохранения файла
@@ -90,6 +93,7 @@ void Generator::saveTblFile(const QString &path)
         }
     }
 }
+
 /*!
 Выполняет обновление настроек генератора
 */
@@ -98,6 +102,7 @@ void Generator::update()
     for (auto& processor : processors)
         processor->update();
 }
+
 /*!
 Выполняет расчет адресов ПЗУ для исполняемых файлов
 */
@@ -148,13 +153,9 @@ void Generator::sortStorage()
         if (e1.at(MODULE_NUM) == e2.at(MODULE_NUM))
         {
             if (e1.genericType() == e2.genericType())
-            {
                 return e1.at(PART_N) < e2.at(PART_N);
-            }
             else
-            {
                 return e1.genericType() > e2.genericType();
-            }
         }
         else return e1.at(MODULE_NUM) < e2.at(MODULE_NUM);
     });

@@ -2,7 +2,7 @@
 
 BatchIniProcessor::BatchIniProcessor(Manager* to_ini, Manager* to_batch) :
     iniprocessor(std::make_unique<IniDataProcessor>()),
-    batchprocessor(std::make_unique<BatchProcessor>())
+    batchprocessor(std::make_unique<BatchIdInfoProcessor>())
 {
     store.resize(1);
     iniprocessor->setStorage(&store);
