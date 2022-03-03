@@ -11,37 +11,26 @@
 #include "dataprocessor.h"
 #include <unordered_map>
 
-class TxtDataProcessorFields
-{
-protected:
-    QString  filename;
-    std::unordered_map<BlockType,QStringList> header;
-};
-
-
-class FlashSwTxtDataProcessor : public DataProcessor, TxtDataProcessorFields
+class FlashSwTxtDataProcessor : public DataProcessor
 {
 public:
-    FlashSwTxtDataProcessor();
+    FlashSwTxtDataProcessor() = default;
     ~FlashSwTxtDataProcessor() = default;
-    virtual void process() override;
-    virtual void update() override;
+    void process() override;
 };
 
-class RamSwTxtDataProcessor : public DataProcessor, TxtDataProcessorFields
+class RamSwTxtDataProcessor : public DataProcessor
 {
 public:
     RamSwTxtDataProcessor() = default;
     ~RamSwTxtDataProcessor() = default;
-    virtual void process() override;
-    virtual void update() override;
+    void process() override;
 };
 
-class FlashRsTxtDataProcessor :  public DataProcessor, TxtDataProcessorFields
+class FlashRsTxtDataProcessor :  public DataProcessor
 {
 public:
     FlashRsTxtDataProcessor()  = default;
     ~FlashRsTxtDataProcessor() = default;
-    virtual void process() override;
-    virtual void update() override;
+    void process() override;
 };

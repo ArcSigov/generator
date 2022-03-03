@@ -2,7 +2,7 @@
 #define OPTIONWINDOW_H
 
 #include <QWidget>
-#include "options.h"
+#include "datastorage.h"
 
 namespace Ui {
 class OptionWindow;
@@ -13,13 +13,10 @@ class OptionWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit OptionWindow(Settings*,QWidget *parent = nullptr);
+    explicit OptionWindow(QWidget *parent = nullptr);
     ~OptionWindow();
 public:
-
     void updateSettings();
-signals:
-    void settingsUpdated();
 private slots:
     void editSettings();
     void on_kernelbtn_clicked();
@@ -27,7 +24,7 @@ private slots:
 
 private:
     Ui::OptionWindow *ui;
-    Settings* s;
+    Settings& settings{Storage::load()->settings()};
 };
 
 #endif // OPTIONWINDOW_H

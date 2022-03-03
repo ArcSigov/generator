@@ -17,9 +17,6 @@ public:
      BatchCfgMotProcessor(Manager*, Manager*);
     ~BatchCfgMotProcessor() = default;
     virtual void process() override;
-    virtual void update() override;
-    virtual void setSettings(Settings*) override;
-    virtual void setStorage(QVector<DataStorage>*) override;
 private:
     std::unique_ptr<DataProcessor>   cfgprocessor;
     std::unique_ptr<DataProcessor>   batchcfgprocessor;

@@ -14,7 +14,6 @@ Generator::Generator(QObject *parent) : QObject(parent),
     ///< Создание пула менеджеров для сохранения результатов программы, выполнения пакетных команд
     managers.emplace_back(std::make_unique<FileManager>());
     managers.emplace_back(std::make_unique<BatchManager>());
-
     ///< Создание пула процессов-обработчиков
     processors.emplace_back(std::make_unique<TblDataProcessor>());
     processors.emplace_back(std::make_unique<BatchIniProcessor>(managers[0].get(),managers[1].get()));
@@ -23,13 +22,9 @@ Generator::Generator(QObject *parent) : QObject(parent),
     processors.emplace_back(std::make_unique<FlashRsTxtDataProcessor>());
     processors.emplace_back(std::make_unique<RamSwTxtDataProcessor>());
 
-    ///< Установка процессорам адреса хранилища данных и менеджеров
     for (auto& processor: processors)
-    {
-        processor->setSettings(&settings);
-        processor->setStorage(&storage);
         processor->setFileManager(managers[0].get());
-    }
+
     mainwindow->show();
 }
 
@@ -39,14 +34,11 @@ Generator::Generator(QObject *parent) : QObject(parent),
 */
 void Generator::run()
 {
-    calcRomAddr();
+    Storage::load()->calcRom();
     for (auto& processor : processors)
     {
         if(!dynamic_cast<TblDataProcessor*>(processor.get()))
-        {
             processor->process();
-            emit workStatus(processor->quittance());
-        }
     }
     static_cast<MainWindow*>(mainwindow.get())->update();
 }
@@ -65,12 +57,11 @@ void Generator::readTblFile(const QString &path)
             storage.clear();
             tbl->setMode(path,TblMode::read);
             tbl->process();
-            sortStorage();
+            Storage::load()->sort();
             static_cast<MainWindow*>(mainwindow.get())->update();
             break;
         }
     }
-    update();
 }
 
 /*!
@@ -92,71 +83,4 @@ void Generator::saveTblFile(const QString &path)
             break;
         }
     }
-}
-
-/*!
-Выполняет обновление настроек генератора
-*/
-void Generator::update()
-{
-    for (auto& processor : processors)
-        processor->update();
-}
-
-/*!
-Выполняет расчет адресов ПЗУ для исполняемых файлов
-*/
-void Generator::calcRomAddr()
-{
-    size_t rom_addr = 0;
-    switch (settings.type)
-    {
-    case BlockType::bis:
-    case BlockType::bcvm:
-        rom_addr = 0xb0200000;
-        break;
-    case BlockType::bgs:
-        rom_addr = 0xbc200000;
-        break;
-    case BlockType::undef:
-    default: return;
-    }
-
-    for (auto it = storage.begin(); it != storage.end(); it++)
-    {
-        it->setRomAddr(rom_addr);
-
-        int _size = it->fileSize();
-        while (_size > 0)
-        {
-            rom_addr+=0x40000;
-            _size   -=0x40000;
-        }
-    }
-}
-
-QVector<DataStorage>* Generator::getStorage()
-{
-    return &storage;
-}
-
-Settings* Generator::getSettings()
-{
-    return &settings;
-}
-
-void Generator::sortStorage()
-{
-    //сортировка при окончании чтения
-    std::sort(storage.begin(),storage.end(),[](const auto& e1, const auto&e2)
-    {
-        if (e1.at(MODULE_NUM) == e2.at(MODULE_NUM))
-        {
-            if (e1.genericType() == e2.genericType())
-                return e1.at(PART_N) < e2.at(PART_N);
-            else
-                return e1.genericType() > e2.genericType();
-        }
-        else return e1.at(MODULE_NUM) < e2.at(MODULE_NUM);
-    });
 }

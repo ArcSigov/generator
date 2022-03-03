@@ -34,8 +34,6 @@ public slots:
 private:
     Ui::MainWindow *ui;
     OptionWindow *optionWindow;
-    QVector<DataStorage> *storage;
-    Settings* settings;
     QMessageBox* box;
 };
 

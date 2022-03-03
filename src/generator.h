@@ -17,8 +17,6 @@
 class Generator : public QObject
 {
     Q_OBJECT
-    QVector<DataStorage> storage;
-    Settings settings;
     std::unique_ptr<QMainWindow> mainwindow;
     std::vector<std::unique_ptr<DataProcessor>> processors;
     std::vector<std::unique_ptr<Manager>> managers;
@@ -28,13 +26,10 @@ public:
     void run();
     void readTblFile(const QString& path);
     void saveTblFile(const QString& path);
-    void update();
-    void sortStorage();
-    QVector<DataStorage>* getStorage();
-    Settings* getSettings();
 signals:
     void workStatus(const QString& result);
     void settingsUpdated();
 private:
-    void calcRomAddr();
+    std::vector<DataStorage>& storage{Storage::load()->data()};
+    Settings& settings{Storage::load()->settings()};
 };

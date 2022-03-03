@@ -13,7 +13,7 @@ class TableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit TableModel(QObject* parent = nullptr,QVector<DataStorage>* _hash = nullptr);
+    explicit TableModel(QObject* parent = nullptr);
     ~TableModel() = default;
     Q_INVOKABLE virtual int rowCount(const QModelIndex &parent = QModelIndex())             const override;
     Q_INVOKABLE virtual int columnCount(const QModelIndex &parent = QModelIndex())          const override;
@@ -27,7 +27,7 @@ public:
 signals:
     void tableUpdated();
 private:
-    QVector<DataStorage>* storage; // данные по каждой ячейке таблицы
+    std::vector<DataStorage>& storage{Storage::load()->data()};
 };
 
 #endif

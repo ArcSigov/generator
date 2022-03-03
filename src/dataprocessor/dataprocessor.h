@@ -11,22 +11,16 @@
 #include <QDebug>
 #include "manager.h"
 #include "datastorage.h"
-#include "options.h"
 
 class DataProcessor
 {
-    public:
+public:
     DataProcessor()  = default;
     virtual ~DataProcessor()  = default;
-public:
-    virtual QString quittance(){ return QString();}
     virtual void process() = 0;
-    virtual void update() = 0;
     virtual void setFileManager(Manager* _manager) {manager = _manager;}
-    virtual void setStorage(QVector<DataStorage>* _storage) {storage = _storage;}
-    virtual void setSettings(Settings* _settings) {settings = _settings;}
 protected:
     Manager* manager;
-    QVector<DataStorage>* storage;
-    Settings* settings;
+    std::vector<DataStorage>& storage {Storage::load()->data()};
+    Settings& settings                {Storage::load()->settings()};
 };

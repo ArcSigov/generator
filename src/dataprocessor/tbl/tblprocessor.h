@@ -23,7 +23,6 @@ public:
     ~TblDataProcessor() = default;
     void         setMode(const QString&,const TblMode&);
     virtual void process() override;
-    virtual void update() override;
 private:
     void writeTbl();
     void readTbl();

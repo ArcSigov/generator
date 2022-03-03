@@ -12,11 +12,9 @@ MainWindow::MainWindow(Generator* _gen, QWidget *parent):
     ui(new Ui::MainWindow),
     box(new QMessageBox(this))
 {
-    settings = _gen->getSettings();
-    storage  = _gen->getStorage();
 
-    optionWindow = new OptionWindow(settings);
-    TableModel* t = new TableModel(this,storage);
+    optionWindow = new OptionWindow();
+    TableModel* t = new TableModel(this);
 
 
     ui->setupUi(this);
@@ -31,8 +29,7 @@ MainWindow::MainWindow(Generator* _gen, QWidget *parent):
     ui->tableView->setModel(t);
 
     connect(ui->options, &QAction::triggered,optionWindow,&OptionWindow::show);
-    connect(optionWindow,&OptionWindow::settingsUpdated,_gen,&Generator::update);
-    connect(t,           &TableModel::tableUpdated,     _gen,&Generator::sortStorage);
+    connect(t,           &TableModel::tableUpdated,      Storage::load(),&Storage::sort);
     connect(this        ,&MainWindow::filePathSetted,   _gen,&Generator::readTblFile);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для чтения
     connect(this        ,&MainWindow::saveFilePath,     _gen,&Generator::saveTblFile);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
     connect(ui->generate,&QAction::triggered,           _gen,&Generator::run);                               ///< Соединенение главного окна с генератором с уведомлением о начале работы

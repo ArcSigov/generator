@@ -2,20 +2,16 @@
 #include "ui_optionwindow.h"
 #include <QFileDialog>
 
-OptionWindow::OptionWindow(Settings* _s,QWidget *parent) :
+OptionWindow::OptionWindow(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::OptionWindow),
-    s(_s)
+    ui(new Ui::OptionWindow)
 {
     ui->setupUi(this);
     connect(ui->ok,       &QPushButton::clicked,       this, &OptionWindow::editSettings);
     connect(ui->ok,       &QPushButton::clicked,       this, &OptionWindow::close);
 
-    if (s)
-    {
-        ui->loadPath->setText(s->loadpath);
-        ui->kernelPath->setText(s->kernelpath);
-    }
+    ui->loadPath->setText(settings.loadpath);
+    ui->kernelPath->setText(settings.kernelpath);
 }
 
 OptionWindow::~OptionWindow()
@@ -25,38 +21,28 @@ OptionWindow::~OptionWindow()
 
 void OptionWindow::editSettings()
 {
-    if (s)
-    {
-        s->loadpath = ui->loadPath->text();
-        s->kernelpath = ui->kernelPath->text();
-        if (ui->bgs->isChecked())
-            s->type = BlockType::bgs;
-        else if (ui->bis->isChecked())
-            s->type = BlockType::bis;
-        else if (ui->bcvm->isChecked())
-            s->type = BlockType::bcvm;
-        else
-            s->type = BlockType::undef;
-        emit settingsUpdated();
-    }
+    settings.loadpath               = ui->loadPath->text();
+    settings.kernelpath             = ui->kernelPath->text();
+    if (ui->bgs->isChecked())       settings.init(BlockType::bgs);
+    else if (ui->bis->isChecked())  settings.init(BlockType::bis);
+    else if (ui->bcvm->isChecked()) settings.init(BlockType::bcvm);
+    else                            settings.init(BlockType::undef);
+
 }
 
 void OptionWindow::updateSettings()
 {
-    if (s)
+    ui->loadPath->setText(settings.loadpath);
+    ui->kernelPath->setText(settings.kernelpath);
+    settings.init(settings.type);
+    switch(settings.type)
     {
-        ui->loadPath->setText(s->loadpath);
-        ui->kernelPath->setText(s->kernelpath);
-        switch(s->type)
-        {
-        case BlockType::bis:        ui->bis->setChecked(true); break;
-        case BlockType::bgs:        ui->bgs->setChecked(true); break;
-        case BlockType::bcvm:       ui->bcvm->setChecked(true); break;
-        case BlockType::undef:
-            default: break;
-        }
-        emit settingsUpdated();
+        case BlockType::bis:    ui->bis->setChecked(true);  break;
+        case BlockType::bgs:    ui->bgs->setChecked(true);  break;
+        case BlockType::bcvm:   ui->bcvm->setChecked(true); break;
+        case BlockType::undef:  default:                    break;
     }
+
 }
 
 void OptionWindow::on_kernelbtn_clicked()

@@ -13,14 +13,22 @@
 #include "dataprocessor.h"
 #include "datastorage.h"
 
+enum class IniMode
+{
+    undef,
+    write,
+    read
+};
+
 class IniDataProcessor : public DataProcessor
 {
 public:
     IniDataProcessor() = default;
     ~IniDataProcessor() = default;
-    virtual void process() override;
-    virtual void update() override {};
-    virtual QString quittance() override;
+    void process() override;
+    void setMode(const IniMode&);
 private:
-    QString output_directory;
+    IniMode mode{IniMode::undef};
+    void read();
+    void write();
 };

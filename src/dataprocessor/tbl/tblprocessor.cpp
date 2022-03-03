@@ -8,13 +8,28 @@
 void TblDataProcessor::writeTbl()
 {
     QStringList data;
-    data.push_back(outputfolder);
-    data.push_back(kernelfolder);
-    data.push_back(blocktype);
 
-    for (auto it = storage->begin(); it != storage->end() ; it++)
+    data.push_back("OUTPUT_FOLDER:"+settings.loadpath + "\r\n");
+    data.push_back("KERNEL_FOLDER:"+settings.kernelpath + "\r\n");
+
+    switch (settings.type)
     {
-        if (it != storage->begin()) data.push_back("\r\n");
+    case BlockType::bis:
+        data.push_back("BLOCK_TYPE:BIS\r\n");
+        break;
+    case BlockType::bcvm:
+        data.push_back("BLOCK_TYPE:BCVM\r\n");
+        break;
+    case BlockType::bgs:
+        data.push_back("BLOCK_TYPE:BGS\r\n");
+        break;
+    default:break;
+    }
+
+
+    for (auto it = storage.begin(); it != storage.end() ; it++)
+    {
+        if (it != storage.begin()) data.push_back("\r\n");
 
         QString str = "TABLE_ROW:";
         for (auto i = 0 ; i < COLUMN_COUNT; i++)
@@ -53,15 +68,15 @@ void TblDataProcessor::readTbl()
     {
         if (it.contains("OUTPUT_FOLDER:"))
         {
-            settings->loadpath = it.section(":",1);
+            settings.loadpath = it.section(":",1);
         }
         else if (it.contains("KERNEL_FOLDER:"))
         {
-            settings->kernelpath = it.section(":",1);
+            settings.kernelpath = it.section(":",1);
         }
         else if (it.contains("BLOCK_TYPE:"))
         {
-            settings->type  = it.contains("BIS")   ?  BlockType::bis :
+            settings.type  = it.contains("BIS")   ?  BlockType::bis :
                               it.contains("BGS")   ?  BlockType::bgs :
                               it.contains("BCVM")  ?  BlockType::bcvm : BlockType::undef;
         }
@@ -71,26 +86,8 @@ void TblDataProcessor::readTbl()
                 DataStorage d;
                 for (auto i = 0 ; i < list.size(); i++)
                     d.set(list.at(i),i);
-                storage->push_back(d);
+                storage.push_back(d);
         }
     }
 }
 
-void TblDataProcessor::update()
-{
-    outputfolder = "OUTPUT_FOLDER:"+settings->loadpath + "\r\n";
-    kernelfolder = "KERNEL_FOLDER:"+settings->kernelpath + "\r\n";
-    switch (settings->type)
-    {
-    case BlockType::bis:
-        blocktype = "BLOCK_TYPE:BIS\r\n";
-        break;
-    case BlockType::bcvm:
-        blocktype = "BLOCK_TYPE:BCVM\r\n";
-        break;
-    case BlockType::bgs:
-        blocktype = "BLOCK_TYPE:BGS\r\n";
-        break;
-    default:break;
-    }
-}
