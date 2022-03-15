@@ -11,29 +11,25 @@ void IniDataProcessor::process()
 {
     switch (mode)
     {
-    case IniMode::read:
-        read();
-        break;
-    case IniMode::write:
-        write();
-        break;
-    case IniMode::undef:
-    default:
-        return;
+        case IniMode::read:  read();  break;
+        case IniMode::write: write(); break;
+        case IniMode::undef:
+        default:return;
     }
 }
 
 void IniDataProcessor::read()
 {
-    for (auto it = storage.begin(); it != storage.end() ; it++)
+    for (auto it = storage.begin(); it != storage.end(); it++)
     {
+        if(!it->at(IS_CHECKED).toBool())
+            continue;
+
         if (manager)
         {
             auto res = manager->read(it->genericName().replace('.','_')+"_log.ini");
             if (res.size()>8)
-            {
               it->set(res.at(8).section(':',1).toUInt(nullptr,16),CRC);
-            }
         }
     }
 }
@@ -41,8 +37,11 @@ void IniDataProcessor::read()
 void IniDataProcessor::write()
 {
 
-    for (auto it = storage.begin(); it != storage.end() ; it++)
+    for (auto it = storage.begin(); it != storage.end(); it++)
     {
+        if(!it->at(IS_CHECKED).toBool())
+            continue;
+
         QString formatted;
         formatted.push_back("00000000\r\n");
         formatted.push_back(it->genericIniSize() + "\r\n");

@@ -2,13 +2,25 @@
 <ui version="4.0">
  <class>OptionWindow</class>
  <widget class="QWidget" name="OptionWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>217</height>
+    <width>388</width>
+    <height>443</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="acceptDrops">
+   <bool>false</bool>
   </property>
   <property name="windowTitle">
    <string>Настройки</string>
@@ -17,53 +29,43 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>20</y>
+     <y>10</y>
      <width>351</width>
-     <height>71</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="title">
     <string>Блок</string>
    </property>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>321</width>
-      <height>19</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QRadioButton" name="bis">
-       <property name="text">
-        <string>БИС</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="bgs">
-       <property name="text">
-        <string>БГС</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="bcvm">
-       <property name="text">
-        <string>БЦВМ</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QRadioButton" name="bis">
+      <property name="text">
+       <string>БИС</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QRadioButton" name="bgs">
+      <property name="text">
+       <string>БГС</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QRadioButton" name="bcvm">
+      <property name="text">
+       <string>БЦВМ</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QPushButton" name="ok">
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>170</y>
+     <y>400</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -76,7 +78,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>100</y>
+     <y>330</y>
      <width>351</width>
      <height>54</height>
     </rect>
@@ -99,6 +101,116 @@
      <widget class="QPushButton" name="kernelbtn">
       <property name="text">
        <string>Путь к ядрам</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>80</y>
+     <width>349</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Настройка генерации скриптов</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="title">
+       <string>ПЗУ скрипты</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QCheckBox" name="romRS232Script">
+         <property name="text">
+          <string>Генерировать скрипт для загрузки по RS232</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="romSWScript">
+         <property name="text">
+          <string>Генерировать скрипт для загрузки по SpaceWire</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="romKernelsFpoScript">
+         <property name="text">
+          <string>Добавить загрузку ядер в скрипт</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="ramSWScript">
+      <property name="text">
+       <string>Генерировать скрипт для загрузки  в ОЗУ по SpaceWire</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="kernelScript">
+      <property name="text">
+       <string>Генерировать скрипт для загрузки ядер</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>261</y>
+     <width>354</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Максимальный размер зоны ПЗУ для загрузочного файла, байт (hex)</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="sectorSize">
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::PlusMinus</enum>
+      </property>
+      <property name="minimum">
+       <number>262144</number>
+      </property>
+      <property name="maximum">
+       <number>26214400</number>
+      </property>
+      <property name="singleStep">
+       <number>262144</number>
+      </property>
+      <property name="stepType">
+       <enum>QAbstractSpinBox::DefaultStepType</enum>
+      </property>
+      <property name="value">
+       <number>262144</number>
+      </property>
+      <property name="displayIntegerBase">
+       <number>16</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="what">
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </item>

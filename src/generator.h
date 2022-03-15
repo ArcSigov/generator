@@ -27,8 +27,8 @@ public:
     void readTblFile(const QString& path);
     void saveTblFile(const QString& path);
 signals:
-    void workStatus(const QString& result);
-    void settingsUpdated();
+    void tblSaveStatus(const QString& result);
+    void workCompleted();
 private:
     std::vector<DataStorage>& storage{Storage::load()->data()};
     Settings& settings{Storage::load()->settings()};

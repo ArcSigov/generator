@@ -14,15 +14,8 @@
    <string>Конфигуратор ПЗУ</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="0">
-     <widget class="QProgressBar" name="progressBar">
-      <property name="value">
-       <number>24</number>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
      <widget class="QTableView" name="tableView">
       <attribute name="horizontalHeaderCascadingSectionResizes">
        <bool>false</bool>
@@ -36,6 +29,13 @@
       <attribute name="verticalHeaderStretchLastSection">
        <bool>true</bool>
       </attribute>
+     </widget>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="progressBar">
+      <property name="value">
+       <number>24</number>
+      </property>
      </widget>
     </item>
    </layout>

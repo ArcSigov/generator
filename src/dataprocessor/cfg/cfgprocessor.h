@@ -13,9 +13,9 @@
 class CfgDataProcessor : public DataProcessor
 {
 public:
-    CfgDataProcessor();
+    CfgDataProcessor()  = default;
     ~CfgDataProcessor() = default;
     virtual void process() override;
 private:
-    std::unique_ptr<BlockCfg>                     block;
+    std::unique_ptr<BlockCfg>                     block{std::make_unique<BlockCfg>()};
 };

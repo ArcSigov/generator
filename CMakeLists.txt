@@ -43,6 +43,8 @@ add_executable(generator    src/main.cpp
                             src/tablerowprop.h
                             src/gui/tablemodel/dialogitemdelegate.h
                             src/gui/tablemodel/calendaritemdelegate.h
+                            src/gui/tablemodel/checkdelegate.h
+                            src/gui/tablemodel/checkdelegate.cpp
                             src/gui/window/mainwindow.ui
                             src/storage/datastorage.h
                             src/storage/datastorage.cpp

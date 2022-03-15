@@ -21,24 +21,29 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    auto s = storage.begin()+index.row();
+    auto& s = storage.at(index.row());
     switch(role)
     {
         case Qt::DisplayRole:
         case Qt::EditRole:
         {
             if (index.column() == RAM_ADDR || index.column() == MODULE_NUM || index.column() == CRC)
-                return QString::number(s->at(index.column()).toUInt(),16);
+                return QString::number(s.at(index.column()).toUInt(),16);
             else
-                return s->at(index.column());
+                return s.at(index.column());
         }
         case Qt::BackgroundRole:
             if (index.column() == PART_N)
                 return QBrush(Qt::transparent);
             else
-                return QBrush((s->isValid(index.column()) ? Qt::yellow : Qt::transparent));
+                return QBrush((s.isValid(index.column()) ? Qt::yellow : Qt::transparent));
+//        case Qt::TextAlignmentRole:
+//            if (index.column() == FILE_PATH || index.column() == DESCRIPTION)
+//                return int(Qt::AlignLeft | Qt::AlignBottom);
+//            return Qt::AlignCenter;
         default:
             return QVariant();
+
     }
 }
 
@@ -46,14 +51,14 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
 {
     if (role == Qt::EditRole)
     {
-        auto p = storage.begin()+index.row();
+        auto& s = storage.at(index.row());
         if (index.column() == RAM_ADDR || index.column() == MODULE_NUM || index.column() == CRC)
         {
             auto v = value.toString().toUInt(nullptr,16);
-            p->set(QVariant(v),index.column());
+            s.set(QVariant(v),index.column());
         }
         else
-            p->set(value,index.column());
+            s.set(value,index.column());
         emit dataChanged(index,index);
         resetModel();
         return true;
@@ -75,7 +80,7 @@ Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
 bool TableModel::insertRows(int row, int count, const QModelIndex &parent)
 {
     beginInsertRows(parent,row,row+count-1);
-    if (storage.size() <= row)
+    if (storage.size() <= static_cast<size_t>(row))
         storage.push_back(DataStorage());
     endInsertRows();
     resetModel();

@@ -6,6 +6,7 @@ QVariant DataStorage::at(const int& column)
 {
     switch (column)
     {
+        case IS_CHECKED:  return isChecked;
         case MODULE_NUM:  return m_num;
         case FILE_PATH:   return f_path;
         case ID_DATE:     return date;
@@ -24,6 +25,7 @@ QVariant DataStorage::at(const int& column) const
 {
     switch (column)
     {
+    case IS_CHECKED:  return isChecked;
     case MODULE_NUM:  return m_num;
     case FILE_PATH:   return f_path;
     case ID_DATE:     return date;
@@ -41,6 +43,7 @@ bool DataStorage::isValid(const int &column)
 {
     switch (column)
     {
+        case IS_CHECKED:    return false;
         case MODULE_NUM:    return m_num < 0x25 || m_num > 0x49;
         case FILE_PATH:     return f_path.isEmpty();
         case ID_DATE:       return date.isNull();
@@ -58,6 +61,7 @@ void DataStorage::set(const QVariant& v, int column)
 {
     switch (column)
     {
+        case IS_CHECKED:  isChecked = v.toBool();      break;
         case MODULE_NUM:  m_num = v.toUInt();          break;
         case ID_DATE:     date   = v.toDate();         break;
         case VERSION:     version = v.toUInt();        break;
@@ -85,6 +89,7 @@ QString DataStorage::name(const int& column)
 {
     switch(column)
     {
+        case IS_CHECKED:    return "Активно";
         case MODULE_NUM:    return "Адрес";
         case FILE_PATH:     return "Файл";
         case ID_DATE:       return "Дата";

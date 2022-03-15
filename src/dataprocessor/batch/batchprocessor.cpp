@@ -9,6 +9,9 @@ void BatchIdInfoProcessor::process()
 {
     for (auto it = storage.begin(); it != storage.end(); it++)
     {
+        if (!it->at(IS_CHECKED).toBool())
+            continue;
+
         QString formatted = cur_id_path + it->genericName().replace('.','_') + ".ini ";
 
         auto crc = it->at(CRC).toUInt();
@@ -19,6 +22,7 @@ void BatchIdInfoProcessor::process()
         formatted.push_back(crc > 0  ? " -cs " + QString::number(it->at(CRC).toUInt(),16): " ");
         formatted.push_back(" > " + QDir::currentPath() + "/" + it->genericName().replace('.','_') + "_log.ini");
         if (manager) manager->write(QStringList(formatted));
+
     }
 }
 

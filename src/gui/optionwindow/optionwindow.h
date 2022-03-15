@@ -2,6 +2,7 @@
 #define OPTIONWINDOW_H
 
 #include <QWidget>
+#include <QMessageBox>
 #include "datastorage.h"
 
 namespace Ui {
@@ -19,6 +20,8 @@ public:
     void updateSettings();
 private slots:
     void editSettings();
+    void editStorage(QString value);
+    void editSpinBox(const QString& what);
     void on_kernelbtn_clicked();
     void on_loadbtn_clicked();
 

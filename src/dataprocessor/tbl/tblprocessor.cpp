@@ -11,30 +11,22 @@ void TblDataProcessor::writeTbl()
 
     data.push_back("OUTPUT_FOLDER:"+settings.loadpath + "\r\n");
     data.push_back("KERNEL_FOLDER:"+settings.kernelpath + "\r\n");
-
+    data.push_back("SECTION_SIZE:"+ QString::number(settings.max_rom_section_size,16)+ "\r\n");
     switch (settings.type)
     {
-    case BlockType::bis:
-        data.push_back("BLOCK_TYPE:BIS\r\n");
-        break;
-    case BlockType::bcvm:
-        data.push_back("BLOCK_TYPE:BCVM\r\n");
-        break;
-    case BlockType::bgs:
-        data.push_back("BLOCK_TYPE:BGS\r\n");
-        break;
-    default:break;
+        case BlockType::bis:  data.push_back("BLOCK_TYPE:BIS\r\n");  break;
+        case BlockType::bcvm: data.push_back("BLOCK_TYPE:BCVM\r\n"); break;
+        case BlockType::bgs:  data.push_back("BLOCK_TYPE:BGS\r\n");  break;
+        default:break;
     }
-
 
     for (auto it = storage.begin(); it != storage.end() ; it++)
     {
         if (it != storage.begin()) data.push_back("\r\n");
 
         QString str = "TABLE_ROW:";
-        for (auto i = 0 ; i < COLUMN_COUNT; i++)
+        for (auto i = 1 ; i < COLUMN_COUNT; i++)
             str += it->at(i).toString() + ";";
-
         data.push_back(str);
     }
     manager->write(data);
@@ -56,8 +48,7 @@ void TblDataProcessor::process()
 void TblDataProcessor::setMode(const QString& path,const TblMode &_mode)
 {
     mode = _mode;
-    if (manager)
-        manager->setFilePath(path);
+    if (manager)  manager->setFilePath(path);
 }
 
 
@@ -76,17 +67,21 @@ void TblDataProcessor::readTbl()
         }
         else if (it.contains("BLOCK_TYPE:"))
         {
-            settings.type  = it.contains("BIS")   ?  BlockType::bis :
+            settings.type   = it.contains("BIS")   ?  BlockType::bis :
                               it.contains("BGS")   ?  BlockType::bgs :
                               it.contains("BCVM")  ?  BlockType::bcvm : BlockType::undef;
+        }
+        else if (it.contains("SECTION_SIZE:"))
+        {
+            settings.max_rom_section_size   = it.section(":",1).toUInt(nullptr,16);
         }
         else if (it.contains("TABLE_ROW:"))
         {
             auto list = it.section(":",1).split(";");
-                DataStorage d;
-                for (auto i = 0 ; i < list.size(); i++)
-                    d.set(list.at(i),i);
-                storage.push_back(d);
+            DataStorage d;
+            for (auto i = 0 ; i < list.size(); i++)
+                d.set(list.at(i),i+1);
+            storage.push_back(d);
         }
     }
 }

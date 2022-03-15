@@ -1,37 +1,22 @@
 #include "cfgprocessor.h"
 #include "tablerowprop.h"
 
-CfgDataProcessor::CfgDataProcessor() : block (std::make_unique<BlockCfg>())
-{
-
-}
-
 /*!
 Выполняет генерацию конфигурационного блока для выбранного блока
 */
 void CfgDataProcessor::process()
 {
+    QStringList str;
+    str.push_back(settings.file_header);
+
     switch (settings.type)
     {
-    case BlockType::bis:
-        block = std::make_unique<BisCfg>();
-        break;
-    case BlockType::bcvm:
-        block = std::make_unique<BcvmCfg>();
-        break;
-    case BlockType::bgs:
-        block = std::make_unique<BgsCfg>();
-        break;
-    case BlockType::undef:
-        block = std::make_unique<BlockCfg>();
-        break;
-    default:break;
+        case BlockType::bis:    block = std::make_unique<BisCfg>();     break;
+        case BlockType::bcvm:   block = std::make_unique<BcvmCfg>();    break;
+        case BlockType::bgs:    block = std::make_unique<BgsCfg>();     break;
+        case BlockType::undef:  block = std::make_unique<BlockCfg>();   break;
+        default:break;
     }
-
-
-    QStringList str;
-
-    str.push_back(settings.file_header);
 
     block->clear();
     for (auto it = storage.begin(); it != storage.end(); it++)
@@ -44,7 +29,7 @@ void CfgDataProcessor::process()
         str.push_back(", 0x"  + QString::number(p.LA,16).rightJustified(4,'0'));
         str.push_back(", 0x"  + QString::number(p.kernel_addr_rom,16));
         str.push_back(", 0x"  + QString::number(p.kernel_addr_ram,16));
-        str.push_back(", 0x"  + QString::number(p.kernel_size,16));
+        str.push_back(", 0x"  + QString::number(p.kernel_size,16).rightJustified(8,'0'));
         for (auto j = 0 ; j < 4 ; j++)
         {
             str.push_back(", 0x"  + QString::number(p.part_addr_ram[j],16));

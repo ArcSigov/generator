@@ -3,6 +3,7 @@
 
 enum ColumnProp
 {
+    IS_CHECKED,
     MODULE_NUM,
     FILE_PATH,
     ID_DATE,

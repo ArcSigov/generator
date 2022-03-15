@@ -23,6 +23,7 @@ signals:
     void filePathSetted(const QString& path);
     void saveFilePath(const QString& path);
     void generateActive();
+    void rawRemoved();
 private slots:
     void on_rem_triggered();
     void on_dob_triggered();
@@ -31,10 +32,12 @@ private slots:
 public slots:
     void update();
     void notify(const QString& quittance);
+    void buttonsMode(const QString&);
 private:
     Ui::MainWindow *ui;
     OptionWindow *optionWindow;
     QMessageBox* box;
+    QLabel*      status;
 };
 
-#endif // MAINWINDOW_H
+#endif

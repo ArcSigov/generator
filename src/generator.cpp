@@ -34,13 +34,12 @@ Generator::Generator(QObject *parent) : QObject(parent),
 */
 void Generator::run()
 {
-    Storage::load()->calcRom();
     for (auto& processor : processors)
     {
         if(!dynamic_cast<TblDataProcessor*>(processor.get()))
             processor->process();
     }
-    static_cast<MainWindow*>(mainwindow.get())->update();
+    emit workCompleted();
 }
 
 /*!
@@ -49,6 +48,7 @@ void Generator::run()
 */
 void Generator::readTblFile(const QString &path)
 {
+    if (path.isEmpty()) return;
     for (auto& processor : processors)
     {
         auto tbl = dynamic_cast<TblDataProcessor*>(processor.get());
@@ -58,7 +58,7 @@ void Generator::readTblFile(const QString &path)
             tbl->setMode(path,TblMode::read);
             tbl->process();
             Storage::load()->sort();
-            static_cast<MainWindow*>(mainwindow.get())->update();
+            emit workCompleted();
             break;
         }
     }
@@ -71,7 +71,6 @@ void Generator::readTblFile(const QString &path)
 void Generator::saveTblFile(const QString &path)
 {
     if (path.isEmpty()) return;
-
     for (auto& processor : processors)
     {
         auto tbl = dynamic_cast<TblDataProcessor*>(processor.get());
@@ -79,7 +78,7 @@ void Generator::saveTblFile(const QString &path)
         {
             tbl->setMode(path,TblMode::write);
             tbl->process();
-            static_cast<MainWindow*>(mainwindow.get())->notify("Файл: "+ path +" сохранён");
+            emit tblSaveStatus("Файл: "+ path +" сохранён");
             break;
         }
     }
