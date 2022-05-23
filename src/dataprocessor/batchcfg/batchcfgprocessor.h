@@ -14,7 +14,7 @@
 class BatchCfgMotProcessor : public DataProcessor
 {
 public:
-     BatchCfgMotProcessor(Manager*, Manager*);
+    BatchCfgMotProcessor(Manager*, Manager*, QObject* parent = nullptr);
     ~BatchCfgMotProcessor() = default;
     virtual void process() override;
 private:

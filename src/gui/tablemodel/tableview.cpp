@@ -8,7 +8,7 @@ TableModel::TableModel(QObject* parent) :
 
 int TableModel::rowCount([[maybe_unused]] const QModelIndex &parent) const
 {
-    return storage.size();
+    return Storage::load()->data().size();
 }
 
 int TableModel::columnCount([[maybe_unused]] const QModelIndex &parent) const
@@ -21,7 +21,7 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    auto& s = storage.at(index.row());
+    auto& s =  Storage::load()->data().at(index.row());
     switch(role)
     {
         case Qt::DisplayRole:
@@ -51,7 +51,7 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
 {
     if (role == Qt::EditRole)
     {
-        auto& s = storage.at(index.row());
+        auto& s = Storage::load()->data().at(index.row());
         if (index.column() == RAM_ADDR || index.column() == MODULE_NUM || index.column() == CRC)
         {
             auto v = value.toString().toUInt(nullptr,16);
@@ -71,7 +71,7 @@ Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return Qt::NoItemFlags;
 
-    if (index.column() == PART_N && storage.at(index.row()).genericType())
+    if (index.column() == PART_N &&  Storage::load()->data().at(index.row()).genericType())
         return Qt::NoItemFlags;
     else
         return Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
@@ -80,8 +80,8 @@ Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
 bool TableModel::insertRows(int row, int count, const QModelIndex &parent)
 {
     beginInsertRows(parent,row,row+count-1);
-    if (storage.size() <= static_cast<size_t>(row))
-        storage.push_back(DataStorage());
+    if ( Storage::load()->data().size() <= static_cast<size_t>(row))
+         Storage::load()->data().push_back(DataStorage());
     endInsertRows();
     resetModel();
     return true;
@@ -93,7 +93,7 @@ bool TableModel::removeRows(int row, int count, const QModelIndex &parent)
         return false;
 
     beginRemoveRows(parent,row,row+count-1);
-    storage.erase(storage.begin()+row);
+    Storage::load()->data().erase( Storage::load()->data().begin()+row);
     endRemoveRows();
     resetModel();
     return true;

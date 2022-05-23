@@ -48,6 +48,10 @@ add_executable(generator    src/main.cpp
                             src/gui/window/mainwindow.ui
                             src/storage/datastorage.h
                             src/storage/datastorage.cpp
+                            src/storage/storage.h
+                            src/storage/storage.cpp
+                            src/storage/configuration.cpp
+                            src/storage/configuration.h
                             src/gui/tablemodel/itempathwidget.h
                             src/gui/tablemodel/itempathwidget.cpp
                             src/gui/tablemodel/itempathwidget.ui
@@ -69,14 +73,13 @@ add_executable(generator    src/main.cpp
                             src/dataprocessor/batchini/batchiniprocessor.h
                             src/dataprocessor/cfg/cfgprocessor.cpp
                             src/dataprocessor/cfg/cfgprocessor.h
-                            src/dataprocessor/cfg/blockcfg.h
-                            src/dataprocessor/cfg/blockcfg.cpp
                             src/dataprocessor/batchcfg/batchcfgprocessor.cpp
                             src/dataprocessor/batchcfg/batchcfgprocessor.h
                             src/gui/optionwindow/optionwindow.h
                             src/gui/optionwindow/optionwindow.cpp
                             src/gui/optionwindow/optionwindow.ui
                             src/options.h
+                            src/messages.h
                             src/dataprocessor/txt/txtdataprocessor.h
                             src/dataprocessor/txt/swtxtdataprocessor.cpp
                             src/dataprocessor/txt/rstxtdataprocessor.cpp
@@ -85,6 +88,17 @@ add_executable(generator    src/main.cpp
 
 target_link_libraries(generator  Qt5::Widgets
                                  Qt5::Gui
-                                 Qt5::Core )
+                                 Qt5::Core)
+
+find_package(threads REQUIRED)
+
+find_path(Jsoncpp_INCLUDE_DIR
+  NAMES json/features.h
+  PATH_SUFFIXES jsoncpp
+  PATHS ${Jsoncpp_PKGCONF_INCLUDE_DIRS} # /usr/include/jsoncpp/json
+)
 
 target_include_directories(generator PRIVATE ${SEARCH_DIRS})
+
+
+

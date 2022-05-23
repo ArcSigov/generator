@@ -9,12 +9,12 @@ OptionWindow::OptionWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->ok,          &QPushButton::clicked,       this, &OptionWindow::editSettings);
-    connect(ui->sectorSize,  &QSpinBox::textChanged,     this, &OptionWindow::editStorage);
+    connect(ui->sectorSize,  &QSpinBox::textChanged,      this, &OptionWindow::editStorage);
     connect(ui->ok,          &QPushButton::clicked,       this, &OptionWindow::close);
     connect(Storage::load(), &Storage::sectionError,      this, &OptionWindow::editSpinBox);
 
-    ui->loadPath->setText(settings.loadpath);
-    ui->kernelPath->setText(settings.kernelpath);
+    ui->loadPath->setText(Storage::load()->options().loadpath);
+    ui->kernelPath->setText(Storage::load()->options().kernelpath);
 
     ui->ramSWScript->setChecked(true);
     ui->romSWScript->setChecked(true);
@@ -32,35 +32,36 @@ OptionWindow::~OptionWindow()
 
 void OptionWindow::editSettings()
 {
-    settings.loadpath               = ui->loadPath->text();
-    settings.kernelpath             = ui->kernelPath->text();
+    Storage::load()->options().loadpath               = ui->loadPath->text();
+    Storage::load()->options().kernelpath             = ui->kernelPath->text();
 
-    settings.ramSW_enabled          = ui->ramSWScript->isChecked();
-    settings.romSW_enabled          = ui->romSWScript->isChecked();
-    settings.romRS232_enabled       = ui->romRS232Script->isChecked();
-    settings.romKernelsFpo_enabled  = ui->romKernelsFpoScript->isChecked();
+    Storage::load()->options().ramSW_enabled          = ui->ramSWScript->isChecked();
+    Storage::load()->options().romSW_enabled          = ui->romSWScript->isChecked();
+    Storage::load()->options().romRS232_enabled       = ui->romRS232Script->isChecked();
+    Storage::load()->options().romKernelsFpo_enabled  = ui->romKernelsFpoScript->isChecked();
 
-    if (ui->bgs->isChecked())       settings.init(BlockType::bgs);
-    else if (ui->bis->isChecked())  settings.init(BlockType::bis);
-    else if (ui->bcvm->isChecked()) settings.init(BlockType::bcvm);
-    else                            settings.init(BlockType::undef);
+    if (ui->bgs->isChecked())       Storage::load()->cfg().setCurrentBlock(BlockType::bgs);
+    else if (ui->bis->isChecked())  Storage::load()->cfg().setCurrentBlock(BlockType::bis);
+    else if (ui->bcvm->isChecked()) Storage::load()->cfg().setCurrentBlock(BlockType::bcvm);
+    else                            Storage::load()->cfg().setCurrentBlock(BlockType::undef);
 }
 
 void OptionWindow::updateSettings()
 {
-    ui->loadPath->setText(settings.loadpath);
-    ui->kernelPath->setText(settings.kernelpath);
-    settings.init(settings.type);
-    ui->sectorSize->setValue(settings.max_rom_section_size);
-    editStorage(QString::number(settings.max_rom_section_size,16));
+    ui->loadPath->setText(Storage::load()->options().loadpath);
+    ui->kernelPath->setText(Storage::load()->options().kernelpath);
+    Storage::load()->cfg().setCurrentBlock(Storage::load()->options().type);
+    ui->sectorSize->setValue(Storage::load()->options().max_rom_section_size);
+    editStorage(QString::number(Storage::load()->options().max_rom_section_size,16));
 
-    switch(settings.type)
+    switch(Storage::load()->options().type)
     {
         case BlockType::bis:    ui->bis->setChecked(true);  break;
         case BlockType::bgs:    ui->bgs->setChecked(true);  break;
         case BlockType::bcvm:   ui->bcvm->setChecked(true); break;
         case BlockType::undef:  default:                    break;
     }
+    editSettings();
 }
 
 void OptionWindow::on_kernelbtn_clicked()
@@ -75,7 +76,7 @@ void OptionWindow::on_loadbtn_clicked()
 
 void OptionWindow::editStorage(QString value)
 {
-    settings.max_rom_section_size = value.toUInt(nullptr,16);
+    Storage::load()->options().max_rom_section_size = value.toUInt(nullptr,16);
     Storage::load()->calcRom();
 }
 

@@ -1,6 +1,7 @@
 #include "batchcfgprocessor.h"
 
-BatchCfgMotProcessor::BatchCfgMotProcessor(Manager* to_cfg, Manager* to_batch) :
+BatchCfgMotProcessor::BatchCfgMotProcessor(Manager* to_cfg, Manager* to_batch, QObject* parent):
+    DataProcessor(parent),
     cfgprocessor(std::make_unique<CfgDataProcessor>()),
     batchcfgprocessor(std::make_unique<BatchCfgProcessor>())
 {

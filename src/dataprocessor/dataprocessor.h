@@ -10,17 +10,20 @@
 #include <QVector>
 #include <QDebug>
 #include "manager.h"
-#include "datastorage.h"
+#include "storage.h"
+#include "messages.h"
 
-class DataProcessor
+
+class DataProcessor : public QObject
 {
+    Q_OBJECT
 public:
-    DataProcessor()  = default;
+    DataProcessor(QObject* parent = nullptr) : QObject(parent) {}
     virtual ~DataProcessor()  = default;
     virtual void process() = 0;
     virtual void setFileManager(Manager* _manager) {manager = _manager;}
+signals:
+    void sendMessage(const MessageCategory& category = MessageCategory::notify,const QString& text = "");
 protected:
     Manager* manager;
-    std::vector<DataStorage>& storage {Storage::load()->data()};
-    Settings& settings                {Storage::load()->settings()};
 };

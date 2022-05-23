@@ -7,7 +7,7 @@
 */
 void BatchIdInfoProcessor::process()
 {
-    for (auto it = storage.begin(); it != storage.end(); it++)
+    for (auto it = Storage::load()->data().begin(); it != Storage::load()->data().end(); it++)
     {
         if (!it->at(IS_CHECKED).toBool())
             continue;
@@ -21,6 +21,7 @@ void BatchIdInfoProcessor::process()
         formatted.push_back(date.isEmpty() ? " " : " -d " + date);
         formatted.push_back(crc > 0  ? " -cs " + QString::number(it->at(CRC).toUInt(),16): " ");
         formatted.push_back(" > " + QDir::currentPath() + "/" + it->genericName().replace('.','_') + "_log.ini");
+        emit sendMessage(MessageCategory::info,"Генерирую " + it->genericName());
         if (manager) manager->write(QStringList(formatted));
 
     }
@@ -29,7 +30,7 @@ void BatchIdInfoProcessor::process()
 void BatchCfgProcessor::process()
 {
     QString str;
-    for (const auto& it: qAsConst(settings.commandHeader))
+    for (const auto& it: qAsConst(commandHeader))
         str.push_back(it);
 
     if (manager) manager->write(QStringList(str));

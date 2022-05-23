@@ -14,7 +14,7 @@
 class FlashSwTxtDataProcessor : public DataProcessor
 {
 public:
-    FlashSwTxtDataProcessor() = default;
+    FlashSwTxtDataProcessor(QObject* parent = nullptr) : DataProcessor(parent) {}
     ~FlashSwTxtDataProcessor() = default;
     void process() override;
 };
@@ -22,7 +22,7 @@ public:
 class RamSwTxtDataProcessor : public DataProcessor
 {
 public:
-    RamSwTxtDataProcessor() = default;
+    RamSwTxtDataProcessor(QObject* parent = nullptr) : DataProcessor(parent) {}
     ~RamSwTxtDataProcessor() = default;
     void process() override;
 };
@@ -30,7 +30,7 @@ public:
 class FlashRsTxtDataProcessor :  public DataProcessor
 {
 public:
-    FlashRsTxtDataProcessor()  = default;
+    FlashRsTxtDataProcessor(QObject* parent = nullptr) : DataProcessor(parent) {}
     ~FlashRsTxtDataProcessor() = default;
     void process() override;
 };

@@ -14,10 +14,7 @@
 class BatchIniProcessor : public DataProcessor
 {
 public:
-     BatchIniProcessor(Manager*, Manager*);
+    BatchIniProcessor(Manager*, Manager*, QObject* parent = nullptr);
     ~BatchIniProcessor() = default;
     void process() override;
-private:
-    std::unique_ptr<IniDataProcessor>       iniprocessor;
-    std::unique_ptr<BatchIdInfoProcessor>   batchprocessor;
 };

@@ -8,28 +8,23 @@
 #pragma once
 
 #include <QObject>
-#include <QMainWindow>
 #include "datastorage.h"
 #include "dataprocessor.h"
-#include "filemanager.h"
-
+#include <unordered_map>
 
 class Generator : public QObject
 {
     Q_OBJECT
-    std::unique_ptr<QMainWindow> mainwindow;
-    std::vector<std::unique_ptr<DataProcessor>> processors;
-    std::vector<std::unique_ptr<Manager>> managers;
+    std::unordered_map<DataProcessor*,bool*> processors;
+    std::vector<Manager*>       managers;
 public:
     explicit Generator(QObject *parent = nullptr);
     ~Generator() = default;
     void run();
-    void readTblFile(const QString& path);
-    void saveTblFile(const QString& path);
+    void readTblFile(const QString&);
+    void saveTblFile(const QString&);
 signals:
     void tblSaveStatus(const QString& result);
     void workCompleted();
-private:
-    std::vector<DataStorage>& storage{Storage::load()->data()};
-    Settings& settings{Storage::load()->settings()};
+    void sendMessage(const MessageCategory& category = MessageCategory::notify,const QString& text = "");
 };

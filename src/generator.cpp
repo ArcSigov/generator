@@ -1,32 +1,31 @@
 #include "generator.h"
-#include "batchmanager.h"
+#include <QDebug>
 #include "tblprocessor.h"
-#include "tablerowprop.h"
 #include "batchiniprocessor.h"
 #include "batchcfgprocessor.h"
 #include "txtdataprocessor.h"
-#include "mainwindow.h"
-#include <QDebug>
+#include "filemanager.h"
+#include "batchmanager.h"
 
-Generator::Generator(QObject *parent) : QObject(parent),
-    mainwindow(std::make_unique<MainWindow>(this))
+Generator::Generator(QObject *parent) : QObject(parent)
 {
-    ///< Создание пула менеджеров для сохранения результатов программы, выполнения пакетных команд
-    managers.emplace_back(std::make_unique<FileManager>());
-    managers.emplace_back(std::make_unique<BatchManager>());
-    ///< Создание пула процессов-обработчиков
-    processors.emplace_back(std::make_unique<TblDataProcessor>());
-    processors.emplace_back(std::make_unique<BatchIniProcessor>(managers[0].get(),managers[1].get()));
-    processors.emplace_back(std::make_unique<BatchCfgMotProcessor>(managers[0].get(),managers[1].get()));
-    processors.emplace_back(std::make_unique<FlashSwTxtDataProcessor>());
-    processors.emplace_back(std::make_unique<FlashRsTxtDataProcessor>());
-    processors.emplace_back(std::make_unique<RamSwTxtDataProcessor>());
+    managers.push_back(new FileManager());
+    managers.push_back(new BatchManager());
 
-    for (auto& processor: processors)
-        processor->setFileManager(managers[0].get());
+    processors[new TblDataProcessor(this)] = nullptr ;
+    processors[new BatchIniProcessor(managers[0],managers[1],this)] = nullptr ;
+    processors[new BatchCfgMotProcessor(managers[0],managers[1],this)] = nullptr ;
+    processors[new FlashSwTxtDataProcessor(this)] = &Storage::load()->options().romSW_enabled;
+    processors[new FlashRsTxtDataProcessor(this)] = &Storage::load()->options().romRS232_enabled;
+    processors[new RamSwTxtDataProcessor(this)]   = &Storage::load()->options().ramSW_enabled;
 
-    mainwindow->show();
+    for (const auto& it : processors)
+    {
+        it.first->setFileManager(managers[0]);
+        QObject::connect(it.first, &DataProcessor::sendMessage, this, &Generator::sendMessage);
+    }
 }
+
 
 /*!
 Выполняет запуск процессов генерации исходного кода, загрузочных файлов, файлов конфигурации
@@ -34,12 +33,16 @@ Generator::Generator(QObject *parent) : QObject(parent),
 */
 void Generator::run()
 {
-    for (auto& processor : processors)
+    emit sendMessage(MessageCategory::info, "Запуск генерации");
+    for (const auto& it :  processors)
     {
-        if(!dynamic_cast<TblDataProcessor*>(processor.get()))
-            processor->process();
+        if(!dynamic_cast<TblDataProcessor*>(it.first))
+        {
+            if (it.first && (!it.second || *it.second))
+                it.first->process();
+        }
     }
-    emit workCompleted();
+    emit sendMessage(MessageCategory::info, "Генерация завершена");
 }
 
 /*!
@@ -49,16 +52,16 @@ void Generator::run()
 void Generator::readTblFile(const QString &path)
 {
     if (path.isEmpty()) return;
-    for (auto& processor : processors)
+    for (const auto& it : processors)
     {
-        auto tbl = dynamic_cast<TblDataProcessor*>(processor.get());
+        auto tbl = dynamic_cast<TblDataProcessor*>(it.first);
         if (tbl)
         {
-            storage.clear();
+            Storage::load()->data().clear();
             tbl->setMode(path,TblMode::read);
             tbl->process();
             Storage::load()->sort();
-            emit workCompleted();
+            emit sendMessage(MessageCategory::update);
             break;
         }
     }
@@ -71,14 +74,14 @@ void Generator::readTblFile(const QString &path)
 void Generator::saveTblFile(const QString &path)
 {
     if (path.isEmpty()) return;
-    for (auto& processor : processors)
+    for (const auto& it : processors)
     {
-        auto tbl = dynamic_cast<TblDataProcessor*>(processor.get());
+        auto tbl = dynamic_cast<TblDataProcessor*>(it.first);
         if (tbl)
         {
             tbl->setMode(path,TblMode::write);
             tbl->process();
-            emit tblSaveStatus("Файл: "+ path +" сохранён");
+            emit sendMessage(MessageCategory::notify,"Файл: "+ path +" сохранён");
             break;
         }
     }

@@ -23,7 +23,7 @@ enum class IniMode
 class IniDataProcessor : public DataProcessor
 {
 public:
-    IniDataProcessor() = default;
+    IniDataProcessor(QObject* parent = nullptr) : DataProcessor(parent) {}
     ~IniDataProcessor() = default;
     void process() override;
     void setMode(const IniMode&);

@@ -9,7 +9,7 @@
 #include <QLabel>
 #include <QStyle>
 
-MainWindow::MainWindow(Generator* _gen, QWidget *parent):
+MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     box(new QMessageBox(this)),
@@ -17,8 +17,6 @@ MainWindow::MainWindow(Generator* _gen, QWidget *parent):
 {
 
     optionWindow = new OptionWindow();
-    TableModel* t = new TableModel(this);
-
 
     ui->setupUi(this);
     ui->progressBar->setVisible(false);
@@ -30,20 +28,16 @@ MainWindow::MainWindow(Generator* _gen, QWidget *parent):
     ui->tableView->setItemDelegateForColumn(ID_DATE,new CalendarDelegate(this));
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableView->setModel(t);
+    ui->tableView->setModel(new TableModel(this));
 
     ui->statusBar->addWidget(status);
     ui->statusBar->setVisible(true);
 
-    connect(ui->options,    &QAction::triggered,            optionWindow,&OptionWindow::show);
-    connect(this,           &MainWindow::rawRemoved,        optionWindow,&OptionWindow::updateSettings);
-    connect(t,              &TableModel::tableUpdated,      Storage::load(),&Storage::sort);
-    connect(this        ,   &MainWindow::filePathSetted,   _gen,&Generator::readTblFile);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для чтения
-    connect(this        ,   &MainWindow::saveFilePath,     _gen,&Generator::saveTblFile);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
-    connect(ui->generate,   &QAction::triggered,           _gen,&Generator::run);                               ///< Соединенение главного окна с генератором с уведомлением о начале работы
-    connect(_gen,           &Generator::workCompleted,     this,&MainWindow::update);
-    connect(_gen,           &Generator::tblSaveStatus,     this,&MainWindow::notify);
-    connect(Storage::load(),&Storage::sectionError,        this,&MainWindow::buttonsMode);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
+
+    connect(ui->options,    &QAction::triggered,             optionWindow,&OptionWindow::show);
+    connect(this,           &MainWindow::rawRemoved,         optionWindow,&OptionWindow::updateSettings);
+    connect(static_cast<TableModel*>(ui->tableView->model()),&TableModel::tableUpdated,      Storage::load(),&Storage::sort);
+    connect(Storage::load(),&Storage::sectionError,          this,&MainWindow::buttonsMode);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
 }
 
 MainWindow::~MainWindow()
@@ -72,24 +66,12 @@ void MainWindow::on_dob_triggered()
 
 void MainWindow::on_Open_triggered()
 {
-    emit filePathSetted(QFileDialog::getOpenFileName(this, tr("Открыть файл"), " ", tr("table(*.tbl)")));
-}
-
-void MainWindow::update()
-{
-    optionWindow->updateSettings();
-    static_cast<TableModel*>(ui->tableView->model())->resetModel();
+    emit filePathSetted(QFileDialog::getOpenFileName(this, tr("Открыть файл"), " ", "table(*.tbl)"));
 }
 
 void MainWindow::on_Save_triggered()
 {
     emit saveFilePath(QFileDialog::getSaveFileName(this, tr("Сохранить файл"), "", tr("table(*.tbl)")));
-}
-
-void MainWindow::notify(const QString& result)
-{
-    box->setText(result);
-    box->exec();
 }
 
 void MainWindow::buttonsMode(const QString& checkList)
@@ -107,3 +89,45 @@ void MainWindow::buttonsMode(const QString& checkList)
         ui->statusBar->setStyleSheet("color : green");
     }
 }
+
+void MainWindow::message(const MessageCategory& category,const QString& text)
+{
+    status->setText(text);
+
+    switch (category)
+    {
+        case MessageCategory::error:
+        break;
+        case MessageCategory::info:
+            ui->statusBar->setStyleSheet("color : green");
+            ui->textBrowser->setTextColor(Qt::green);
+        break;
+        case MessageCategory::notify:
+        {
+            box->setText(text);
+            box->exec();
+        }
+        break;
+        case MessageCategory::warning:
+        {
+            ui->textBrowser->setTextColor(Qt::red);
+            break;
+        }
+        case MessageCategory::update:
+        {
+            optionWindow->updateSettings();
+            static_cast<TableModel*>(ui->tableView->model())->resetModel();
+        }
+        break;
+        default: break;
+    }
+
+    if (!text.isEmpty()) ui->textBrowser->insertPlainText(text+"\r\n");
+}
+
+
+void MainWindow::on_generate_triggered()
+{
+    emit generateActive();
+}
+

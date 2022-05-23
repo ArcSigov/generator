@@ -20,7 +20,7 @@ void IniDataProcessor::process()
 
 void IniDataProcessor::read()
 {
-    for (auto it = storage.begin(); it != storage.end(); it++)
+    for (auto it = Storage::load()->data().begin(); it != Storage::load()->data().end(); it++)
     {
         if(!it->at(IS_CHECKED).toBool())
             continue;
@@ -29,7 +29,10 @@ void IniDataProcessor::read()
         {
             auto res = manager->read(it->genericName().replace('.','_')+"_log.ini");
             if (res.size()>8)
+            {
               it->set(res.at(8).section(':',1).toUInt(nullptr,16),CRC);
+              emit sendMessage(MessageCategory::warning,"Процесс генерации " + it->genericName() + " завершён без ошибок");
+            }
         }
     }
 }
@@ -37,7 +40,7 @@ void IniDataProcessor::read()
 void IniDataProcessor::write()
 {
 
-    for (auto it = storage.begin(); it != storage.end(); it++)
+    for (auto it = Storage::load()->data().begin(); it != Storage::load()->data().end(); it++)
     {
         if(!it->at(IS_CHECKED).toBool())
             continue;
@@ -46,10 +49,9 @@ void IniDataProcessor::write()
         formatted.push_back("00000000\r\n");
         formatted.push_back(it->genericIniSize() + "\r\n");
         formatted.push_back(it->at(FILE_PATH).toString()+"\r\n");
-        formatted.push_back(settings.loadpath + "/"+it->genericName()+"\r\n"+" "+"\r\n");
+        formatted.push_back(Storage::load()->options().loadpath + "/"+it->genericName()+"\r\n"+" "+"\r\n");
         formatted.push_back(it->at(DESCRIPTION).toString()+"\r\n");
         formatted.push_back(it->at(VERSION).toString().rightJustified(2,'0') + " " + it->at(REVISION).toString().rightJustified(2,'0') + "\r\n");
-
         if (manager)
         {
             manager->setFilePath(it->genericName().replace('.','_')+".ini");

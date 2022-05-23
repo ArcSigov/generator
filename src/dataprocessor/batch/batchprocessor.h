@@ -13,7 +13,7 @@
 class BatchIdInfoProcessor : public DataProcessor
 {
 public:
-    explicit BatchIdInfoProcessor() = default;
+    explicit BatchIdInfoProcessor(QObject* parent = nullptr) : DataProcessor(parent) {}
     ~BatchIdInfoProcessor() = default;
     void process() override;
 private:
@@ -22,8 +22,21 @@ private:
 
 class BatchCfgProcessor : public DataProcessor
 {
+    enum
+    {
+        CFG_NAME = 1,
+        COMLINE_ROM = 3,
+        OUTPUT = 5
+    };
+    QStringList commandHeader{{QDir::currentPath()+"/Tools4x/bin/mipsel-elf32-gcc.exe -g -c -O0 -EL -o cfg_files.o "},
+            {},   //what a cfg block name
+            {" && " + QDir::currentPath()+"/Tools4x/bin/mipsel-elf32-ld.exe -d -g -EL -T "},
+            {},   //what a comline rom
+            {" && copy cfg_files.mot "},
+            {} //where
+    };
 public:
-    explicit BatchCfgProcessor() = default;
+    explicit BatchCfgProcessor(QObject* parent = nullptr) : DataProcessor(parent) {}
     ~BatchCfgProcessor() = default;
     void process() override;
 };

@@ -19,15 +19,12 @@ enum class TblMode
 class TblDataProcessor : public DataProcessor
 {
 public:
-     TblDataProcessor() = default;
+    TblDataProcessor(QObject* parent = nullptr) : DataProcessor(parent) {}
     ~TblDataProcessor() = default;
-    void         setMode(const QString&,const TblMode&);
-    virtual void process() override;
+    void setMode(const QString&,const TblMode&);
+    void process() override;
 private:
     void writeTbl();
     void readTbl();
     TblMode  mode;
-    QString outputfolder;
-    QString blocktype;
-    QString kernelfolder;
 };
