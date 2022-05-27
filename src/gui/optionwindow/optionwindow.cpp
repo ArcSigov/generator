@@ -1,6 +1,8 @@
 #include "optionwindow.h"
 #include "ui_optionwindow.h"
 #include <QFileDialog>
+#include <QRadioButton>
+#include <QLayout>
 #include <QDebug>
 
 OptionWindow::OptionWindow(QWidget *parent) :
@@ -8,6 +10,7 @@ OptionWindow::OptionWindow(QWidget *parent) :
     ui(new Ui::OptionWindow)
 {
     ui->setupUi(this);
+
     connect(ui->ok,          &QPushButton::clicked,       this, &OptionWindow::editSettings);
     connect(ui->sectorSize,  &QSpinBox::textChanged,      this, &OptionWindow::editStorage);
     connect(ui->ok,          &QPushButton::clicked,       this, &OptionWindow::close);
@@ -15,7 +18,6 @@ OptionWindow::OptionWindow(QWidget *parent) :
 
     ui->loadPath->setText(Storage::load()->options().loadpath);
     ui->kernelPath->setText(Storage::load()->options().kernelpath);
-
     ui->ramSWScript->setChecked(true);
     ui->romSWScript->setChecked(true);
     ui->romRS232Script->setChecked(true);
@@ -23,6 +25,14 @@ OptionWindow::OptionWindow(QWidget *parent) :
     ui->kernelScript->setChecked(true);
     ui->what->setVisible(false);
     ui->what->setStyleSheet("color: red");
+
+    QHBoxLayout *vbox = new QHBoxLayout(ui->blocksBox);
+    for (const auto& it : Storage::load()->cfg().blockList())
+    {
+        QRadioButton* btn = new QRadioButton(it,ui->blocksBox);
+        btn->setObjectName(it);
+        ui->blocksBox->layout()->addWidget(btn);
+    }
 }
 
 OptionWindow::~OptionWindow()
@@ -32,36 +42,45 @@ OptionWindow::~OptionWindow()
 
 void OptionWindow::editSettings()
 {
-    Storage::load()->options().loadpath               = ui->loadPath->text();
-    Storage::load()->options().kernelpath             = ui->kernelPath->text();
+    auto& options = Storage::load()->options();
 
-    Storage::load()->options().ramSW_enabled          = ui->ramSWScript->isChecked();
-    Storage::load()->options().romSW_enabled          = ui->romSWScript->isChecked();
-    Storage::load()->options().romRS232_enabled       = ui->romRS232Script->isChecked();
-    Storage::load()->options().romKernelsFpo_enabled  = ui->romKernelsFpoScript->isChecked();
+    //!< Установка путей сборки и пути хранения ядер
+    options.loadpath               = ui->loadPath->text();
+    options.kernelpath             = ui->kernelPath->text();
 
-    if (ui->bgs->isChecked())       Storage::load()->cfg().setCurrentBlock(BlockType::bgs);
-    else if (ui->bis->isChecked())  Storage::load()->cfg().setCurrentBlock(BlockType::bis);
-    else if (ui->bcvm->isChecked()) Storage::load()->cfg().setCurrentBlock(BlockType::bcvm);
-    else                            Storage::load()->cfg().setCurrentBlock(BlockType::undef);
+    //!< Установка выбранных пользовательских настроек
+    options.ramSW_enabled          = ui->ramSWScript->isChecked();
+    options.romSW_enabled          = ui->romSWScript->isChecked();
+    options.romRS232_enabled       = ui->romRS232Script->isChecked();
+    options.romKernelsFpo_enabled  = ui->romKernelsFpoScript->isChecked();
+
+    //!< Конфигурирование хранилища под выбранный блок
+    for (const auto& it : ui->blocksBox->children())
+    {
+        auto t = dynamic_cast<QRadioButton*>(it);
+        if (t && t->isChecked())
+        {
+            Storage::load()->cfg().setCurrentBlock(it->objectName());
+            break;
+        }
+    }
 }
 
-void OptionWindow::updateSettings()
+void OptionWindow::initializeSettings()
 {
     ui->loadPath->setText(Storage::load()->options().loadpath);
     ui->kernelPath->setText(Storage::load()->options().kernelpath);
-    Storage::load()->cfg().setCurrentBlock(Storage::load()->options().type);
     ui->sectorSize->setValue(Storage::load()->options().max_rom_section_size);
-    editStorage(QString::number(Storage::load()->options().max_rom_section_size,16));
 
-    switch(Storage::load()->options().type)
+    for (const auto& it : ui->blocksBox->children())
     {
-        case BlockType::bis:    ui->bis->setChecked(true);  break;
-        case BlockType::bgs:    ui->bgs->setChecked(true);  break;
-        case BlockType::bcvm:   ui->bcvm->setChecked(true); break;
-        case BlockType::undef:  default:                    break;
+        auto t = dynamic_cast<QRadioButton*>(it);
+        if (t && t->objectName() == Storage::load()->cfg().BlockName())
+        {
+            t->setChecked(true);
+            break;
+        }
     }
-    editSettings();
 }
 
 void OptionWindow::on_kernelbtn_clicked()

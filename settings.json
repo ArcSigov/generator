@@ -1,0 +1,422 @@
+[
+	{
+		"block" : "BIS",
+		"la_addresses" : [37,41,45,49,53,57,61,65,69,73],
+		"rom_str": ["1 1 25 a0040000","10 1 49 a0040000"],
+		"cfg": [
+			{
+				"pos": [
+					{
+						"GA" : 1,
+						"LA" : [37]
+					},
+					{
+						"GA" : 10,
+						"LA" : [73]
+					}
+				],			
+				"kernel_addr_rom":"0xb0000000",
+				"kernel_addr_ram":"0xa0040000",
+				"kernel_size":"0x50000",
+				"config_addr_rom":"0xffffffff",
+				"config_addr_ram":"0xffffffff",
+				"config_size":"0xffffffff",
+				"part1_addr_rom":"0xffffffff",
+				"part1_addr_ram":"0xffffffff",
+				"part1_size":"0xffffffff",
+				"part2_addr_rom":"0xffffffff",
+				"part2_addr_ram":"0xffffffff",
+				"part2_size":"0xffffffff",
+				"part3_addr_rom":"0xffffffff",
+				"part3_addr_ram":"0xffffffff",
+				"part3_size":"0xffffffff"
+			},			
+			{
+				"pos": [
+					{
+						"GA" : 2,
+						"LA" : [41]
+					},
+					{
+						"GA" : 9,
+						"LA" : [69]
+					}
+				],	
+				"kernel_addr_rom":"0xb0080000",
+				"kernel_addr_ram":"0xa0040000",
+				"kernel_size":"0x50000",
+				"config_addr_rom":"0xffffffff",
+				"config_addr_ram":"0xffffffff",
+				"config_size":"0xffffffff",
+				"part1_addr_rom":"0xffffffff",
+				"part1_addr_ram":"0xffffffff",
+				"part1_size":"0xffffffff",
+				"part2_addr_rom":"0xffffffff",
+				"part2_addr_ram":"0xffffffff",
+				"part2_size":"0xffffffff",
+				"part3_addr_rom":"0xffffffff",
+				"part3_addr_ram":"0xffffffff",
+				"part3_size":"0xffffffff"
+			},
+			{
+				"pos": [
+					{
+						"GA" : 3,
+						"LA" : [45]
+					},
+					{
+						"GA" : 4,
+						"LA" : [49]
+					},
+					{
+						"GA" : 5,
+						"LA" : [53]
+					},
+					{
+						"GA" : 6,
+						"LA" : [57]
+					},
+					{
+						"GA" : 7,
+						"LA" : [61]
+					},
+					{
+						"GA" : 8,
+						"LA" : [65]
+					}
+				],	
+				"kernel_addr_rom":"0xb0100000",
+				"kernel_addr_ram":"0xa0040000",
+				"kernel_size":"0x50000",
+				"config_addr_rom":"0xffffffff",
+				"config_addr_ram":"0xffffffff",
+				"config_size":"0xffffffff",
+				"part1_addr_rom":"0xffffffff",
+				"part1_addr_ram":"0xffffffff",
+				"part1_size":"0xffffffff",
+				"part2_addr_rom":"0xffffffff",
+				"part2_addr_ram":"0xffffffff",
+				"part2_size":"0xffffffff",
+				"part3_addr_rom":"0xffffffff",
+				"part3_addr_ram":"0xffffffff",
+				"part3_size":"0xffffffff"
+			}
+		],
+		"kernels" : [ 
+			{
+				"name" : "kernel_BIS_MV100_02_02_sum.mot",
+				"rom_offset": "0x0ffc0000",
+				"module" : [1,10]			
+			},
+			{
+				"name" : "kernel_BIS_MV100_01_sum.mot",
+				"rom_offset": "0x10040000",
+				"module" : [2,9]
+			},
+			{
+				"name" : "kernel_BIS_MV101_01_sum.mot",
+				"rom_offset": "0x100c0000",
+				"module" : [3,4,5,6,7,8]
+			}			
+		],
+		"base_rom_addr": "0xb0200000",
+		"cfg_rom_addr":  "b7f80000",
+		"comline_rom"  : "bis_comline_rom.cmd"		
+	},
+	{
+		"block" : "BCVM",
+		"la_addresses" : [37,41,42,45,49,53,57,61,65,69,73],
+		"rom_str": ["1 1 25 a0040000","10 1 49 a0040000"],
+		"cfg": [
+			{
+				"pos": [
+					{
+						"GA" : 1,
+						"LA" : [37]
+					},
+					{
+						"GA" : 10,
+						"LA" : [73]
+					}
+				],
+				"kernel_addr_rom":"0xb0000000",
+				"kernel_addr_ram":"0xa0040000",
+				"kernel_size":"0x50000",
+				"config_addr_rom":"0xffffffff",
+				"config_addr_ram":"0xffffffff",
+				"config_size":"0xffffffff",
+				"part1_addr_rom":"0xffffffff",
+				"part1_addr_ram":"0xffffffff",
+				"part1_size":"0xffffffff",
+				"part2_addr_rom":"0xffffffff",
+				"part2_addr_ram":"0xffffffff",
+				"part2_size":"0xffffffff",
+				"part3_addr_rom":"0xffffffff",
+				"part3_addr_ram":"0xffffffff",
+				"part3_size":"0xffffffff"
+			},			
+			{
+				"pos": [
+					{
+						"GA" : 2,
+						"LA" : [41,42]
+					}
+				],
+				"kernel_addr_rom":"0xb0080000",
+				"kernel_addr_ram":"0xa0040000",
+				"kernel_size":"0x50000",
+				"config_addr_rom":"0xffffffff",
+				"config_addr_ram":"0xffffffff",
+				"config_size":"0xffffffff",
+				"part1_addr_rom":"0xffffffff",
+				"part1_addr_ram":"0xffffffff",
+				"part1_size":"0xffffffff",
+				"part2_addr_rom":"0xffffffff",
+				"part2_addr_ram":"0xffffffff",
+				"part2_size":"0xffffffff",
+				"part3_addr_rom":"0xffffffff",
+				"part3_addr_ram":"0xffffffff",
+				"part3_size":"0xffffffff"
+			},
+			{
+				"pos": [
+					{
+						"GA" : 5,
+						"LA" : [49]
+					},
+					{
+						"GA" : 6,
+						"LA" : [53]
+					}
+				],
+				"kernel_addr_rom":"0xb0100000",
+				"kernel_addr_ram":"0xa0040000",
+				"kernel_size":"0x50000",
+				"config_addr_rom":"0xffffffff",
+				"config_addr_ram":"0xffffffff",
+				"config_size":"0xffffffff",
+				"part1_addr_rom":"0xffffffff",
+				"part1_addr_ram":"0xffffffff",
+				"part1_size":"0xffffffff",
+				"part2_addr_rom":"0xffffffff",
+				"part2_addr_ram":"0xffffffff",
+				"part2_size":"0xffffffff",
+				"part3_addr_rom":"0xffffffff",
+				"part3_addr_ram":"0xffffffff",
+				"part3_size":"0xffffffff"
+			},
+			{
+				"pos": [
+					{
+						"GA" : 3,
+						"LA" : [45]
+					},
+					{
+						"GA" : 4,
+						"LA" : [49]
+					},
+					{
+						"GA" : 7,
+						"LA" : [61]
+					},
+					{
+						"GA" : 8,
+						"LA" : [65]
+					},
+					{
+						"GA" : 9,
+						"LA" : [69]
+					}
+				],
+				"kernel_addr_rom":"0xb0080000",
+				"kernel_addr_ram":"0xa0040000",
+				"kernel_size":"0x50000",
+				"config_addr_rom":"0xffffffff",
+				"config_addr_ram":"0xffffffff",
+				"config_size":"0xffffffff",
+				"part1_addr_rom":"0xffffffff",
+				"part1_addr_ram":"0xffffffff",
+				"part1_size":"0xffffffff",
+				"part2_addr_rom":"0xffffffff",
+				"part2_addr_ram":"0xffffffff",
+				"part2_size":"0xffffffff",
+				"part3_addr_rom":"0xffffffff",
+				"part3_addr_ram":"0xffffffff",
+				"part3_size":"0xffffffff"
+			}
+		],	
+		"kernels" : [ 
+			{
+				"name" : "kernel_BCVM_MV100_02_sum.mot",
+				"rom_offset": "0x0ffc0000",
+				"module" : [1,10]			
+			},
+			{
+				"name" : "kernel_BCVM_MV100_01_sum.mot",
+				"rom_offset": "0x10040000",
+				"module" : [3,4,7,8,9]
+			},
+			{
+				"name" : "kernel_BCVM_MV101_01_sum.mot",
+				"rom_offset": "0x100c0000",
+				"module" : [5,6]
+			},
+			{
+				"name" : "kernel_BCVM_MV102_01_sum.mot",
+				"rom_offset": "0x10140000",
+				"module" : [2]
+			}				
+		],
+		"base_rom_addr": "0xb0200000",
+		"cfg_rom_addr" : "b7f80000",
+		"comline_rom"  : "bis_comline_rom.cmd"		
+	},
+	{
+		"block" : "BGS",
+		"la_addresses" : [37,38,41,45,46,49,50,53,54,57,58,61,62,65,66,69,73],
+		"rom_str": ["1 1 25 a0040000","1 2 26 a0040000"],
+		"cfg": [
+			{
+				"pos": [
+					{
+						"GA" : 1,
+						"LA" : [37,38]
+					}
+				],
+				"kernel_addr_rom":"0xbc000000",
+				"kernel_addr_ram":"0xa0040000",
+				"kernel_size":"0x50000",
+				"config_addr_rom":"0xffffffff",
+				"config_addr_ram":"0xffffffff",
+				"config_size":"0xffffffff",
+				"part1_addr_rom":"0xffffffff",
+				"part1_addr_ram":"0xffffffff",
+				"part1_size":"0xffffffff",
+				"part2_addr_rom":"0xffffffff",
+				"part2_addr_ram":"0xffffffff",
+				"part2_size":"0xffffffff",
+				"part3_addr_rom":"0xffffffff",
+				"part3_addr_ram":"0xffffffff",
+				"part3_size":"0xffffffff"
+			},
+			{
+				"pos": [
+					{
+						"GA" : 2,
+						"LA" : [41]
+					},
+					{
+						"GA" : 9,
+						"LA" : [69]
+					}
+				],
+				"kernel_addr_rom":"0xbc180000",
+				"kernel_addr_ram":"0xa0040000",
+				"kernel_size":"0x20000",
+				"config_addr_rom":"0xffffffff",
+				"config_addr_ram":"0xffffffff",
+				"config_size":"0xffffffff",
+				"part1_addr_rom":"0xffffffff",
+				"part1_addr_ram":"0xffffffff",
+				"part1_size":"0xffffffff",
+				"part2_addr_rom":"0xffffffff",
+				"part2_addr_ram":"0xffffffff",
+				"part2_size":"0xffffffff",
+				"part3_addr_rom":"0xffffffff",
+				"part3_addr_ram":"0xffffffff",
+				"part3_size":"0xffffffff"			
+			},
+			{
+				"pos": [
+					{
+						"GA" : 3,
+						"LA" : [45,46]
+					},
+					{
+						"GA" : 4,
+						"LA" : [49,50]
+					},
+					{
+						"GA" : 5,
+						"LA" : [53,54]				
+					},
+					{
+						"GA" : 6,
+						"LA" : [57,58]					
+					},
+					{
+						"GA" : 7,
+						"LA" : [61,62]					
+					},
+					{
+						"GA" : 8,
+						"LA" : [65,66]					
+					}
+				],
+				"kernel_addr_rom":"0xbc080000",
+				"kernel_addr_ram":"0xa0040000",
+				"kernel_size":"0x50000",
+				"config_addr_rom":"0xffffffff",
+				"config_addr_ram":"0xffffffff",
+				"config_size":"0xffffffff",
+				"part1_addr_rom":"0xffffffff",
+				"part1_addr_ram":"0xffffffff",
+				"part1_size":"0xffffffff",
+				"part2_addr_rom":"0xffffffff",
+				"part2_addr_ram":"0xffffffff",
+				"part2_size":"0xffffffff",
+				"part3_addr_rom":"0xffffffff",
+				"part3_addr_ram":"0xffffffff",
+				"part3_size":"0xffffffff"			
+			},
+			{
+				"pos": [
+					{
+						"GA" : 10,
+						"LA" : [73]
+					}
+				],
+				"kernel_addr_rom":"0xbc100000",
+				"kernel_addr_ram":"0xa0040000",
+				"kernel_size":"0x50000",
+				"config_addr_rom":"0xffffffff",
+				"config_addr_ram":"0xffffffff",
+				"config_size":"0xffffffff",
+				"part1_addr_rom":"0xffffffff",
+				"part1_addr_ram":"0xffffffff",
+				"part1_size":"0xffffffff",
+				"part2_addr_rom":"0xffffffff",
+				"part2_addr_ram":"0xffffffff",
+				"part2_size":"0xffffffff",
+				"part3_addr_rom":"0xffffffff",
+				"part3_addr_ram":"0xffffffff",
+				"part3_size":"0xffffffff"			
+			}
+		],
+		"kernels" : [ 
+			{
+				"name" : "kernel_BGS_MV102_02_01_sum.mot",
+				"rom_offset": "0x1bfc0000",
+				"module" : [1]			
+			},
+			{
+				"name" : "kernel_BGS_MG100_pzuELF_sum.mot",
+				"rom_offset": "0x1c040000",
+				"module" : [3,4,5,6,7,8]
+			},
+			{
+				"name" : "kernel_BGS_MV101_01_sum.mot",
+				"rom_offset": "0x1c0c0000",
+				"module" : [10]
+			},
+			{
+				"name" : "WorkSW_mk100.sre",
+				"rom_offset": "0x1c040000",
+				"module" : [2,9]
+			}					
+		],		
+		"base_rom_addr": "0xbc200000",
+		"cfg_rom_addr":  "bfc80000",
+		"comline_rom"  : "bgs_comline_rom.cmd"		
+	}
+]

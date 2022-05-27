@@ -25,7 +25,7 @@
   <property name="windowTitle">
    <string>Настройки</string>
   </property>
-  <widget class="QGroupBox" name="groupBox">
+  <widget class="QGroupBox" name="blocksBox">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -37,29 +37,12 @@
    <property name="title">
     <string>Блок</string>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QRadioButton" name="bis">
-      <property name="text">
-       <string>БИС</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QRadioButton" name="bgs">
-      <property name="text">
-       <string>БГС</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QRadioButton" name="bcvm">
-      <property name="text">
-       <string>БЦВМ</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
+   <property name="flat">
+    <bool>false</bool>
+   </property>
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QPushButton" name="ok">
    <property name="geometry">

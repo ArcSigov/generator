@@ -5,9 +5,6 @@
 #include <QThread>
 #include <QTextCodec>
 #include "messages.h"
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
 #include "filemanager.h"
 
 int main(int argc, char *argv[])

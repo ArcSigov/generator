@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent):
 
 
     connect(ui->options,    &QAction::triggered,             optionWindow,&OptionWindow::show);
-    connect(this,           &MainWindow::rawRemoved,         optionWindow,&OptionWindow::updateSettings);
+    connect(this,           &MainWindow::rawRemoved,         optionWindow,&OptionWindow::initializeSettings);
     connect(static_cast<TableModel*>(ui->tableView->model()),&TableModel::tableUpdated,      Storage::load(),&Storage::sort);
     connect(Storage::load(),&Storage::sectionError,          this,&MainWindow::buttonsMode);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
 }
@@ -57,11 +57,13 @@ void MainWindow::on_rem_triggered()
             emit rawRemoved();
         }
     }
+    Storage::load()->calcRom();
 }
 
 void MainWindow::on_dob_triggered()
 {
     ui->tableView->model()->insertRows(ui->tableView->model()->rowCount(),1);
+    Storage::load()->calcRom();
 }
 
 void MainWindow::on_Open_triggered()
@@ -97,31 +99,35 @@ void MainWindow::message(const MessageCategory& category,const QString& text)
     switch (category)
     {
         case MessageCategory::error:
-        break;
-        case MessageCategory::info:
-            ui->statusBar->setStyleSheet("color : green");
-            ui->textBrowser->setTextColor(Qt::green);
-        break;
-        case MessageCategory::notify:
-        {
-            box->setText(text);
-            box->exec();
-        }
-        break;
-        case MessageCategory::warning:
         {
             ui->textBrowser->setTextColor(Qt::red);
             break;
         }
+        case MessageCategory::info:
+        {
+            ui->statusBar->setStyleSheet("color : green");
+            ui->textBrowser->setTextColor(Qt::green);
+            break;
+        }
+        case MessageCategory::notify:
+        {
+            box->setText(text);
+            box->exec();
+            break;
+        }
+        case MessageCategory::warning:
+        {
+            ui->textBrowser->setTextColor(Qt::yellow);
+            break;
+        }
         case MessageCategory::update:
         {
-            optionWindow->updateSettings();
+            optionWindow->initializeSettings();
             static_cast<TableModel*>(ui->tableView->model())->resetModel();
+            break;
         }
-        break;
         default: break;
     }
-
     if (!text.isEmpty()) ui->textBrowser->insertPlainText(text+"\r\n");
 }
 

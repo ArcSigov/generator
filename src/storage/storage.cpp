@@ -19,16 +19,16 @@ Options& Storage::options()
 void Storage::sort()
 {
     std::sort(store.begin(),store.end(),[](const auto& e1, const auto&e2)
-              {
-                  if (e1.at(MODULE_NUM) == e2.at(MODULE_NUM))
-                  {
-                      if (e1.genericType() == e2.genericType())
-                          return e1.at(PART_N) < e2.at(PART_N);
-                      else
-                          return e1.genericType() > e2.genericType();
-                  }
-                  else return e1.at(MODULE_NUM) < e2.at(MODULE_NUM);
-              });
+    {
+        if (e1.at(MODULE_NUM) == e2.at(MODULE_NUM))
+        {
+            if (e1.genericType() == e2.genericType())
+                return e1.at(PART_N) < e2.at(PART_N);
+            else
+                return e1.genericType() > e2.genericType();
+        }
+        else return e1.at(MODULE_NUM) < e2.at(MODULE_NUM);
+    });
 }
 
 Configuration& Storage::cfg()

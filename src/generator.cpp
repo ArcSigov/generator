@@ -57,10 +57,8 @@ void Generator::readTblFile(const QString &path)
         auto tbl = dynamic_cast<TblDataProcessor*>(it.first);
         if (tbl)
         {
-            Storage::load()->data().clear();
             tbl->setMode(path,TblMode::read);
             tbl->process();
-            Storage::load()->sort();
             emit sendMessage(MessageCategory::update);
             break;
         }

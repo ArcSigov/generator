@@ -15,7 +15,7 @@ class OptionWindow : public QWidget
 public:
     explicit OptionWindow(QWidget *parent = nullptr);
     ~OptionWindow();
-    void updateSettings();
+    void initializeSettings();
 private slots:
     void editSettings();
     void editStorage(QString value);

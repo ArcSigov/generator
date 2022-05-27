@@ -26,6 +26,15 @@ struct SoftLoad
     unsigned long part_size[4]{0xffffffff,0xffffffff,0xffffffff,0xffffffff};
 };
 
+struct block_t
+{
+    QString blockName;
+    QString comlineRom;
+    std::map<std::vector<size_t>,kernel_t> kernels;
+    std::map<size_t, SoftLoad> cfg;
+    QStringList romAddresses;
+};
+
 class Configuration
 {
 public:
@@ -36,8 +45,10 @@ public:
     QString     ComlineRom();
     size_t      BaseRomAddr();
     QString     BlockName();
+    QString     cfgRomAddr();
+    QStringList blockList();
     void        loadRomAddresses(QStringList &);
-    void        setCurrentBlock(const BlockType& = BlockType::bis);
+    void        setCurrentBlock(const QString& name= " ");
 private:
     QJsonDocument qjsondocument;
     QJsonArray    qjsonarray;

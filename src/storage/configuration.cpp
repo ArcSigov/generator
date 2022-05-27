@@ -23,39 +23,30 @@ void Configuration::loadCfg(std::map<size_t,SoftLoad>& hash)
     }
 }
 
+QStringList Configuration::blockList()
+{
+    QStringList out;
+    for (const auto& block : qAsConst(qjsonarray))
+    {
+        out.push_back(block.toObject()["block"].toString());
+    }
+    return out;
+}
+
 size_t Configuration::BaseRomAddr()
 {
     return currentBlock["base_rom_addr"].toString().toUInt(nullptr,16);
 }
 
 
-void Configuration::setCurrentBlock(const BlockType& type)
+void Configuration::setCurrentBlock(const QString& name)
 {
     for (const auto& block : qAsConst(qjsonarray))
     {
-        switch (type)
+        if (block.toObject()["block"] == name)
         {
-            case BlockType::bis:
-            if (block.toObject()["block"] == "bis")
-            {
-                currentBlock = block.toObject();
-                return;
-            }
-            case BlockType::bcvm:
-            if (block.toObject()["block"] == "bcvm")
-            {
-                currentBlock = block.toObject();
-                return;
-            }
-            case BlockType::bgs:
-            if (block.toObject()["block"] == "bgs")
-            {
-                currentBlock = block.toObject();
-                return;
-            }
-            case BlockType::undef:
-            default:
-                break;
+            currentBlock = block.toObject();
+            return;
         }
     }
 }
@@ -123,4 +114,15 @@ void  Configuration::loadRomAddresses(QStringList& addr)
 {
     for (const auto& num : currentBlock["rom_str"].toArray())
         addr.push_back(num.toString());
+}
+
+
+QString Configuration::ComlineRom()
+{
+    return currentBlock["comline_rom"].toString();
+}
+
+QString Configuration::cfgRomAddr()
+{
+    return currentBlock["cfg_rom_addr"].toString();
 }
