@@ -2,9 +2,13 @@
 
 enum class MessageCategory
 {
+    def,
+    run,
     info,
     notify,
     warning,
     error,
-    update
+    update,
+    stop,
+    dataReady
 };

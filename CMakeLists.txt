@@ -62,6 +62,8 @@ add_executable(generator    src/main.cpp
                             src/manager/filemanager.cpp
                             src/manager/batchmanager.h
                             src/manager/batchmanager.cpp
+                            src/manager/sremanager.h
+                            src/manager/sremanager.cpp
                             src/dataprocessor/dataprocessor.h
                             src/dataprocessor/tbl/tblprocessor.cpp
                             src/dataprocessor/tbl/tblprocessor.h

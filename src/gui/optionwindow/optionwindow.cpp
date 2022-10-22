@@ -14,7 +14,7 @@ OptionWindow::OptionWindow(QWidget *parent) :
     connect(ui->ok,          &QPushButton::clicked,       this, &OptionWindow::editSettings);
     connect(ui->sectorSize,  &QSpinBox::textChanged,      this, &OptionWindow::editStorage);
     connect(ui->ok,          &QPushButton::clicked,       this, &OptionWindow::close);
-    connect(Storage::load(), &Storage::sectionError,      this, &OptionWindow::editSpinBox);
+    connect(Storage::load(), &Storage::sendMessage,       this, &OptionWindow::message);
 
     ui->loadPath->setText(Storage::load()->options().loadpath);
     ui->kernelPath->setText(Storage::load()->options().kernelpath);
@@ -99,7 +99,7 @@ void OptionWindow::editStorage(QString value)
     Storage::load()->calcRom();
 }
 
-void OptionWindow::editSpinBox(const QString& what)
+void OptionWindow::message(const MessageCategory& cat,const QString& what)
 {
     if (!what.isEmpty())
     {

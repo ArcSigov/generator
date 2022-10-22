@@ -29,6 +29,7 @@ void Storage::sort()
         }
         else return e1.at(MODULE_NUM) < e2.at(MODULE_NUM);
     });
+    emit sendMessage(MessageCategory::update);
 }
 
 Configuration& Storage::cfg()
@@ -50,11 +51,11 @@ void Storage::calcRom()
         }
         else
         {
-            emit sectionError("Файл " + it->genericName() + " больше максимально заданного размера");
+            emit sendMessage(MessageCategory::error,"Файл " + it->genericName() + " больше максимально заданного размера");
             return;
         }
     }
-    emit sectionError("");
+    emit sendMessage(MessageCategory::update);
 }
 
 

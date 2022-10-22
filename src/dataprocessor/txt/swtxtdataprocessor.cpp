@@ -65,8 +65,6 @@ void RamSwTxtDataProcessor::process()
                                 " 0"       +                                       // mot or elf
                                 " 00000000 " +
                                 Storage::load()->options().kernelpath + "/" + kernel.name + "\r\n");             //abs path
-
-
         }
 
         formatted.push_back(QString::number(cur_ga) +   //module

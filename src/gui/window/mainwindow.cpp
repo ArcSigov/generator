@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QLabel>
 #include <QStyle>
+#include <QPalette>
 
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
@@ -32,12 +33,10 @@ MainWindow::MainWindow(QWidget *parent):
 
     ui->statusBar->addWidget(status);
     ui->statusBar->setVisible(true);
-
+    message(MessageCategory::def);
 
     connect(ui->options,    &QAction::triggered,             optionWindow,&OptionWindow::show);
-    connect(this,           &MainWindow::rawRemoved,         optionWindow,&OptionWindow::initializeSettings);
-    connect(static_cast<TableModel*>(ui->tableView->model()),&TableModel::tableUpdated,      Storage::load(),&Storage::sort);
-    connect(Storage::load(),&Storage::sectionError,          this,&MainWindow::buttonsMode);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
+    connect(Storage::load(),&Storage::sendMessage,           this,&MainWindow::message);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
 }
 
 MainWindow::~MainWindow()
@@ -52,18 +51,14 @@ void MainWindow::on_rem_triggered()
     for (auto it = list.begin(); it != list.end() ; it++)
     {
         if (it->column() == 0)
-        {
             ui->tableView->model()->removeRows(it->row(),1,*it);
-            emit rawRemoved();
-        }
     }
-    Storage::load()->calcRom();
 }
 
 void MainWindow::on_dob_triggered()
 {
     ui->tableView->model()->insertRows(ui->tableView->model()->rowCount(),1);
-    Storage::load()->calcRom();
+    message(MessageCategory::dataReady);
 }
 
 void MainWindow::on_Open_triggered()
@@ -76,61 +71,89 @@ void MainWindow::on_Save_triggered()
     emit saveFilePath(QFileDialog::getSaveFileName(this, tr("Сохранить файл"), "", tr("table(*.tbl)")));
 }
 
-void MainWindow::buttonsMode(const QString& checkList)
-{
-    if (!checkList.isEmpty())
-    {
-        ui->generate->setEnabled(false);
-        status->setText(checkList + tr(", перейдите в настройки и задайте корректный размер сектора ПЗУ"));
-        ui->statusBar->setStyleSheet("color : red");
-    }
-    else
-    {
-        ui->generate->setEnabled(true);
-        status->setText("Готов");
-        ui->statusBar->setStyleSheet("color : green");
-    }
-}
 
 void MainWindow::message(const MessageCategory& category,const QString& text)
 {
-    status->setText(text);
-
+    static QPalette p;
+    ui->progressBar->setPalette(p);
     switch (category)
     {
-        case MessageCategory::error:
-        {
-            ui->textBrowser->setTextColor(Qt::red);
-            break;
-        }
-        case MessageCategory::info:
-        {
-            ui->statusBar->setStyleSheet("color : green");
-            ui->textBrowser->setTextColor(Qt::green);
-            break;
-        }
-        case MessageCategory::notify:
-        {
-            box->setText(text);
-            box->exec();
-            break;
-        }
-        case MessageCategory::warning:
-        {
-            ui->textBrowser->setTextColor(Qt::yellow);
-            break;
-        }
-        case MessageCategory::update:
-        {
-            optionWindow->initializeSettings();
-            static_cast<TableModel*>(ui->tableView->model())->resetModel();
-            break;
-        }
-        default: break;
+    //!< первоначальная настройка
+    case MessageCategory::def:
+    {
+        ui->rem->setEnabled(false);
+        ui->generate->setEnabled(false);
+        ui->textBrowser->setVisible(false);
+        ui->Save->setEnabled(false);
+        ui->Save_as->setEnabled(false);
+        ui->progressBar->setVisible(false);
+        ui->tableView->setVisible(false);
+        ui->textBrowser->setTextColor(Qt::black);
+        break;
+    }
+    //!< при запуске генерации
+    case MessageCategory::run:
+    {
+        ui->rem->setEnabled(false);
+        ui->generate->setEnabled(false);
+        ui->textBrowser->setVisible(true);
+        ui->Save->setEnabled(false);
+        ui->Save_as->setEnabled(false);
+        ui->progressBar->setVisible(true);
+        ui->progressBar->setMinimum(0);
+        ui->progressBar->setMaximum(Storage::load()->data().size());
+        ui->progressBar->setValue(0);
+        p.setColor(QPalette::Highlight,Qt::green);
+        break;
+    }
+    //!< при завершении генерации
+    case MessageCategory::stop:
+    {
+        ui->generate->setEnabled(true);
+        ui->Save->setEnabled(true);
+        ui->Save_as->setEnabled(true);
+        ui->textBrowser->setVisible(false);
+        ui->textBrowser->clear();
+        ui->progressBar->setVisible(false);
+        break;
+    }
+    //!< при готовности данных
+    case MessageCategory::dataReady:
+    {
+        ui->rem->setEnabled(true);
+        ui->generate->setEnabled(true);
+        ui->Save->setEnabled(true);
+        ui->Save_as->setEnabled(true);
+        ui->tableView->setVisible(true);
+        optionWindow->initializeSettings();
+        static_cast<TableModel*>(ui->tableView->model())->resetModel();
+        break;
+    }
+    //!< обновление табличного состояния и строки прогресса
+    case MessageCategory::update:
+    {
+        ui->progressBar->setValue(ui->progressBar->value()+1);
+        static_cast<TableModel*>(ui->tableView->model())->resetModel();
+        break;
+    }
+    //!< при генерации ошибок
+    case MessageCategory::error:
+    {
+        ui->textBrowser->setVisible(true);
+        p.setColor(QPalette::Highlight,Qt::red);
+        ui->textBrowser->setTextColor(Qt::red);
+        break;
+    }
+    //!< предупреждения
+    case MessageCategory::warning:
+    {
+        ui->textBrowser->setTextColor(Qt::yellow);
+        break;
+    }
+    default : break;
     }
     if (!text.isEmpty()) ui->textBrowser->insertPlainText(text+"\r\n");
 }
-
 
 void MainWindow::on_generate_triggered()
 {

@@ -33,7 +33,7 @@ Generator::Generator(QObject *parent) : QObject(parent)
 */
 void Generator::run()
 {
-    emit sendMessage(MessageCategory::info, "Запуск генерации");
+    emit sendMessage(MessageCategory::run);
     for (const auto& it :  processors)
     {
         if(!dynamic_cast<TblDataProcessor*>(it.first))
@@ -42,7 +42,7 @@ void Generator::run()
                 it.first->process();
         }
     }
-    emit sendMessage(MessageCategory::info, "Генерация завершена");
+    emit sendMessage(MessageCategory::stop);
 }
 
 /*!
@@ -59,7 +59,6 @@ void Generator::readTblFile(const QString &path)
         {
             tbl->setMode(path,TblMode::read);
             tbl->process();
-            emit sendMessage(MessageCategory::update);
             break;
         }
     }
@@ -79,7 +78,6 @@ void Generator::saveTblFile(const QString &path)
         {
             tbl->setMode(path,TblMode::write);
             tbl->process();
-            emit sendMessage(MessageCategory::notify,"Файл: "+ path +" сохранён");
             break;
         }
     }

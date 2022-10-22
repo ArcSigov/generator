@@ -2,6 +2,7 @@
 
 #include "datastorage.h"
 #include "configuration.h"
+#include "messages.h"
 
 class Storage : public QObject
 {
@@ -12,7 +13,7 @@ public:
     Options&                  options();
     Configuration&            cfg();
 signals:
-    void sectionError(const QString& what);
+    void sendMessage(const MessageCategory&,const QString& = {});
 public slots:
     void sort();
     void calcRom();

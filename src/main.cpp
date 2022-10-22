@@ -7,6 +7,7 @@
 #include "messages.h"
 #include "filemanager.h"
 
+
 int main(int argc, char *argv[])
 {
 
@@ -15,6 +16,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     QThread*    t = new QThread();
     g.moveToThread(t);
+
 
     qRegisterMetaType<MessageCategory>("MessageCategory");
     QObject::connect(&g, &Generator::sendMessage,      &w,  &MainWindow::message);

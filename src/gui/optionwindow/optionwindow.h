@@ -19,7 +19,7 @@ public:
 private slots:
     void editSettings();
     void editStorage(QString value);
-    void editSpinBox(const QString& what);
+    void message(const MessageCategory& cat, const QString& what);
     void on_kernelbtn_clicked();
     void on_loadbtn_clicked();
 private:

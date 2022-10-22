@@ -12,6 +12,8 @@ namespace Ui {
 class MainWindow;
 }
 
+
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -31,7 +33,6 @@ private slots:
     void on_generate_triggered();
 public slots:
     void message(const MessageCategory& category = MessageCategory::notify, const QString& text = " ");
-    void buttonsMode(const QString&);
 private:
     Ui::MainWindow *ui;
     OptionWindow *optionWindow;

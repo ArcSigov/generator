@@ -24,8 +24,6 @@ public:
     virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
     virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
     void resetModel();
-signals:
-    void tableUpdated();
 };
 
 #endif

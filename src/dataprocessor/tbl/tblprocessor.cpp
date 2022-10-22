@@ -23,7 +23,8 @@ void TblDataProcessor::writeTbl()
             str += it->at(i).toString() + ";";
         data.push_back(str);
     }
-    manager->write(data);
+    if (manager->write(data))
+         emit sendMessage(MessageCategory::notify,"Файл сохранён");
 }
 
 /*!
@@ -79,7 +80,12 @@ void TblDataProcessor::readTbl()
             storage->data().push_back(d);
         }
     }
-    storage->sort();
-    storage->calcRom();
+
+    if (storage->data().size())
+    {
+        storage->sort();
+        storage->calcRom();
+        emit sendMessage(MessageCategory::dataReady);
+    }
 }
 

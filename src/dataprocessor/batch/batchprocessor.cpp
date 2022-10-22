@@ -21,7 +21,7 @@ void BatchIdInfoProcessor::process()
         formatted.push_back(date.isEmpty() ? " " : " -d " + date);
         formatted.push_back(crc > 0  ? " -cs " + QString::number(it.at(CRC).toUInt(),16): " ");
         formatted.push_back(" > " + QDir::currentPath() + "/" + it.genericName().replace('.','_') + "_log.ini");
-        emit sendMessage(MessageCategory::info,"Генерирую " + it.genericName());
+        emit sendMessage(MessageCategory::update,"Генерирую " + it.genericName());
         if (manager) manager->write(QStringList(formatted));
     }
 }

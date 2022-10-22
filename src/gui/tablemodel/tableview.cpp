@@ -60,6 +60,7 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
         else
             s.set(value,index.column());
         emit dataChanged(index,index);
+        Storage::load()->sort();
         resetModel();
         return true;
     }
@@ -81,7 +82,11 @@ bool TableModel::insertRows(int row, int count, const QModelIndex &parent)
 {
     beginInsertRows(parent,row,row+count-1);
     if ( Storage::load()->data().size() <= static_cast<size_t>(row))
+    {
          Storage::load()->data().push_back(DataStorage());
+         Storage::load()->calcRom();
+         Storage::load()->sort();
+    }
     endInsertRows();
     resetModel();
     return true;
@@ -94,6 +99,8 @@ bool TableModel::removeRows(int row, int count, const QModelIndex &parent)
 
     beginRemoveRows(parent,row,row+count-1);
     Storage::load()->data().erase( Storage::load()->data().begin()+row);
+    Storage::load()->calcRom();
+    Storage::load()->sort();
     endRemoveRows();
     resetModel();
     return true;
@@ -114,7 +121,6 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
 
 void TableModel::resetModel()
 {
-    emit tableUpdated();
     beginResetModel();
     endResetModel();
 }
