@@ -4,12 +4,9 @@
 Configuration::Configuration(const QString& path)
 {
     FileManager f;
-    QByteArray ba;
-    for (const auto& it : f.read(path))
-        ba.append(it);
-
+    auto cfg = f.read(path);
     QJsonParseError err;
-    qjsondocument  = QJsonDocument::fromJson(ba,&err);
+    qjsondocument  = QJsonDocument::fromJson(cfg,&err);
     if (qjsondocument.isArray())
         qjsonarray = qjsondocument.array();
 }

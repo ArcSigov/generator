@@ -12,9 +12,15 @@ public:
     explicit FileManager();
     ~FileManager() = default;
 public:
-    virtual QStringList read(const QString& path = QString()) override;
-    virtual bool write(const QStringList &data) override;
-    virtual void setFilePath(const QString& path) override;
+    QStringList     read(bool* ok = nullptr,const QString& path = QString()) override;
+    QByteArrayList  read(const size_t& block_size,const QString& path = QString()) override;
+    QByteArray      read(const QString& path = QString()) override;
+    bool write(const QStringList &data) override;
+    bool write(const QString &data) override
+    {
+
+    }
+    void setFilePath(const QString& path) override;
 private:
     std::unique_ptr<QFile> f;
 };

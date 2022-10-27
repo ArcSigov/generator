@@ -1,23 +1,25 @@
 #include "generator.h"
 #include <QDebug>
 #include "tblprocessor.h"
-#include "batchiniprocessor.h"
-#include "batchcfgprocessor.h"
+//#include "batchiniprocessor.h"
+//#include "batchcfgprocessor.h"
 #include "txtdataprocessor.h"
 #include "filemanager.h"
 #include "batchmanager.h"
+#include "sreprocessor.h"
+#include "cfgprocessor.h"
 
 Generator::Generator(QObject *parent) : QObject(parent)
 {
     managers.push_back(new FileManager());
-    managers.push_back(new BatchManager());
+    //managers.push_back(new BatchManager());
 
     processors[new TblDataProcessor(this)] = nullptr ;
-    processors[new BatchIniProcessor(managers[0],managers[1],this)] = nullptr ;
-    processors[new BatchCfgMotProcessor(managers[0],managers[1],this)] = nullptr ;
+    processors[new CfgDataProcessor(this)] = nullptr ;
     processors[new FlashSwTxtDataProcessor(this)] = &Storage::load()->options().romSW_enabled;
     processors[new FlashRsTxtDataProcessor(this)] = &Storage::load()->options().romRS232_enabled;
     processors[new RamSwTxtDataProcessor(this)]   = &Storage::load()->options().ramSW_enabled;
+    processors[new SreProcessor(this,RecType::S3)]   = nullptr;
 
     for (const auto& it : processors)
     {

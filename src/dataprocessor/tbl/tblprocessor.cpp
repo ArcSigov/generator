@@ -49,7 +49,7 @@ void TblDataProcessor::setMode(const QString& path,const TblMode &_mode)
 
 void TblDataProcessor::readTbl()
 {
-    auto tbldata = manager->read();
+    auto tbldata = manager->read(nullptr);
     auto storage = Storage::load();
     storage->data().clear();
     for (const auto& it:tbldata)
@@ -72,7 +72,6 @@ void TblDataProcessor::readTbl()
         }
         else if (it.contains("TABLE_ROW:"))
         {
-
             auto list = it.section(":",1).split(";");
             DataStorage d;
             for (auto i = 0 ; i < list.size(); i++)

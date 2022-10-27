@@ -1,10 +1,5 @@
 #include "batchmanager.h"
 
-QStringList BatchManager::read(const QString &path)
-{
-    Q_UNUSED(path)
-    return {};
-}
 
 bool BatchManager::write(const QStringList &data)
 {

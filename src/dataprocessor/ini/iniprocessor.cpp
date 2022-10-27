@@ -27,11 +27,11 @@ void IniDataProcessor::read()
 
         if (manager)
         {
-            auto res = manager->read(it->genericName().replace('.','_')+"_log.ini");
+            auto res = manager->read(nullptr,it->genericName().replace('.','_')+"_log.ini");
             if (res.size()>8)
             {
-              it->set(res.at(8).section(':',1).toUInt(nullptr,16),CRC);
-              emit sendMessage(MessageCategory::warning,"Процесс генерации " + it->genericName() + " завершён без ошибок");
+                it->set(res.at(8).section(':',1).toUInt(nullptr,16),CRC);
+                emit sendMessage(MessageCategory::warning,"Процесс генерации " + it->genericName() + " завершён без ошибок");
             }
         }
     }

@@ -1,5 +1,5 @@
 #include "filemanager.h"
-
+#include <QDataStream>
 
 FileManager::FileManager() : f(std::make_unique<QFile>())
 {
@@ -7,22 +7,47 @@ FileManager::FileManager() : f(std::make_unique<QFile>())
 }
 
 
-QStringList FileManager::read(const QString &path)
+QStringList FileManager::read(bool* ok,const QString& path)
 {
+    Q_UNUSED(ok)
+    setFilePath(path);
+    QStringList out;
+    if (f->open(QIODevice::ReadOnly))
+    {
+        QTextStream s(f.get());
+        while (!s.atEnd())
+            out.push_back(s.readLine());
+        f->close();
+    }
+    return out;
+}
+
+QByteArrayList  FileManager::read(const size_t& block_size,const QString& path)
+{
+    QByteArrayList out;
     setFilePath(path);
     if (f->open(QIODevice::ReadOnly))
     {
-        QStringList l;
-        QTextStream s(f.get());
-        while (!s.atEnd())
-        {
-            l.push_back(s.readLine());
-        }
+        while (!f->atEnd())
+            out.push_back(f->read(block_size));
         f->close();
-        return l;
     }
-    return {};
+    return out;
 }
+
+
+QByteArray FileManager::read(const QString& path)
+{
+    QByteArray out;
+    setFilePath(path);
+    if (f->open(QIODevice::ReadOnly))
+    {
+        out = f->readAll();
+        f->close();
+    }
+    return out;
+}
+
 
 bool FileManager::write(const QStringList &data)
 {

@@ -35,7 +35,7 @@ const SoftLoad conf_info[]  =\r\n\
 {\r\n\t\
 /*module           --------  kernel ---------------    ---------- config --------------    ------------ app 1 -------------    ------------ app 2 -------------    ------------ app 3 ------------- */\r\n";
 public:
-    CfgDataProcessor()  = default;
+    CfgDataProcessor(QObject* parent = nullptr) : DataProcessor(parent) {};
     ~CfgDataProcessor() = default;
     virtual void process() override;
 };
