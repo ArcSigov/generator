@@ -6,16 +6,25 @@ TableModel::TableModel(QObject* parent) :
 
 }
 
+/*!
+    Возвращает текущее количество строк таблицы
+*/
 int TableModel::rowCount([[maybe_unused]] const QModelIndex &parent) const
 {
     return Storage::load()->data().size();
 }
 
+/*!
+    Возвращает текущее количество столбцов таблицы
+*/
 int TableModel::columnCount([[maybe_unused]] const QModelIndex &parent) const
 {
     return COLUMN_COUNT;
 }
 
+/*!
+    Возвращает текущее количество столбцов таблицы
+*/
 QVariant TableModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
@@ -42,7 +51,7 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
 //                return int(Qt::AlignLeft | Qt::AlignBottom);
 //            return Qt::AlignCenter;
         default:
-            return QVariant();
+            return {};
 
     }
 }
@@ -81,12 +90,12 @@ Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
 bool TableModel::insertRows(int row, int count, const QModelIndex &parent)
 {
     beginInsertRows(parent,row,row+count-1);
-    if ( Storage::load()->data().size() <= static_cast<size_t>(row))
-    {
-         Storage::load()->data().push_back(DataStorage());
-         Storage::load()->calcRom();
-         Storage::load()->sort();
-    }
+        if ( Storage::load()->data().size() <= static_cast<size_t>(row))
+        {
+             Storage::load()->data().push_back(DataStorage());
+             Storage::load()->calcRom();
+             Storage::load()->sort();
+        }
     endInsertRows();
     resetModel();
     return true;
@@ -98,9 +107,9 @@ bool TableModel::removeRows(int row, int count, const QModelIndex &parent)
         return false;
 
     beginRemoveRows(parent,row,row+count-1);
-    Storage::load()->data().erase( Storage::load()->data().begin()+row);
-    Storage::load()->calcRom();
-    Storage::load()->sort();
+        Storage::load()->data().erase( Storage::load()->data().begin()+row);
+        Storage::load()->calcRom();
+        Storage::load()->sort();
     endRemoveRows();
     resetModel();
     return true;
@@ -116,7 +125,7 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
         else
             return section;
     }
-    return QVariant();
+    return {};
 }
 
 void TableModel::resetModel()

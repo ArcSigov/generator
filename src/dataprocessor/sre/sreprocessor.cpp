@@ -23,12 +23,13 @@ SreProcessor::SreProcessor(QObject *parent, const RecType& _record_type) : DataP
 */
 void SreProcessor::process()
 {
-    for (const auto& it : Storage::load()->data())
+    for (auto& it : Storage::load()->data())
     {
         if (it.at(IS_CHECKED).toBool())
         {
             QStringList srec;
             QByteArrayList memory;
+
             if (!it.genericType())
             {
                 memory = manager->read(rec_size,it.at(FILE_PATH).toString());
@@ -43,28 +44,44 @@ void SreProcessor::process()
                 memory = read_sre(srec);
             }
 
-            auto crc = 0u;
-            auto id_mem = make_id(it);
+            auto crc         = 0u;
+            auto table_crc   = it.at(CRC).toUInt();
+            auto id_mem      = make_id(it);
+            auto offset_size = 0u;
             calc_checksumm(crc,id_mem+memory);
-            memcpy(id_mem.last().begin()+12,&crc,4);
-            write_sre(it.fileSize()-sizeof(ID_PO_TYPE), id_mem,srec);
 
+            //если табличная КС введена и она не равна рассчитанной
+            if (table_crc > 0 && table_crc != crc)
+            {
+                offset_size = 4u;
+                remake_id(id_mem,(table_crc - crc) - (crc > table_crc ? 1 : 0),table_crc);
+            }
+            // иначе просто записать контрольную сумму в идентификационные признаки
+            else
+            {
+                 it.set(crc,CRC);
+                 memcpy(id_mem.last().begin()+12,&crc,4);
+            }
+
+
+            write_sre(it.fileSize()-sizeof(ID_PO_TYPE) - offset_size, id_mem,srec);
             srec.push_back(terminate_str);
             if (it.genericType()) srec.push_back("\r\n");
 
             manager->setFilePath(Storage::load()->options().loadpath + "/"+it.genericName());
             manager->write(srec);
+
+            emit sendMessage(MessageCategory::update,"Генерация файла " + it.genericName() + " завершена");
         }
     }
 }
 
 /*!
-Выполняет запись бинарных данных elf.файла в файл в формате S-Record
+Выполняет запись бинарных данных файла в файл в формате S-Record
 \param[in] data данные и идентификационные признаки файла
 */
 void SreProcessor::write_sre(size_t base_addr,const QByteArrayList &data, QStringList& out)
 {
-    //!< выполняем чтение файла в виде массива байтs
     unsigned char checksumm = 0;
     unsigned char* p_base_addr = (unsigned char*)&base_addr;
 
@@ -83,26 +100,16 @@ void SreProcessor::write_sre(size_t base_addr,const QByteArrayList &data, QStrin
         }
         str+=QString::number(0xff-checksumm,16).toUpper().rightJustified(2,'0') + "\r\n";
 
-        //!< осуществляем проход памяти массива байтов
         base_addr += mem.size();
         checksumm = 0;
-        out.push_back(str);
+        out << str;
     }
-}
-
-
-/*!
-Выполняет модификацию S-record файла с внесением в него идентификационных признаков
-\param[in] data данные и идентификационные признаки файла
-*/
-void SreProcessor::create_cfg()
-{
-
 }
 
 /*!
 Выполняет запись идентификационных признаков в бинарное представление
 \param[in] data идентификационные признаки файла
+\param[out] массив идентификационных признаков
 */
 QByteArrayList SreProcessor::make_id(const DataStorage& data)
 {
@@ -122,7 +129,6 @@ QByteArrayList SreProcessor::make_id(const DataStorage& data)
     memcpy(id.date,date.data(),date.size());
     memcpy(id.name,name.data(),name.size());
 
-
     out.push_back(QByteArray((char*)&id,32));
     out.push_back(QByteArray((char*)&id+32,32));
     out.push_back(QByteArray((char*)&id+64,16));
@@ -131,7 +137,11 @@ QByteArrayList SreProcessor::make_id(const DataStorage& data)
 }
 
 
-
+/*!
+Выполняет чтение s record формата в бинарное представление
+\param[in] srec загрузочный файл
+\param[out] бинарные данные файла
+*/
 QByteArrayList SreProcessor::read_sre(const QStringList& srec)
 {
     QByteArrayList out;
@@ -153,18 +163,15 @@ QByteArrayList SreProcessor::read_sre(const QStringList& srec)
     return out;
 }
 
-struct bitfield_t
-{
-    unsigned int hi;
-    unsigned int lo;
-};
-
+/*!
+Выполняет расчёт контрольной суммы бинарных данных
+\param[in] crc данные для хранения контрольной суммы
+\param[in] memory бинарные данные файла
+*/
 void SreProcessor::calc_checksumm(unsigned int& crc, QByteArrayList memory)
 {
     bitfield_t b;
     bitfield_t t;
-    memset(&b,0,8);
-    memset(&t,0,8);
     memcpy(&b,&crc,4);
     for (auto& mem : memory)
     {
@@ -173,21 +180,32 @@ void SreProcessor::calc_checksumm(unsigned int& crc, QByteArrayList memory)
             mem.insert(mem.size()-1,1,0);
         }
 
-
         for (auto pos = 0ull; pos < mem.size(); pos +=4)
         {
             size_t value = 0;
             memcpy(&value,mem.data()+pos,4);
-
             *(size_t*)&b += value;
-//            while (b.hi)
-//            {
-//                b.lo +=b.hi;
-//                b.hi = 0;
-//            }
         }
     }
-
     *(size_t*)&t = (size_t)b.lo + (size_t)b.hi;
-    crc = t.lo + t.hi;
+    crc = (t.lo+t.hi);
+}
+
+
+void SreProcessor::remake_id(QByteArrayList& id, const size_t& res, const size_t& crc)
+{
+    QByteArray memory;
+    if (id.size() == 3)
+    {
+        memory.push_back(id[0]);
+        memory.push_back(id[1]);
+        memory.push_back(id[2]);
+        memory.insert(0,(char*)&res,4);
+        memcpy(memory.begin()+80,&crc,4);
+
+        id.clear();
+        id.push_back(QByteArray(memory.data(),32));
+        id.push_back(QByteArray(memory.data()+32,32));
+        id.push_back(QByteArray(memory.data()+64,20));
+    }
 }

@@ -20,7 +20,7 @@ void FlashRsTxtDataProcessor::process()
         last++;
 
     formatted.push_front("0 f " + QString::number(Storage::load()->data().front().romAddr(),16) + "-" + QString::number(last,16)+"\r\n");
-    formatted.push_back(QString::number(i++) + " f " + Storage::load()->cfg().cfgRomAddr() +"\r\n");
+    formatted.push_back(QString::number(i++) + " f " + QString::number(Storage::load()->cfg().cfgRomAddr(),16) +"\r\n");
     formatted.push_back(QString::number(i) + " 0 00000000 " + Storage::load()->options().loadpath + "/cfg_" + Storage::load()->cfg().BlockName() + ".mot\r\n");
 
 

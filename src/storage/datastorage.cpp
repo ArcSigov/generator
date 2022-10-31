@@ -25,17 +25,17 @@ QVariant DataStorage::at(const int& column) const
 {
     switch (column)
     {
-    case IS_CHECKED:  return isChecked;
-    case MODULE_NUM:  return m_num;
-    case FILE_PATH:   return f_path;
-    case ID_DATE:     return date;
-    case VERSION:     return version;
-    case REVISION:    return revision;
-    case CRC:         return crc;
-    case DESCRIPTION: return description;
-    case RAM_ADDR:    return ram_addr;
-    case PART_N:      return n_part;
-    default :         return 0;
+        case IS_CHECKED:  return isChecked;
+        case MODULE_NUM:  return m_num;
+        case FILE_PATH:   return f_path;
+        case ID_DATE:     return date;
+        case VERSION:     return version;
+        case REVISION:    return revision;
+        case CRC:         return crc;
+        case DESCRIPTION: return description;
+        case RAM_ADDR:    return ram_addr;
+        case PART_N:      return n_part;
+        default :         return 0;
     }
 }
 
@@ -56,6 +56,25 @@ bool DataStorage::isValid(const int &column)
         default :           return 0;
     }
 }
+
+bool DataStorage::isValid(const int &column) const
+{
+    switch (column)
+    {
+    case IS_CHECKED:    return false;
+    case MODULE_NUM:    return m_num < 0x25 || m_num > 0x49;
+    case FILE_PATH:     return f_path.isEmpty();
+    case ID_DATE:       return date.isNull();
+    case VERSION:       return false;
+    case REVISION:      return false;
+    case CRC:           return crc != 0;
+    case DESCRIPTION:   return description.isEmpty();
+    case RAM_ADDR:      return ram_addr == 0;
+    case PART_N:        return n_part > 3;
+    default :           return 0;
+    }
+}
+
 
 void DataStorage::set(const QVariant& v, int column)
 {

@@ -34,8 +34,11 @@ typedef struct{\r\n\
 const SoftLoad conf_info[]  =\r\n\
 {\r\n\t\
 /*module           --------  kernel ---------------    ---------- config --------------    ------------ app 1 -------------    ------------ app 2 -------------    ------------ app 3 ------------- */\r\n";
+    QString last_str = "	{ 0xffff, 0xffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff}\r\n};";
 public:
-    CfgDataProcessor(QObject* parent = nullptr) : DataProcessor(parent) {};
+CfgDataProcessor(DataProcessor* sre,QObject* parent = nullptr) : sreprocessor(sre),DataProcessor(parent) {};
     ~CfgDataProcessor() = default;
     virtual void process() override;
+private:
+    DataProcessor* sreprocessor = nullptr;
 };

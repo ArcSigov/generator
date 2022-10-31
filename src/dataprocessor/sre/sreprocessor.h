@@ -7,7 +7,11 @@ enum class RecType
     S3
 };
 
-
+struct bitfield_t
+{
+    unsigned int hi{0};
+    unsigned int lo{0};
+};
 
 
 class SreProcessor : public DataProcessor
@@ -26,7 +30,6 @@ public:
     void process() override;
     void           write_sre(size_t base_addr, const QByteArrayList &data, QStringList &out);
     QByteArrayList read_sre(const QStringList &srec);
-    void create_cfg();
 private:
     size_t rec_size{0};
     RecType type{RecType::S3};
@@ -34,4 +37,5 @@ private:
     QString terminate_str{"S70500000000FA"};
     QByteArrayList make_id(const DataStorage& data);
     void calc_checksumm(unsigned int &crc, QByteArrayList memory);
+    void remake_id(QByteArrayList& id, const size_t& res, const size_t& crc);
 };

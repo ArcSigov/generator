@@ -66,6 +66,8 @@ void OptionWindow::editSettings()
     }
 }
 
+
+
 void OptionWindow::initializeSettings()
 {
     ui->loadPath->setText(Storage::load()->options().loadpath);

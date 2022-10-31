@@ -30,6 +30,7 @@ public:
     QVariant at(const int &column);
     QVariant at(const int &column) const;
     void     set(const QVariant &v, int column);
+    bool     isValid(const int& column) const;
     bool     isValid(const int& column);
     static QString  name(const int &column);
     QString genericName();
