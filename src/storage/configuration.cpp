@@ -119,7 +119,7 @@ QString Configuration::ComlineRom()
     return currentBlock["comline_rom"].toString();
 }
 
-QString Configuration::cfgRomAddr()
+size_t Configuration::cfgRomAddr()
 {
-    return currentBlock["cfg_rom_addr"].toString();
+    return currentBlock["cfg_rom_addr"].toString().toUInt(nullptr,16);
 }

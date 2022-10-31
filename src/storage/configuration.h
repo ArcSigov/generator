@@ -45,7 +45,7 @@ public:
     QString     ComlineRom();
     size_t      BaseRomAddr();
     QString     BlockName();
-    QString     cfgRomAddr();
+    size_t cfgRomAddr();
     QStringList blockList();
     void        loadRomAddresses(QStringList &);
     void        setCurrentBlock(const QString& name= " ");
