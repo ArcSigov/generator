@@ -2,6 +2,7 @@
 
 #include "datastorage.h"
 #include "configuration.h"
+#include "tablerowprop.h"
 #include "messages.h"
 
 class Storage : public QObject
