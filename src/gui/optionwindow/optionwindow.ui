@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>388</width>
-    <height>443</height>
+    <width>830</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,180 +25,145 @@
   <property name="windowTitle">
    <string>Настройки</string>
   </property>
-  <widget class="QGroupBox" name="blocksBox">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>10</y>
-     <width>351</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Блок</string>
-   </property>
-   <property name="flat">
-    <bool>false</bool>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="ok">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>400</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>ОК</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>330</y>
-     <width>351</width>
-     <height>54</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLineEdit" name="loadPath"/>
-    </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="loadbtn">
-      <property name="text">
-       <string>Путь загрузки</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLineEdit" name="kernelPath"/>
-    </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="kernelbtn">
-      <property name="text">
-       <string>Путь к ядрам</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_2">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>80</y>
-     <width>349</width>
-     <height>171</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Настройка генерации скриптов</string>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QGroupBox" name="groupBox_3">
-      <property name="title">
-       <string>ПЗУ скрипты</string>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="0">
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="blocksBox">
+       <property name="title">
+        <string>Блок</string>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="title">
+        <string>Настройка генерации скриптов</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="title">
+           <string>ПЗУ скрипты</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QCheckBox" name="romRS232Script">
+             <property name="text">
+              <string>Генерировать скрипт для загрузки по RS232</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="romSWScript">
+             <property name="text">
+              <string>Генерировать скрипт для загрузки по SpaceWire</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="romKernelsFpoScript">
+             <property name="text">
+              <string>Добавить загрузку ядер в скрипт</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="ramSWScript">
+          <property name="text">
+           <string>Генерировать скрипт для загрузки  в ОЗУ по SpaceWire</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="kernelScript">
+          <property name="text">
+           <string>Генерировать скрипт для загрузки ядер</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QCheckBox" name="romRS232Script">
+        <widget class="QLabel" name="label">
          <property name="text">
-          <string>Генерировать скрипт для загрузки по RS232</string>
+          <string>Максимальный размер зоны ПЗУ для загрузочного файла, байт (hex)</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="romSWScript">
-         <property name="text">
-          <string>Генерировать скрипт для загрузки по SpaceWire</string>
+        <widget class="QSpinBox" name="sectorSize">
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::PlusMinus</enum>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="romKernelsFpoScript">
-         <property name="text">
-          <string>Добавить загрузку ядер в скрипт</string>
+         <property name="minimum">
+          <number>262144</number>
+         </property>
+         <property name="maximum">
+          <number>26214400</number>
+         </property>
+         <property name="singleStep">
+          <number>262144</number>
+         </property>
+         <property name="stepType">
+          <enum>QAbstractSpinBox::DefaultStepType</enum>
+         </property>
+         <property name="value">
+          <number>262144</number>
+         </property>
+         <property name="displayIntegerBase">
+          <number>16</number>
          </property>
         </widget>
        </item>
       </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QCheckBox" name="ramSWScript">
-      <property name="text">
-       <string>Генерировать скрипт для загрузки  в ОЗУ по SpaceWire</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QCheckBox" name="kernelScript">
-      <property name="text">
-       <string>Генерировать скрипт для загрузки ядер</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>261</y>
-     <width>354</width>
-     <height>60</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_3">
-    <item>
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Максимальный размер зоны ПЗУ для загрузочного файла, байт (hex)</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QSpinBox" name="sectorSize">
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::PlusMinus</enum>
-      </property>
-      <property name="minimum">
-       <number>262144</number>
-      </property>
-      <property name="maximum">
-       <number>26214400</number>
-      </property>
-      <property name="singleStep">
-       <number>262144</number>
-      </property>
-      <property name="stepType">
-       <enum>QAbstractSpinBox::DefaultStepType</enum>
-      </property>
-      <property name="value">
-       <number>262144</number>
-      </property>
-      <property name="displayIntegerBase">
-       <number>16</number>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="what">
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+     </item>
+     <item row="3" column="0">
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QLineEdit" name="loadPath"/>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="loadbtn">
+         <property name="text">
+          <string>Путь загрузки</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLineEdit" name="kernelPath"/>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="kernelbtn">
+         <property name="text">
+          <string>Путь к ядрам</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="4" column="0">
+      <widget class="QPushButton" name="ok">
+       <property name="text">
+        <string>ОК</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

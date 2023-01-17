@@ -16,10 +16,11 @@ public:
     explicit OptionWindow(QWidget *parent = nullptr);
     ~OptionWindow();
     void initializeSettings();
+public slots:
+
 private slots:
     void editSettings();
-    void editStorage(QString value);
-    void message(const MessageCategory& cat, const QString& what);
+    void editStorage(int value);
     void on_kernelbtn_clicked();
     void on_loadbtn_clicked();
 private:
