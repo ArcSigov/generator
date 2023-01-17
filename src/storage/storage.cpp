@@ -51,11 +51,12 @@ void Storage::calcRom()
         }
         else
         {
-            emit sendMessage(MessageCategory::error,"Файл " + it->genericName() + " больше максимально заданного размера");
+            emit sendMessage(MessageCategory::error,"Файл " + it->genericName() + " больше максимально заданного размера в 0x" + QString::number(_settings.max_rom_section_size,16) +", измените максимальный размер в настройках");
             return;
         }
     }
     emit sendMessage(MessageCategory::update);
+    emit sendMessage(MessageCategory::dataReady);
 }
 
 
