@@ -61,23 +61,13 @@ add_executable(generator    src/main.cpp
                             src/manager/manager.h
                             src/manager/filemanager.h
                             src/manager/filemanager.cpp
-#                            src/manager/batchmanager.h
-#                            src/manager/batchmanager.cpp
                             src/dataprocessor/sre/sreprocessor.h
                             src/dataprocessor/sre/sreprocessor.cpp
                             src/dataprocessor/dataprocessor.h
                             src/dataprocessor/tbl/tblprocessor.cpp
                             src/dataprocessor/tbl/tblprocessor.h
-#                            src/dataprocessor/ini/iniprocessor.cpp
-#                            src/dataprocessor/ini/iniprocessor.h
-#                            src/dataprocessor/batch/batchprocessor.cpp
-#                            src/dataprocessor/batch/batchprocessor.h
-#                            src/dataprocessor/batchini/batchiniprocessor.cpp
-#                            src/dataprocessor/batchini/batchiniprocessor.h
                             src/dataprocessor/cfg/cfgprocessor.cpp
                             src/dataprocessor/cfg/cfgprocessor.h
-#                            src/dataprocessor/batchcfg/batchcfgprocessor.cpp
-#                            src/dataprocessor/batchcfg/batchcfgprocessor.h
                             src/gui/optionwindow/optionwindow.h
                             src/gui/optionwindow/optionwindow.cpp
                             src/gui/optionwindow/optionwindow.ui
