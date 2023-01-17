@@ -5,7 +5,7 @@
 #include <QThread>
 #include <QTextCodec>
 #include "messages.h"
-#include "filemanager.h"
+
 
 
 int main(int argc, char *argv[])
