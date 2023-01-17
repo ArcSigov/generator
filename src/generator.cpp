@@ -1,11 +1,8 @@
 #include "generator.h"
 #include <QDebug>
 #include "tblprocessor.h"
-//#include "batchiniprocessor.h"
-//#include "batchcfgprocessor.h"
 #include "txtdataprocessor.h"
 #include "filemanager.h"
-#include "batchmanager.h"
 #include "sreprocessor.h"
 #include "cfgprocessor.h"
 
