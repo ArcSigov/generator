@@ -2,6 +2,7 @@
 #include "ui_optionwindow.h"
 #include <QFileDialog>
 #include <QRadioButton>
+#include <QSpinBox>
 #include <QLayout>
 #include <QDebug>
 
@@ -12,9 +13,8 @@ OptionWindow::OptionWindow(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->ok,          &QPushButton::clicked,       this, &OptionWindow::editSettings);
-    connect(ui->sectorSize,  &QSpinBox::textChanged,      this, &OptionWindow::editStorage);
+    connect(ui->sectorSize,  SIGNAL(valueChanged(int)),   this, SLOT(editStorage(int)));
     connect(ui->ok,          &QPushButton::clicked,       this, &OptionWindow::close);
-    connect(Storage::load(), &Storage::sendMessage,       this, &OptionWindow::message);
 
     ui->loadPath->setText(Storage::load()->options().loadpath);
     ui->kernelPath->setText(Storage::load()->options().kernelpath);
@@ -23,8 +23,7 @@ OptionWindow::OptionWindow(QWidget *parent) :
     ui->romRS232Script->setChecked(true);
     ui->romKernelsFpoScript->setChecked(true);
     ui->kernelScript->setChecked(true);
-    ui->what->setVisible(false);
-    ui->what->setStyleSheet("color: red");
+
 
     QHBoxLayout *vbox = new QHBoxLayout(ui->blocksBox);
     for (const auto& it : Storage::load()->cfg().blockList())
@@ -95,23 +94,8 @@ void OptionWindow::on_loadbtn_clicked()
     ui->loadPath->setText(QFileDialog::getExistingDirectory(this,ui->loadbtn->text()));
 }
 
-void OptionWindow::editStorage(QString value)
+void OptionWindow::editStorage(int value)
 {
-    Storage::load()->options().max_rom_section_size = value.toUInt(nullptr,16);
+    Storage::load()->options().max_rom_section_size = value;
     Storage::load()->calcRom();
-}
-
-void OptionWindow::message(const MessageCategory& cat,const QString& what)
-{
-    if (!what.isEmpty())
-    {
-        ui->what->setVisible(true);
-        ui->what->setText(what);
-        ui->sectorSize->setStyleSheet("color: red");
-    }
-    else
-    {
-        ui->what->setVisible(false);
-        ui->sectorSize->setStyleSheet("color: black");
-    }
 }
