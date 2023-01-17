@@ -58,7 +58,6 @@ void MainWindow::on_rem_triggered()
 void MainWindow::on_dob_triggered()
 {
     ui->tableView->model()->insertRows(ui->tableView->model()->rowCount(),1);
-    message(MessageCategory::dataReady);
 }
 
 void MainWindow::on_Open_triggered()
@@ -76,6 +75,7 @@ void MainWindow::message(const MessageCategory& category,const QString& text)
 {
     static QPalette p;
     ui->progressBar->setPalette(p);
+    status->clear();
     switch (category)
     {
     //!< первоначальная настройка
@@ -125,6 +125,8 @@ void MainWindow::message(const MessageCategory& category,const QString& text)
         ui->Save->setEnabled(true);
         ui->Save_as->setEnabled(true);
         ui->tableView->setVisible(true);
+        ui->textBrowser->setVisible(false);
+        ui->textBrowser->clear();
         optionWindow->initializeSettings();
         static_cast<TableModel*>(ui->tableView->model())->resetModel();
         break;
@@ -139,10 +141,10 @@ void MainWindow::message(const MessageCategory& category,const QString& text)
     //!< при генерации ошибок
     case MessageCategory::error:
     {
-        ui->textBrowser->setVisible(true);
-        p.setColor(QPalette::Highlight,Qt::red);
-        ui->textBrowser->setTextColor(Qt::red);
-        break;
+        ui->generate->setEnabled(false);
+        status->setStyleSheet("color:red");
+        status->setText(text);
+        return;
     }
     //!< предупреждения
     case MessageCategory::warning:
