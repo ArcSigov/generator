@@ -120,8 +120,7 @@
 			}			
 		],
 		"base_rom_addr": "0xb0200000",
-		"cfg_rom_addr":  "b7f80000",
-		"comline_rom"  : "bis_comline_rom.cmd"		
+		"cfg_rom_addr":  "b7f80000"		
 	},
 	{
 		"block" : "BCVM",
@@ -268,8 +267,7 @@
 			}				
 		],
 		"base_rom_addr": "0xb0200000",
-		"cfg_rom_addr" : "b7f80000",
-		"comline_rom"  : "bis_comline_rom.cmd"		
+		"cfg_rom_addr" : "b7f80000"	
 	},
 	{
 		"block" : "BGS",
@@ -416,7 +414,6 @@
 			}					
 		],		
 		"base_rom_addr": "0xbc200000",
-		"cfg_rom_addr":  "bfc80000",
-		"comline_rom"  : "bgs_comline_rom.cmd"		
+		"cfg_rom_addr":  "bfc80000"	
 	}
 ]
