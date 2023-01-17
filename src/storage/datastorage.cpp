@@ -3,7 +3,7 @@
 #include <QDebug>
 
 QVariant DataStorage::at(const int& column)
-{
+{   
     switch (column)
     {
         case IS_CHECKED:  return isChecked;
@@ -81,7 +81,7 @@ void DataStorage::set(const QVariant& v, int column)
     switch (column)
     {
         case IS_CHECKED:  isChecked = v.toBool();      break;
-        case MODULE_NUM:  m_num = v.toUInt();          break;
+        case MODULE_NUM:  m_num = v.toString();        break;
         case ID_DATE:     date   = v.toDate();         break;
         case VERSION:     version = v.toUInt();        break;
         case REVISION:    revision = v.toUInt();       break;

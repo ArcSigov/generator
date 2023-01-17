@@ -4,15 +4,14 @@
 #include <QVariant>
 #include <QDate>
 #include <QFileInfo>
-
-#include "tablerowprop.h"
+#include <QVector>
 #include <algorithm>
 
 
 class DataStorage
 {
     bool    isChecked{true};
-    size_t  m_num{0};
+    QString  m_num;
     QString f_path{};
     QDate   date{QDate::currentDate()};
     size_t  version{0};

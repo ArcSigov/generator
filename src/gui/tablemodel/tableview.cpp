@@ -36,7 +36,7 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:
         case Qt::EditRole:
         {
-            if (index.column() == RAM_ADDR || index.column() == MODULE_NUM || index.column() == CRC)
+            if (index.column() == RAM_ADDR || index.column() == CRC)
                 return QString::number(s.at(index.column()).toUInt(),16);
             else
                 return s.at(index.column());
@@ -61,7 +61,7 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
     if (role == Qt::EditRole)
     {
         auto& s = Storage::load()->data().at(index.row());
-        if (index.column() == RAM_ADDR || index.column() == MODULE_NUM || index.column() == CRC)
+        if (index.column() == RAM_ADDR || index.column() == CRC)
         {
             auto v = value.toString().toUInt(nullptr,16);
             s.set(QVariant(v),index.column());

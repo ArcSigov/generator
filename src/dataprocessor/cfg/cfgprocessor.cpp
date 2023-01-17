@@ -16,11 +16,14 @@ void CfgDataProcessor::process()
 
     for (const auto& it : Storage::load()->data())
     {
-          auto m_num = it.at(MODULE_NUM).toUInt();
+          auto m_nums = it.at(MODULE_NUM).toString().split(',');
           auto p_num = it.at(PART_N).toUInt();
-          hash[m_num].part_addr_rom[p_num] = it.romAddr();
-          hash[m_num].part_addr_ram[p_num] = it.at(RAM_ADDR).toUInt();
-          hash[m_num].part_size[p_num]     = it.fileSize();
+          for (const auto& m_num: m_nums)
+          {
+            hash[m_num.toUInt(nullptr,16)].part_addr_rom[p_num] = it.romAddr();
+            hash[m_num.toUInt(nullptr,16)].part_addr_ram[p_num] = it.at(RAM_ADDR).toUInt();
+            hash[m_num.toUInt(nullptr,16)].part_size[p_num]     = it.fileSize();
+          }
     }
 
     for (auto it = hash.begin(); it != hash.end();it++)
