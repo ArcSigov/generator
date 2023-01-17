@@ -93,8 +93,8 @@ bool TableModel::insertRows(int row, int count, const QModelIndex &parent)
         if ( Storage::load()->data().size() <= static_cast<size_t>(row))
         {
              Storage::load()->data().push_back(DataStorage());
-             Storage::load()->calcRom();
              Storage::load()->sort();
+             Storage::load()->calcRom();
         }
     endInsertRows();
     resetModel();

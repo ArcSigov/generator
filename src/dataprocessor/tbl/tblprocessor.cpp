@@ -82,9 +82,9 @@ void TblDataProcessor::readTbl()
 
     if (storage->data().size())
     {
+        emit sendMessage(MessageCategory::dataReady);
         storage->sort();
         storage->calcRom();
-        emit sendMessage(MessageCategory::dataReady);
     }
 }
 
