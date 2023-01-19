@@ -44,7 +44,16 @@ bool DataStorage::isValid(const int &column)
     switch (column)
     {
         case IS_CHECKED:    return false;
-        case MODULE_NUM:    return m_num < 0x25 || m_num > 0x49;
+        case MODULE_NUM:
+        {
+            for (const auto &m: m_num.split(','))
+            {
+                auto val = m.toUInt(nullptr,16);
+                if (val < 0x25 || val > 0x49)
+                    return true;
+            }
+            return false;
+        };
         case FILE_PATH:     return f_path.isEmpty();
         case ID_DATE:       return date.isNull();
         case VERSION:       return false;
@@ -62,7 +71,16 @@ bool DataStorage::isValid(const int &column) const
     switch (column)
     {
     case IS_CHECKED:    return false;
-    case MODULE_NUM:    return m_num < 0x25 || m_num > 0x49;
+    case MODULE_NUM:
+    {
+        for (const auto &m: m_num.split(','))
+        {
+            auto val = m.toUInt(nullptr,16);
+            if (val < 0x25 || val > 0x49)
+                return true;
+        }
+        return false;
+    }
     case FILE_PATH:     return f_path.isEmpty();
     case ID_DATE:       return date.isNull();
     case VERSION:       return false;

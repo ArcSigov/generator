@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent):
 
     connect(ui->options,    &QAction::triggered,             optionWindow,&OptionWindow::show);
     connect(Storage::load(),&Storage::sendMessage,           this,&MainWindow::message);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
+    connect(ui->tableView->horizontalHeader(),  &QHeaderView::sectionDoubleClicked, this, &MainWindow::removeRowData);
 }
 
 MainWindow::~MainWindow()
@@ -160,5 +161,12 @@ void MainWindow::message(const MessageCategory& category,const QString& text)
 void MainWindow::on_generate_triggered()
 {
     emit generateActive();
+}
+
+void MainWindow::removeRowData(int v)
+{
+    auto list = ui->tableView->selectionModel()->selection().indexes();
+    for (const auto& index:list)
+        ui->tableView->model()->setData(index,{});
 }
 
