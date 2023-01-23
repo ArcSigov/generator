@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QStyle>
 #include <QPalette>
+#include <QMenu>
 
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
@@ -30,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent):
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setModel(new TableModel(this));
+    ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
 
     ui->statusBar->addWidget(status);
     ui->statusBar->setVisible(true);
@@ -37,7 +39,16 @@ MainWindow::MainWindow(QWidget *parent):
 
     connect(ui->options,    &QAction::triggered,             optionWindow,&OptionWindow::show);
     connect(Storage::load(),&Storage::sendMessage,           this,&MainWindow::message);                       ///< Соединенение главного окна с генератором с уведомлением о выборе файла для записи
-    connect(ui->tableView->horizontalHeader(),  &QHeaderView::sectionDoubleClicked, this, &MainWindow::removeRowData);
+
+    QMenu* menu = new QMenu(this);
+    QAction* remove = new QAction("Очистить выделенное",this);
+    QAction* defval = new QAction("Установить по умолчанию",this);
+    menu->addAction(remove);
+    menu->addAction(defval);
+    connect(remove, &QAction::triggered,this,&MainWindow::clearRowData);
+    connect(defval, &QAction::triggered,this,&MainWindow::defaultRowData);
+    connect(ui->tableView,&QTableView::customContextMenuRequested,this,&MainWindow::menuRequested);
+
 }
 
 MainWindow::~MainWindow()
@@ -163,10 +174,66 @@ void MainWindow::on_generate_triggered()
     emit generateActive();
 }
 
-void MainWindow::removeRowData(int v)
+void MainWindow::clearRowData(bool flag)
 {
-    auto list = ui->tableView->selectionModel()->selection().indexes();
-    for (const auto& index:list)
-        ui->tableView->model()->setData(index,{});
+    if (!flag)
+    {
+        auto list = ui->tableView->selectionModel()->selection().indexes();
+        for (const auto& index:list)
+            ui->tableView->model()->setData(index,{});
+    }
+}
+
+void MainWindow::defaultRowData(bool flag)
+{
+    if (!flag)
+    {
+        auto list = ui->tableView->selectionModel()->selection().indexes();
+        for (const auto& index:list)
+        {
+            switch (index.column())
+            {
+                case  IS_CHECKED:
+                    ui->tableView->model()->setData(index,true);
+                    break;
+                case  MODULE_NUM:
+                    ui->tableView->model()->setData(index,"25");
+                    break;
+                case  ID_DATE:
+                    ui->tableView->model()->setData(index,QDate::currentDate());
+                    break;
+                case  VERSION:
+                    ui->tableView->model()->setData(index,1);
+                    break;
+                case  REVISION:
+                    ui->tableView->model()->setData(index,1);
+                    break;
+                case  RAM_ADDR:
+                    ui->tableView->model()->setData(index,"0xa00b0000");
+                    break;
+                case  CRC:
+                case  PART_N:
+                case  FILE_PATH:
+                case  DESCRIPTION:
+                    break;
+                default:break;
+            }
+        }
+    }
+}
+
+
+
+void MainWindow::menuRequested(QPoint pos)
+{
+    auto childs = this->children();
+    for (const auto& child:childs)
+    {
+        auto menu = dynamic_cast<QMenu*>(child);
+        if (menu)
+        {
+            menu->popup(ui->tableView->viewport()->mapToGlobal(pos));
+        }
+    }
 }
 

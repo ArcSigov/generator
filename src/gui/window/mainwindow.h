@@ -30,7 +30,9 @@ private slots:
     void on_Open_triggered();
     void on_Save_triggered();
     void on_generate_triggered();
-    void removeRowData(int v);
+    void clearRowData(bool flag);
+    void defaultRowData(bool flag);
+    void menuRequested(QPoint pos);
 public slots:
     void message(const MessageCategory& category = MessageCategory::notify, const QString& text = " ");
 private:
