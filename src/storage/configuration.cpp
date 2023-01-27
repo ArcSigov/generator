@@ -81,18 +81,18 @@ SoftLoad Configuration::getCfg(const size_t& la_num)
                     s.kernel_addr_ram  = cfg.toObject()["kernel_addr_ram"].toString().toUInt(nullptr,16);
                     s.kernel_addr_rom  = cfg.toObject()["kernel_addr_rom"].toString().toUInt(nullptr,16);
                     s.kernel_size      = cfg.toObject()["kernel_size"].toString().toUInt(nullptr,16);
-                    s.part_addr_ram[0] = cfg.toObject()["part1_addr_ram"].toString().toUInt(nullptr,16);
-                    s.part_addr_rom[0] = cfg.toObject()["part1_addr_rom"].toString().toUInt(nullptr,16);
-                    s.part_size[0]     = cfg.toObject()["part1_size"].toString().toUInt(nullptr,16);
-                    s.part_addr_ram[1] = cfg.toObject()["part2_addr_ram"].toString().toUInt(nullptr,16);
-                    s.part_addr_rom[1] = cfg.toObject()["part2_addr_rom"].toString().toUInt(nullptr,16);
-                    s.part_size[1]     = cfg.toObject()["part2_size"].toString().toUInt(nullptr,16);
-                    s.part_addr_ram[2] = cfg.toObject()["part3_addr_ram"].toString().toUInt(nullptr,16);
-                    s.part_addr_rom[2] = cfg.toObject()["part3_addr_rom"].toString().toUInt(nullptr,16);
-                    s.part_size[2]     = cfg.toObject()["part3_size"].toString().toUInt(nullptr,16);
-                    s.part_addr_ram[3] = cfg.toObject()["config_addr_ram"].toString().toUInt(nullptr,16);
-                    s.part_addr_rom[3] = cfg.toObject()["config_addr_rom"].toString().toUInt(nullptr,16);
-                    s.part_size[3]     = cfg.toObject()["config_size"].toString().toUInt(nullptr,16);
+                    s.part1_addr_ram   = cfg.toObject()["part1_addr_ram"].toString().toUInt(nullptr,16);
+                    s.part1_addr_rom   = cfg.toObject()["part1_addr_rom"].toString().toUInt(nullptr,16);
+                    s.part1_size       = cfg.toObject()["part1_size"].toString().toUInt(nullptr,16);
+                    s.part2_addr_ram   = cfg.toObject()["part2_addr_ram"].toString().toUInt(nullptr,16);
+                    s.part2_addr_rom   = cfg.toObject()["part2_addr_rom"].toString().toUInt(nullptr,16);
+                    s.part2_size       = cfg.toObject()["part2_size"].toString().toUInt(nullptr,16);
+                    s.part3_addr_ram   = cfg.toObject()["part3_addr_ram"].toString().toUInt(nullptr,16);
+                    s.part3_addr_rom   = cfg.toObject()["part3_addr_rom"].toString().toUInt(nullptr,16);
+                    s.part3_size       = cfg.toObject()["part3_size"].toString().toUInt(nullptr,16);
+                    s.config_addr_ram  = cfg.toObject()["config_addr_ram"].toString().toUInt(nullptr,16);
+                    s.config_addr_rom  = cfg.toObject()["config_addr_rom"].toString().toUInt(nullptr,16);
+                    s.config_size      = cfg.toObject()["config_size"].toString().toUInt(nullptr,16);
                     return s;
                 }
             }

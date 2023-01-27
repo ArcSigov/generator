@@ -1,11 +1,11 @@
 #pragma once
 
-#include <QString>
-#include "datastorage.h"
+#include <QStringList>
 #include <map>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <vector>
 
 
 struct kernel_t
@@ -21,9 +21,18 @@ struct SoftLoad
     unsigned long kernel_addr_rom{0xffffffff};
     unsigned long kernel_addr_ram{0xa0040000};
     unsigned long kernel_size{0x50000};
-    unsigned long part_addr_rom[4]{0xffffffff,0xffffffff,0xffffffff,0xffffffff};
-    unsigned long part_addr_ram[4]{0xa00a0000,0xffffffff,0xffffffff,0xffffffff};
-    unsigned long part_size[4]{0xffffffff,0xffffffff,0xffffffff,0xffffffff};
+    unsigned long config_addr_rom{0xffffffff};
+    unsigned long config_addr_ram{0xffffffff};
+    unsigned long config_size{0xffffffff};
+    unsigned long part1_addr_rom{0xffffffff};
+    unsigned long part1_addr_ram{0xffffffff};
+    unsigned long part1_size{0xffffffff};
+    unsigned long part2_addr_rom{0xffffffff};
+    unsigned long part2_addr_ram{0xffffffff};
+    unsigned long part2_size{0xffffffff};
+    unsigned long part3_addr_rom{0xffffffff};
+    unsigned long part3_addr_ram{0xffffffff};
+    unsigned long part3_size{0xffffffff};
 };
 
 struct block_t

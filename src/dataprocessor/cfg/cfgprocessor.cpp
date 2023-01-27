@@ -8,7 +8,7 @@
 void CfgDataProcessor::process()
 {
     QStringList str;
-    QByteArray data;
+    QByteArrayList list;
     str.push_back(file_header);
 
     std::map<size_t,SoftLoad> hash;
@@ -20,39 +20,64 @@ void CfgDataProcessor::process()
           auto p_num = it.at(PART_N).toUInt();
           for (const auto& m_num: m_nums)
           {
-            hash[m_num.toUInt(nullptr,16)].part_addr_rom[p_num] = it.romAddr();
-            hash[m_num.toUInt(nullptr,16)].part_addr_ram[p_num] = it.at(RAM_ADDR).toUInt();
-            hash[m_num.toUInt(nullptr,16)].part_size[p_num]     = it.fileSize();
+              switch(p_num)
+              {
+                case 0:
+                    hash[m_num.toUInt(nullptr,16)].config_addr_rom = it.romAddr();
+                    hash[m_num.toUInt(nullptr,16)].config_addr_ram = it.at(RAM_ADDR).toUInt();
+                    hash[m_num.toUInt(nullptr,16)].config_size     = it.fileSize();
+                    break;
+                case 1:
+                    hash[m_num.toUInt(nullptr,16)].part1_addr_rom = it.romAddr();
+                    hash[m_num.toUInt(nullptr,16)].part1_addr_ram = it.at(RAM_ADDR).toUInt();
+                    hash[m_num.toUInt(nullptr,16)].part1_size     = it.fileSize();
+                    break;
+                case 2:
+                    hash[m_num.toUInt(nullptr,16)].part2_addr_rom = it.romAddr();
+                    hash[m_num.toUInt(nullptr,16)].part2_addr_ram = it.at(RAM_ADDR).toUInt();
+                    hash[m_num.toUInt(nullptr,16)].part2_size     = it.fileSize();
+                    break;
+                case 3:
+                    hash[m_num.toUInt(nullptr,16)].part3_addr_rom = it.romAddr();
+                    hash[m_num.toUInt(nullptr,16)].part3_addr_ram = it.at(RAM_ADDR).toUInt();
+                    hash[m_num.toUInt(nullptr,16)].part3_size     = it.fileSize();
+                    break;
+              }
           }
+          hash[0xff] = SoftLoad();
+          hash[0xff].kernel_addr_ram = 0xffffffff;
+          hash[0xff].kernel_size = 0xffffffff;
     }
 
     for (auto it = hash.begin(); it != hash.end();it++)
     {
-       data.append((char*)&it->second,sizeof(SoftLoad));
+       list.push_back(QByteArray((char*)&it->second,16));
+       list.push_back(QByteArray((char*)&it->second+16,16));
+       list.push_back(QByteArray((char*)&it->second+32,16));
+       list.push_back(QByteArray((char*)&it->second+48,16));
        str.push_back("\t{ 0x"+ QString::number(it->second.GA,16).toUpper().rightJustified(4,'0'));
        str.push_back(", 0x"  + QString::number(it->second.LA,16).rightJustified(4,'0'));
        str.push_back(", 0x"  + QString::number(it->second.kernel_addr_rom,16));
        str.push_back(", 0x"  + QString::number(it->second.kernel_addr_ram,16));
        str.push_back(", 0x"  + QString::number(it->second.kernel_size,16).rightJustified(8,'0'));
-       for (auto j = 0 ; j < 4 ; j++)
-       {
-           str.push_back(", 0x"  + QString::number(it->second.part_addr_rom[j],16));
-           str.push_back(", 0x"  + QString::number(it->second.part_addr_ram[j],16));
-           str.push_back(", 0x"  + QString::number(it->second.part_size[j],16).rightJustified(8,'0'));
-       }
+       str.push_back(", 0x"  + QString::number(it->second.config_addr_rom,16));
+       str.push_back(", 0x"  + QString::number(it->second.config_addr_ram,16));
+       str.push_back(", 0x"  + QString::number(it->second.config_size,16).rightJustified(8,'0'));
+       str.push_back(", 0x"  + QString::number(it->second.part1_addr_rom,16));
+       str.push_back(", 0x"  + QString::number(it->second.part1_addr_ram,16));
+       str.push_back(", 0x"  + QString::number(it->second.part1_size,    16).rightJustified(8,'0'));
+       str.push_back(", 0x"  + QString::number(it->second.part2_addr_rom,16));
+       str.push_back(", 0x"  + QString::number(it->second.part2_addr_ram,16));
+       str.push_back(", 0x"  + QString::number(it->second.part2_size,16).rightJustified(8,'0'));
+       str.push_back(", 0x"  + QString::number(it->second.part3_addr_rom,16));
+       str.push_back(", 0x"  + QString::number(it->second.part3_addr_ram,16));
+       str.push_back(", 0x"  + QString::number(it->second.part3_size,16).rightJustified(8,'0'));
        str.push_back("},\r\n");
     }
-    str.push_back(last_str);
-    data.append(sizeof(SoftLoad),static_cast<char>(255));
-
 
     if (manager)
     {
-        QByteArrayList list;
-        QStringList srec;
-        for (auto it = data.begin(); it < data.end(); it+=16)
-            list.push_back(QByteArray(it,16));
-
+        QStringList srec;       
         static_cast<SreProcessor*>(sreprocessor)->write_sre(Storage::load()->cfg().cfgRomAddr(),list,srec);
         srec.push_back("S70500000000FA\r\n");
 
