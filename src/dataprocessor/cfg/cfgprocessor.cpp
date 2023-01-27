@@ -42,6 +42,7 @@ void CfgDataProcessor::process()
                     hash[m_num.toUInt(nullptr,16)].part3_addr_ram = it.at(RAM_ADDR).toUInt();
                     hash[m_num.toUInt(nullptr,16)].part3_size     = it.fileSize();
                     break;
+                default:break;
               }
           }
           hash[0xff] = SoftLoad();
@@ -51,10 +52,11 @@ void CfgDataProcessor::process()
 
     for (auto it = hash.begin(); it != hash.end();it++)
     {
-       list.push_back(QByteArray((char*)&it->second,16));
-       list.push_back(QByteArray((char*)&it->second+16,16));
-       list.push_back(QByteArray((char*)&it->second+32,16));
-       list.push_back(QByteArray((char*)&it->second+48,16));
+       list.push_back(QByteArray(static_cast<char*>(static_cast<void*>(&it->second)),16));
+       list.push_back(QByteArray(static_cast<char*>(static_cast<void*>(&it->second))+16,16));
+       list.push_back(QByteArray(static_cast<char*>(static_cast<void*>(&it->second))+32,16));
+       list.push_back(QByteArray(static_cast<char*>(static_cast<void*>(&it->second))+48,16));
+
        str.push_back("\t{ 0x"+ QString::number(it->second.GA,16).toUpper().rightJustified(4,'0'));
        str.push_back(", 0x"  + QString::number(it->second.LA,16).rightJustified(4,'0'));
        str.push_back(", 0x"  + QString::number(it->second.kernel_addr_rom,16));
