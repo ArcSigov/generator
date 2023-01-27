@@ -72,10 +72,11 @@
    </widget>
    <widget class="QMenu" name="HelpMenu">
     <property name="title">
-     <string>Помощь</string>
+     <string>Инструменты</string>
     </property>
     <addaction name="about"/>
     <addaction name="options"/>
+    <addaction name="verifi"/>
    </widget>
    <addaction name="MainMenu"/>
    <addaction name="HelpMenu"/>
@@ -176,6 +177,11 @@
   <action name="options">
    <property name="text">
     <string>Настройки</string>
+   </property>
+  </action>
+  <action name="verifi">
+   <property name="text">
+    <string>Верификация идентификаторов ПО</string>
    </property>
   </action>
  </widget>

@@ -43,10 +43,13 @@ MainWindow::MainWindow(QWidget *parent):
     QMenu* menu = new QMenu(this);
     QAction* remove = new QAction("Очистить выделенное",this);
     QAction* defval = new QAction("Установить по умолчанию",this);
+    QAction* setval = new QAction("Установить выделенное для всех ячеек в столбце",this);
     menu->addAction(remove);
     menu->addAction(defval);
+    menu->addAction(setval);
     connect(remove, &QAction::triggered,this,&MainWindow::clearRowData);
     connect(defval, &QAction::triggered,this,&MainWindow::defaultRowData);
+    connect(setval, &QAction::triggered,this,&MainWindow::setRowData);
     connect(ui->tableView,&QTableView::customContextMenuRequested,this,&MainWindow::menuRequested);
 
 }
@@ -215,7 +218,6 @@ void MainWindow::defaultRowData(bool flag)
                 case  PART_N:
                 case  FILE_PATH:
                 case  DESCRIPTION:
-                    break;
                 default:break;
             }
         }
@@ -233,7 +235,31 @@ void MainWindow::menuRequested(QPoint pos)
         if (menu)
         {
             menu->popup(ui->tableView->viewport()->mapToGlobal(pos));
+            break;
         }
     }
+}
+
+
+void MainWindow::setRowData(bool flag)
+{
+    if (!flag)
+    {
+        auto list = ui->tableView->selectionModel()->selection().indexes();
+        if (list.size() == 1)
+        {
+            auto cell = list.first();
+            for (auto i = 0; i < ui->tableView->model()->rowCount();i++)
+            {
+                auto index = ui->tableView->model()->index(i,cell.column());
+                ui->tableView->model()->setData(index,cell.data());
+            }
+        }
+    }
+}
+
+void MainWindow::on_verifi_triggered()
+{
+
 }
 
