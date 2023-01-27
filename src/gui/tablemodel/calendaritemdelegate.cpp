@@ -34,8 +34,7 @@ void CalendarDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, 
 
 void CalendarDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    Q_UNUSED(index);
-    editor->setGeometry(255,255,255,255);
+    editor->setGeometry(option.rect.x()+120,option.rect.y(),option.rect.width()*3,option.rect.height()*3);
 }
 
 void CalendarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
