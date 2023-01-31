@@ -32,6 +32,7 @@ set                        (SEARCH_DIRS
                             src/dataprocessor/batchini
                             src/dataprocessor/batchcfg
                             src/dataprocessor/sre
+                            src/dataprocessor/verify
                             )
 
 add_executable(generator    src/main.cpp
@@ -76,6 +77,8 @@ add_executable(generator    src/main.cpp
                             src/dataprocessor/txt/txtdataprocessor.h
                             src/dataprocessor/txt/swtxtdataprocessor.cpp
                             src/dataprocessor/txt/rstxtdataprocessor.cpp
+                            src/dataprocessor/verify/verifydataprocessor.h
+                            src/dataprocessor/verify/verifydataprocessor.cpp
                             )
 
 
