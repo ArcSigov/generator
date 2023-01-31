@@ -91,7 +91,7 @@ find_package(threads REQUIRED)
 find_path(Jsoncpp_INCLUDE_DIR
   NAMES json/features.h
   PATH_SUFFIXES jsoncpp
-  PATHS ${Jsoncpp_PKGCONF_INCLUDE_DIRS} # /usr/include/jsoncpp/json
+  PATHS ${Jsoncpp_PKGCONF_INCLUDE_DIRS}
 )
 
 target_include_directories(generator PRIVATE ${SEARCH_DIRS})

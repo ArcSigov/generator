@@ -24,8 +24,8 @@ MainWindow::MainWindow(QWidget *parent):
     ui->progressBar->setVisible(false);
     ui->dob->setIcon(style()->standardIcon(QStyle::SP_FileDialogStart));
     ui->rem->setIcon(style()->standardIcon(QStyle::SP_TrashIcon));
-    ui->verify->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-    ui->generate->setIcon(style()->standardIcon(QStyle::SP_DialogYesButton));
+    ui->verify->setIcon(style()->standardIcon(QStyle::SP_FileDialogInfoView));
+    ui->generate->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
     ui->tableView->setItemDelegateForColumn(IS_CHECKED,new CheckDelegate(this));
     ui->tableView->setItemDelegateForColumn(FILE_PATH,new DialogDelegate(this));
     ui->tableView->setItemDelegateForColumn(ID_DATE,new CalendarDelegate(this));
@@ -128,6 +128,7 @@ void MainWindow::message(const MessageCategory& category,const QString& text)
     case MessageCategory::stop:
     {
         ui->generate->setEnabled(true);
+        ui->rem->setEnabled(true);
         ui->Save->setEnabled(true);
         ui->Save_as->setEnabled(true);
         ui->progressBar->setVisible(false);
