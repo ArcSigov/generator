@@ -2,7 +2,6 @@
 
 
 #include <QFile>
-#include <QDebug>
 #include "manager.h"
 #include <memory>
 

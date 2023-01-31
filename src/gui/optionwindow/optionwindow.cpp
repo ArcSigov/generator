@@ -4,7 +4,6 @@
 #include <QRadioButton>
 #include <QSpinBox>
 #include <QLayout>
-#include <QDebug>
 
 OptionWindow::OptionWindow(QWidget *parent) :
     QWidget(parent),

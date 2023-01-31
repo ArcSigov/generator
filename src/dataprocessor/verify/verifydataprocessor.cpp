@@ -1,5 +1,5 @@
 #include "verifydataprocessor.h"
-#include <QDebug>
+
 
 VerifyDataProcessor::VerifyDataProcessor(QObject *parent)
     : DataProcessor{parent}

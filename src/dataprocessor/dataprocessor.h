@@ -8,7 +8,6 @@
 #pragma once
 
 #include <QVector>
-#include <QDebug>
 #include "manager.h"
 #include "storage.h"
 #include "messages.h"

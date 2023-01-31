@@ -1,6 +1,6 @@
 #include "datastorage.h"
 #include "tablerowprop.h"
-#include <QDebug>
+
 
 QVariant DataStorage::at(const int& column)
 {   

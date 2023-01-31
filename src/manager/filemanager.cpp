@@ -1,5 +1,6 @@
 #include "filemanager.h"
 #include <QDataStream>
+#include <QTextStream>
 
 FileManager::FileManager() : f(std::make_unique<QFile>())
 {

@@ -2,7 +2,6 @@
 
 
 #include <QFile>
-#include <QDebug>
 #include <QByteArray>
 
 

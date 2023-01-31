@@ -1,5 +1,4 @@
 #include "generator.h"
-#include <QDebug>
 #include "tblprocessor.h"
 #include "txtdataprocessor.h"
 #include "filemanager.h"

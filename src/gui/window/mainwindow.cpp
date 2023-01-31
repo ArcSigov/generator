@@ -5,7 +5,7 @@
 #include "checkdelegate.h"
 #include "tableview.h"
 
-#include <QDebug>
+
 #include <QLabel>
 #include <QStyle>
 #include <QPalette>
