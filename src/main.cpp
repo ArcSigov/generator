@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
     QObject::connect(&w, &MainWindow::generateActive,  &g,  &Generator::run);
     QObject::connect(&w, &MainWindow::filePathSetted,  &g,  &Generator::readTblFile);
     QObject::connect(&w, &MainWindow::saveFilePath,    &g,  &Generator::saveTblFile);
+    QObject::connect(&w, &MainWindow::verifyPathSetted,&g,  &Generator::runVerify);
 
     if (argc < 2)
     {

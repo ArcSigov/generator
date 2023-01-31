@@ -5,6 +5,7 @@
 #include "filemanager.h"
 #include "sreprocessor.h"
 #include "cfgprocessor.h"
+#include "verifydataprocessor.h"
 
 Generator::Generator(QObject *parent) : QObject(parent)
 {
@@ -15,6 +16,7 @@ Generator::Generator(QObject *parent) : QObject(parent)
     processors[new FlashSwTxtDataProcessor(this)] = &Storage::load()->options().romSW_enabled;
     processors[new FlashRsTxtDataProcessor(this)] = &Storage::load()->options().romRS232_enabled;
     processors[new RamSwTxtDataProcessor(this)]   = &Storage::load()->options().ramSW_enabled;
+    processors[new VerifyDataProcessor(this)]   = nullptr;
     processors[sre]   = nullptr;
 
     for (const auto& it : processors)
@@ -34,7 +36,7 @@ void Generator::run()
     emit sendMessage(MessageCategory::run);
     for (const auto& it :  processors)
     {
-        if(!dynamic_cast<TblDataProcessor*>(it.first))
+        if(!dynamic_cast<TblDataProcessor*>(it.first) && !dynamic_cast<VerifyDataProcessor*>(it.first))
         {
             if (it.first && (!it.second || *it.second))
                 it.first->process();
@@ -77,6 +79,26 @@ void Generator::saveTblFile(const QString &path)
             tbl->setMode(path,TblMode::write);
             tbl->process();
             break;
+        }
+    }
+}
+
+/*!
+Выполняет верификацию файла с контрольными суммами с табличными
+\param[in] &path ссылка на место сохранения файла
+*/
+void Generator::runVerify(const QString& verifyFile)
+{
+    if (verifyFile.isEmpty()) return;
+    for (const auto& it: processors)
+    {
+        auto vrf = dynamic_cast<VerifyDataProcessor*>(it.first);
+        if (vrf)
+        {
+            vrf->setPath(verifyFile);
+            emit sendMessage(MessageCategory::run);
+            vrf->process();
+            emit sendMessage(MessageCategory::stop);
         }
     }
 }

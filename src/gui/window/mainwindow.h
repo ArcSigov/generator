@@ -22,6 +22,7 @@ public:
 signals:
     void filePathSetted(const QString& path);
     void saveFilePath(const QString& path);
+    void verifyPathSetted(const QString& path);
     void generateActive();
     void rawRemoved();
 private slots:
@@ -34,7 +35,7 @@ private slots:
     void defaultRowData(bool flag);
     void setRowData(bool flag);
     void menuRequested(QPoint pos);
-    void on_verifi_triggered();
+    void on_verify_triggered();
 
 public slots:
     void message(const MessageCategory& category = MessageCategory::notify, const QString& text = " ");

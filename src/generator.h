@@ -23,6 +23,7 @@ public:
     void run();
     void readTblFile(const QString&);
     void saveTblFile(const QString&);
+    void runVerify(const QString&);
 signals:
     void tblSaveStatus(const QString& result);
     void workCompleted();

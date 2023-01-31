@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent):
     ui->progressBar->setVisible(false);
     ui->dob->setIcon(style()->standardIcon(QStyle::SP_FileDialogStart));
     ui->rem->setIcon(style()->standardIcon(QStyle::SP_TrashIcon));
+    ui->verify->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
     ui->generate->setIcon(style()->standardIcon(QStyle::SP_DialogYesButton));
     ui->tableView->setItemDelegateForColumn(IS_CHECKED,new CheckDelegate(this));
     ui->tableView->setItemDelegateForColumn(FILE_PATH,new DialogDelegate(this));
@@ -98,6 +99,7 @@ void MainWindow::message(const MessageCategory& category,const QString& text)
     {
         ui->rem->setEnabled(false);
         ui->generate->setEnabled(false);
+        ui->verify->setEnabled(false);
         ui->textBrowser->setVisible(false);
         ui->Save->setEnabled(false);
         ui->Save_as->setEnabled(false);
@@ -112,6 +114,7 @@ void MainWindow::message(const MessageCategory& category,const QString& text)
         ui->rem->setEnabled(false);
         ui->generate->setEnabled(false);
         ui->textBrowser->setVisible(true);
+        ui->textBrowser->clear();
         ui->Save->setEnabled(false);
         ui->Save_as->setEnabled(false);
         ui->progressBar->setVisible(true);
@@ -127,8 +130,6 @@ void MainWindow::message(const MessageCategory& category,const QString& text)
         ui->generate->setEnabled(true);
         ui->Save->setEnabled(true);
         ui->Save_as->setEnabled(true);
-        ui->textBrowser->setVisible(false);
-        ui->textBrowser->clear();
         ui->progressBar->setVisible(false);
         break;
     }
@@ -139,6 +140,7 @@ void MainWindow::message(const MessageCategory& category,const QString& text)
         ui->generate->setEnabled(true);
         ui->Save->setEnabled(true);
         ui->Save_as->setEnabled(true);
+        ui->verify->setEnabled(true);
         ui->tableView->setVisible(true);
         ui->textBrowser->setVisible(false);
         ui->textBrowser->clear();
@@ -149,6 +151,7 @@ void MainWindow::message(const MessageCategory& category,const QString& text)
     //!< обновление табличного состояния и строки прогресса
     case MessageCategory::update:
     {
+        ui->textBrowser->setTextColor(Qt::black);
         ui->progressBar->setValue(ui->progressBar->value()+1);
         static_cast<TableModel*>(ui->tableView->model())->resetModel();
         break;
@@ -156,10 +159,9 @@ void MainWindow::message(const MessageCategory& category,const QString& text)
     //!< при генерации ошибок
     case MessageCategory::error:
     {
-        ui->generate->setEnabled(false);
-        status->setStyleSheet("color:red");
-        status->setText(text);
-        return;
+        ui->textBrowser->setTextColor(Qt::red);
+        ui->progressBar->setStyleSheet("color:red");
+        break;
     }
     //!< предупреждения
     case MessageCategory::warning:
@@ -258,8 +260,9 @@ void MainWindow::setRowData(bool flag)
     }
 }
 
-void MainWindow::on_verifi_triggered()
-{
 
+void MainWindow::on_verify_triggered()
+{
+    emit verifyPathSetted(QFileDialog::getOpenFileName(this, tr("Открыть файл с идентификаторами"), " ", "file(*.txt),logs(*.log)"));
 }
 
