@@ -8,11 +8,13 @@
 				"pos": [
 					{
 						"GA" : 1,
-						"LA" : [37]
+						"LA" : [37],
+						"name" : "BIS_MMP1"
 					},
 					{
 						"GA" : 10,
-						"LA" : [73]
+						"LA" : [73],
+						"name" : "BIS_MMP2"
 					}
 				],			
 				"kernel_addr_rom":"0xb0000000",
@@ -35,11 +37,13 @@
 				"pos": [
 					{
 						"GA" : 2,
-						"LA" : [41]
+						"LA" : [41],
+						"name" : "BIS_MV1"
 					},
 					{
 						"GA" : 9,
-						"LA" : [69]
+						"LA" : [69],
+						"name" : "BIS_MV2"
 					}
 				],	
 				"kernel_addr_rom":"0xb0080000",
@@ -62,27 +66,33 @@
 				"pos": [
 					{
 						"GA" : 3,
-						"LA" : [45]
+						"LA" : [45],
+						"name" : "BIS_MI1"
 					},
 					{
 						"GA" : 4,
-						"LA" : [49]
+						"LA" : [49],
+						"name" : "BIS_MI2"
 					},
 					{
 						"GA" : 5,
-						"LA" : [53]
+						"LA" : [53],
+						"name" : "BIS_MI3"
 					},
 					{
 						"GA" : 6,
-						"LA" : [57]
+						"LA" : [57],
+						"name" : "BIS_MI4"
 					},
 					{
 						"GA" : 7,
-						"LA" : [61]
+						"LA" : [61],
+						"name" : "BIS_MI5"
 					},
 					{
 						"GA" : 8,
-						"LA" : [65]
+						"LA" : [65],
+						"name" : "BIS_MI6"
 					}
 				],	
 				"kernel_addr_rom":"0xb0100000",
@@ -131,11 +141,13 @@
 				"pos": [
 					{
 						"GA" : 1,
-						"LA" : [37]
+						"LA" : [37],
+						"name" : "BCVM_MMP1"
 					},
 					{
 						"GA" : 10,
-						"LA" : [73]
+						"LA" : [73],
+						"name" : "BCVM_MMP2"
 					}
 				],
 				"kernel_addr_rom":"0xb0000000",
@@ -158,10 +170,11 @@
 				"pos": [
 					{
 						"GA" : 2,
-						"LA" : [41,42]
+						"LA" : [41,42],
+						"name" : "BCVM_MVP"
 					}
 				],
-				"kernel_addr_rom":"0xb0080000",
+				"kernel_addr_rom":"0xb0180000",
 				"kernel_addr_ram":"0xa0040000",
 				"kernel_size":"0x50000",
 				"config_addr_rom":"0xffffffff",
@@ -181,11 +194,13 @@
 				"pos": [
 					{
 						"GA" : 5,
-						"LA" : [49]
+						"LA" : [53],
+						"name" : "BCVM_MI1"
 					},
 					{
 						"GA" : 6,
-						"LA" : [53]
+						"LA" : [57],
+						"name" : "BCVM_MI2"
 					}
 				],
 				"kernel_addr_rom":"0xb0100000",
@@ -208,23 +223,28 @@
 				"pos": [
 					{
 						"GA" : 3,
-						"LA" : [45]
+						"LA" : [45],
+						"name" : "BCVM_MV1"
 					},
 					{
 						"GA" : 4,
-						"LA" : [49]
+						"LA" : [49],
+						"name" : "BCVM_MV2"
 					},
 					{
 						"GA" : 7,
-						"LA" : [61]
+						"LA" : [61],
+						"name" : "BCVM_MV3"
 					},
 					{
 						"GA" : 8,
-						"LA" : [65]
+						"LA" : [65],
+						"name" : "BCVM_MV4"
 					},
 					{
 						"GA" : 9,
-						"LA" : [69]
+						"LA" : [69],
+						"name" : "BCVM_MV5"
 					}
 				],
 				"kernel_addr_rom":"0xb0080000",
@@ -278,7 +298,8 @@
 				"pos": [
 					{
 						"GA" : 1,
-						"LA" : [37,38]
+						"LA" : [37,38],
+						"name" : "BGS_MMP"
 					}
 				],
 				"kernel_addr_rom":"0xbc000000",
@@ -301,11 +322,13 @@
 				"pos": [
 					{
 						"GA" : 2,
-						"LA" : [41]
+						"LA" : [41],
+						"name" : "BGS_MK1"
 					},
 					{
 						"GA" : 9,
-						"LA" : [69]
+						"LA" : [69],
+						"name" : "BGS_MK2"
 					}
 				],
 				"kernel_addr_rom":"0xbc180000",
@@ -328,27 +351,33 @@
 				"pos": [
 					{
 						"GA" : 3,
-						"LA" : [45,46]
+						"LA" : [45,46],
+						"name" : "BGS_MG1"
 					},
 					{
 						"GA" : 4,
-						"LA" : [49,50]
+						"LA" : [49,50],
+						"name" : "BGS_MG2"
 					},
 					{
 						"GA" : 5,
-						"LA" : [53,54]				
+						"LA" : [53,54],
+						"name" : "BGS_MG3"				
 					},
 					{
 						"GA" : 6,
-						"LA" : [57,58]					
+						"LA" : [57,58],
+						"name" : "BGS_MG4"					
 					},
 					{
 						"GA" : 7,
-						"LA" : [61,62]					
+						"LA" : [61,62],
+						"name" : "BGS_MG5"					
 					},
 					{
 						"GA" : 8,
-						"LA" : [65,66]					
+						"LA" : [65,66],
+						"name" : "BGS_MG6"					
 					}
 				],
 				"kernel_addr_rom":"0xbc080000",
@@ -371,7 +400,8 @@
 				"pos": [
 					{
 						"GA" : 10,
-						"LA" : [73]
+						"LA" : [73],
+						"name" : "BGS_MI"
 					}
 				],
 				"kernel_addr_rom":"0xbc100000",
