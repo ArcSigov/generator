@@ -101,6 +101,26 @@ SoftLoad Configuration::getCfg(const size_t& la_num)
     return {};
 }
 
+QString Configuration::getLaName(const size_t& la_num)
+{
+    for (const auto& cfg : currentBlock["cfg"].toArray())
+    {
+        for (const auto& pos : cfg.toObject()["pos"].toArray())
+        {
+            for (const auto& la : pos.toObject()["LA"].toArray())
+            {
+                if (la.toInt() == la_num)
+                {
+                  return pos.toObject()["name"].toString();
+                }
+            }
+        }
+    }
+    return {};
+}
+
+
+
 QString Configuration::BlockName()
 {
    return currentBlock["block"].toString();
