@@ -7,12 +7,6 @@ enum class RecType
     S3
 };
 
-struct bitfield_t
-{
-    unsigned int hi{0};
-    unsigned int lo{0};
-};
-
 
 class SreProcessor : public DataProcessor
 {
@@ -23,6 +17,11 @@ class SreProcessor : public DataProcessor
         unsigned short red{0};
         unsigned char  date[12]={0};
         unsigned int   KS{0};
+    };
+    struct bitfield_t
+    {
+        unsigned int hi{0};
+        unsigned int lo{0};
     };
 public:
     SreProcessor(QObject* parent,const RecType& _record_type);
