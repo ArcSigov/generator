@@ -45,10 +45,10 @@ void CfgDataProcessor::process()
                 default:break;
               }
           }
-          hash[0xff] = SoftLoad();
-          hash[0xff].kernel_addr_ram = 0xffffffff;
-          hash[0xff].kernel_size = 0xffffffff;
     }
+    hash[0xff] = SoftLoad();
+    hash[0xff].kernel_addr_ram = 0xffffffff;
+    hash[0xff].kernel_size = 0xffffffff;
 
     for (auto it = hash.begin(); it != hash.end();it++)
     {
