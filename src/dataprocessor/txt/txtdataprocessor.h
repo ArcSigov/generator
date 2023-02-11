@@ -34,3 +34,11 @@ public:
     ~FlashRsTxtDataProcessor() = default;
     void process() override;
 };
+
+class IdentityDataProcessor : public DataProcessor
+{
+public:
+    IdentityDataProcessor(QObject* parent = nullptr) : DataProcessor(parent) {}
+    ~IdentityDataProcessor() = default;
+    void process() override;
+};
