@@ -5,6 +5,7 @@
 #include "sreprocessor.h"
 #include "cfgprocessor.h"
 #include "verifydataprocessor.h"
+#include "sziprocessor.h"
 
 Generator::Generator(QObject *parent) : QObject(parent)
 {
@@ -16,7 +17,9 @@ Generator::Generator(QObject *parent) : QObject(parent)
     processors[new FlashRsTxtDataProcessor(this)] = &Storage::load()->options().romRS232_enabled;
     processors[new RamSwTxtDataProcessor(this)]   = &Storage::load()->options().ramSW_enabled;
     processors[new VerifyDataProcessor(this)]   = nullptr;
+    processors[new IdentityDataProcessor(this)]   = nullptr;
     processors[sre]   = nullptr;
+    processors[new SziDataProcessor(sre,this)]= nullptr;
 
     for (const auto& it : processors)
     {
