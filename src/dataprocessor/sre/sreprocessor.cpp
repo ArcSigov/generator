@@ -1,7 +1,7 @@
 #include "sreprocessor.h"
 #include <string>
 #include <QTextCodec>
-
+#include <iostream>
 
 SreProcessor::SreProcessor(QObject *parent, const RecType& _record_type) : DataProcessor(parent),type(_record_type)
 {
@@ -17,6 +17,14 @@ SreProcessor::SreProcessor(QObject *parent, const RecType& _record_type) : DataP
     }
 }
 
+SreProcessor::~SreProcessor(){
+    for (auto& t:threads){
+        if (t.joinable()){
+            t.join();
+        }
+    }
+}
+#include <QDebug>
 /*!
 Выполняет запись бинарных данных в файл в формате S-Record
 \param[in] bynarydata путь к бинарному файлу
@@ -25,54 +33,62 @@ void SreProcessor::process()
 {
     for (auto& it : Storage::load()->data())
     {
-        if (it.at(IS_CHECKED).toBool())
-        {
-            QStringList srec;
-            QByteArrayList memory;
-
-            if (!it.genericType())
+//        threads.emplace_back([&]()
+//        {
+            if (it.at(IS_CHECKED).toBool())
             {
-                memory = manager->read(rec_size,it.at(FILE_PATH).toString());
-                if(memory.last().size() == 32) memory.push_back(0);
-                write_sre(0,memory,srec);
+                QStringList srec;
+                QByteArrayList memory;
+
+//                m.lock();
+                if (!it.genericType())
+                {
+                    memory = manager->read(rec_size,it.at(FILE_PATH).toString());
+                    if(memory.last().size() == 32) memory.push_back(0);
+                    write_sre(0,memory,srec);
+                }
+                else
+                {
+                    srec = manager->read(nullptr,it.at(FILE_PATH).toString());
+                    for (auto& it: srec) it.push_back("\r\n");
+                    srec.pop_back();
+                    memory = read_sre(srec);
+                }
+//                m.unlock();
+
+                auto crc         = 0u;
+                auto table_crc   = it.at(CRC).toUInt();
+                auto id_mem      = make_id(it);
+                auto offset_size = 0u;
+                calc_checksumm(crc,id_mem+memory);
+
+                //если табличная КС введена и она не равна рассчитанной
+                if (table_crc > 0 && table_crc != crc)
+                {
+                    offset_size = 4u;
+                    remake_id(id_mem,(table_crc - crc) - (crc > table_crc ? 1 : 0),table_crc);
+                }
+                // иначе просто записать контрольную сумму в идентификационные признаки
+                else
+                {
+                     it.set(crc,CRC);
+                     memcpy(id_mem.last().begin()+12,&crc,4);
+                }
+                write_sre(it.fileSize()-sizeof(ID_PO_TYPE) - offset_size, id_mem,srec);
+                srec.push_back(terminate_str);
+                if (it.genericType()) srec.push_back("\r\n");
+
+//                m.lock();
+                    manager->setFilePath(Storage::load()->options().loadpath + "/"+it.genericName());
+                    manager->write(srec);
+                    emit sendMessage(MessageCategory::update,"Генерация файла " + it.genericName() + " завершена");
+//                m.unlock();
+
+//                m.lock();
+//                    std::cout<<"thread=" << std::this_thread::get_id() <<" finished" << std::endl;
+//                m.unlock();
             }
-            else
-            {
-                srec = manager->read(nullptr,it.at(FILE_PATH).toString());
-                for (auto& it: srec) it.push_back("\r\n");
-                srec.pop_back();
-                memory = read_sre(srec);
-            }
-
-            auto crc         = 0u;
-            auto table_crc   = it.at(CRC).toUInt();
-            auto id_mem      = make_id(it);
-            auto offset_size = 0u;
-            calc_checksumm(crc,id_mem+memory);
-
-            //если табличная КС введена и она не равна рассчитанной
-            if (table_crc > 0 && table_crc != crc)
-            {
-                offset_size = 4u;
-                remake_id(id_mem,(table_crc - crc) - (crc > table_crc ? 1 : 0),table_crc);
-            }
-            // иначе просто записать контрольную сумму в идентификационные признаки
-            else
-            {
-                 it.set(crc,CRC);
-                 memcpy(id_mem.last().begin()+12,&crc,4);
-            }
-
-
-            write_sre(it.fileSize()-sizeof(ID_PO_TYPE) - offset_size, id_mem,srec);
-            srec.push_back(terminate_str);
-            if (it.genericType()) srec.push_back("\r\n");
-
-            manager->setFilePath(Storage::load()->options().loadpath + "/"+it.genericName());
-            manager->write(srec);
-
-            emit sendMessage(MessageCategory::update,"Генерация файла " + it.genericName() + " завершена");
-        }
+//        });
     }
 }
 
@@ -91,7 +107,7 @@ void SreProcessor::write_sre(size_t base_addr,const QByteArrayList &data, QStrin
         //!< подсчитываем количество записываемых данных (количество байт +  байт контрольной суммы + х байт записи в зависимости от типа
         auto count  = mem.size() + rec_size / 8 + 1;
         checksumm  += count + p_base_addr[0] + p_base_addr[1] + p_base_addr[2] + p_base_addr[3];
-        auto str = header+QString::number(count,16).rightJustified(2,'0').toUpper()+QString::number(base_addr,16).rightJustified(8,'0').toUpper();
+        auto str = header+QString::number(count,16).rightJustified(2,'0').toUpper()+QString::number(base_addr,16).rightJustified(rec_size == 16 ? 4 : 8,'0').toUpper();
 
         for (const auto& byte : mem)
         {

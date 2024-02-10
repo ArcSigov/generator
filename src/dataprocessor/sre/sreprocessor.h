@@ -1,5 +1,7 @@
 #include "dataprocessor.h"
-
+#include <thread>
+#include <mutex>
+#include <list>
 enum class RecType
 {
     S1,
@@ -25,11 +27,13 @@ class SreProcessor : public DataProcessor
     };
 public:
     SreProcessor(QObject* parent,const RecType& _record_type);
-    ~SreProcessor(){}
+    ~SreProcessor();
     void process() override;
     void           write_sre(size_t base_addr, const QByteArrayList &data, QStringList &out);
     QByteArrayList read_sre(const QStringList &srec);
 private:
+    std::mutex m;
+    std::list<std::thread> threads;
     size_t rec_size{0};
     RecType type{RecType::S3};
     QString header;

@@ -58,7 +58,7 @@ public:
     QStringList blockList();
     void        loadRomAddresses(QStringList &);
     void        setCurrentBlock(const QString& name= " ");   
-    QString     getLaName(const size_t& la_num);
+    int getLaName(const size_t& la_num);
 private:
     QJsonDocument qjsondocument;
     QJsonArray    qjsonarray;

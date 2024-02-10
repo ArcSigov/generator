@@ -101,7 +101,7 @@ SoftLoad Configuration::getCfg(const size_t& la_num)
     return {};
 }
 
-QString Configuration::getLaName(const size_t& la_num)
+int Configuration::getLaName(const size_t& la_num)
 {
     for (const auto& cfg : currentBlock["cfg"].toArray())
     {
@@ -111,7 +111,7 @@ QString Configuration::getLaName(const size_t& la_num)
             {
                 if (la.toInt() == la_num)
                 {
-                  return pos.toObject()["name"].toString();
+                  return pos.toObject()["GA"].toInt();
                 }
             }
         }
