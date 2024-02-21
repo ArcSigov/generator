@@ -2,6 +2,7 @@
 #include "tblprocessor.h"
 #include "txtdataprocessor.h"
 #include "filemanager.h"
+#include "sremanager.h"
 #include "sreprocessor.h"
 #include "cfgprocessor.h"
 #include "verifydataprocessor.h"
@@ -10,16 +11,17 @@
 Generator::Generator(QObject *parent) : QObject(parent)
 {
     managers.push_back(new FileManager());
-    DataProcessor* sre = new SreProcessor(this,RecType::S3);
+    managers.push_back(new SreManager());
+    DataProcessor* sre = new SreProcessor(this,managers.back());
     processors[new TblDataProcessor(this)] = nullptr;
-    processors[new CfgDataProcessor(sre,this)] = nullptr;
+    processors[new CfgDataProcessor(managers.back(),this)] = nullptr;
     processors[new FlashSwTxtDataProcessor(this)] = &Storage::load()->options().romSW_enabled;
     processors[new FlashRsTxtDataProcessor(this)] = &Storage::load()->options().romRS232_enabled;
     processors[new RamSwTxtDataProcessor(this)]   = &Storage::load()->options().ramSW_enabled;
     processors[new VerifyDataProcessor(this)]   = nullptr;
     processors[new IdentityDataProcessor(this)]   = nullptr;
     processors[sre]   = nullptr;
-    processors[new SziDataProcessor(sre,this)]= nullptr;
+    processors[new SziDataProcessor(managers.back(),this)]= nullptr;
 
     for (const auto& it : processors)
     {

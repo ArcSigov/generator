@@ -5,7 +5,7 @@
 #include <QDebug>
 
 
-SziDataProcessor::SziDataProcessor(DataProcessor* _sre,QObject *parent)
+SziDataProcessor::SziDataProcessor(Manager* _sre,QObject *parent)
     : DataProcessor{parent},sre{_sre}
 {
 
@@ -16,7 +16,6 @@ void SziDataProcessor::process()
     QStringList list;
     QByteArrayList sre_list;
     QByteArrayList sre_header;
-    SreProcessor    sre(nullptr,RecType::S1);
     list.push_back(file_header);
     auto file = "szi_" + Storage::load()->cfg().BlockName() + ".mot";
     sre_header.push_back(QByteArray(file.toStdString().c_str(),file.size()));
@@ -53,15 +52,13 @@ void SziDataProcessor::process()
     {
         manager->setFilePath(Storage::load()->options().loadpath + "/szi_" + Storage::load()->cfg().BlockName() + ".c");
         manager->write(list);
+    }
 
-        QStringList srec;
-        sre.write_sre(0,sre_header,srec);
-        sre.write_sre(0,sre_list,srec);
-        srec.push_back("S9030000FC\r\n");
-        srec[0].replace(1,1,'0');
-
-        manager->setFilePath(Storage::load()->options().loadpath +"/"+ file);
-        manager->write(srec);
+    if (sre && sre->beginWrite(Storage::load()->options().loadpath +"/"+ file))
+    {
+        sre->write("rec_type:S0",sre_header);
+        sre->write("rec_type:S1,base_addr:0",sre_list);
+        sre->endWrite();
     }
 }
 

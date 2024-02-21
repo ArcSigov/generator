@@ -1,14 +1,5 @@
 #include "dataprocessor.h"
-#include <thread>
-#include <mutex>
 #include <list>
-enum class RecType
-{
-    S1,
-    S2,
-    S3
-};
-
 
 class SreProcessor : public DataProcessor
 {
@@ -26,19 +17,12 @@ class SreProcessor : public DataProcessor
         unsigned int lo{0};
     };
 public:
-    SreProcessor(QObject* parent,const RecType& _record_type);
+    SreProcessor(QObject* parent, Manager *sre);
     ~SreProcessor();
     void process() override;
-    void           write_sre(size_t base_addr, const QByteArrayList &data, QStringList &out);
-    QByteArrayList read_sre(const QStringList &srec);
 private:
-    std::mutex m;
-    std::list<std::thread> threads;
-    size_t rec_size{0};
-    RecType type{RecType::S3};
-    QString header;
-    QString terminate_str{"S70500000000FA"};
     QByteArrayList make_id(const DataStorage& data);
     void calc_checksumm(unsigned int &crc, QByteArrayList memory);
     void remake_id(QByteArrayList& id, const size_t& res, const size_t& crc);
+    Manager* sre_manager;
 };

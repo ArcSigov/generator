@@ -83,13 +83,13 @@ void CfgDataProcessor::process()
     if (manager)
     {
         QStringList srec;       
-        static_cast<SreProcessor*>(sreprocessor)->write_sre(Storage::load()->cfg().cfgRomAddr(),list,srec);
-        srec.push_back("S70500000000FA\r\n");
-
         manager->setFilePath(Storage::load()->options().loadpath + "/cfg_" + Storage::load()->cfg().BlockName() + ".c");
         manager->write(str);
+    }
 
-        manager->setFilePath(Storage::load()->options().loadpath + "/cfg_" + Storage::load()->cfg().BlockName() + ".mot");
-        manager->write(srec);
+    if (sre && sre->beginWrite(Storage::load()->options().loadpath + "/cfg_" + Storage::load()->cfg().BlockName() + ".mot"))
+    {
+        sre->write("rec_type:S3,base_addr:"+QString::number(Storage::load()->cfg().cfgRomAddr(),16),list);
+        sre->endWrite();
     }
 }

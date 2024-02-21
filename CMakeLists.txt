@@ -63,6 +63,8 @@ add_executable(generator    src/main.cpp
                             src/manager/manager.h
                             src/manager/filemanager.h
                             src/manager/filemanager.cpp
+                            src/manager/sremanager.h
+                            src/manager/sremanager.cpp
                             src/dataprocessor/sre/sreprocessor.h
                             src/dataprocessor/sre/sreprocessor.cpp
                             src/dataprocessor/dataprocessor.h
