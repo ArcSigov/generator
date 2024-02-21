@@ -19,11 +19,11 @@ typedef struct\r\n\
 const PO_CHECKSUM po_info[]  =\r\n\
 {\r\n";
 public:
-    explicit SziDataProcessor(DataProcessor* _sre,QObject *parent = nullptr);
+    explicit SziDataProcessor(Manager* _sre,QObject *parent = nullptr);
     void process();
 signals:
 private:
-    DataProcessor* sre;
+    Manager* sre;
     int getCpu(size_t la);
 };
 
