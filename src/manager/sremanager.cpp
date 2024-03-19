@@ -18,8 +18,7 @@ QByteArrayList SreManager::read(const size_t& block_size,const QString& path )
         QTextStream s(&f);
         while (!s.atEnd())
         {
-            auto l = s.readLine();
-            l.push_back("\r\n");
+            auto l = s.readLine() + "\r\n";
             if (l.contains("S3"))
             {
                 QByteArray srec_str;
@@ -42,11 +41,7 @@ QByteArrayList SreManager::read(const size_t& block_size,const QString& path )
 bool SreManager::beginWrite(const QString& path)
 {
     f.setFileName(path);
-    if (f.open(QIODevice::WriteOnly|QIODevice::Truncate))
-    {
-        return true;
-    }
-    return false;
+    return f.open(QIODevice::WriteOnly|QIODevice::Truncate);
 }
 
 void SreManager::endWrite()
@@ -88,6 +83,28 @@ void SreManager::write(const QString& options, const QByteArrayList &data)
 
 QByteArray SreManager::read(const QString& path)
 {
+    setFilePath(path);
+    if (f.open(QIODevice::ReadOnly))
+    {
+        QByteArray out;
+        QTextStream s(&f);
+        while (!s.atEnd())
+        {
+            auto l = s.readLine() + "\r\n";
+            if (l.contains("S3"))
+            {
+                auto bytes_count = QString(l.data()+2,2).toUInt(nullptr,16) -1 - 4;
+                auto pos = 12;
+                for (auto i = 0ull; i < bytes_count;i++)
+                {
+                    out.push_back(QString(l.data()+pos,2).toUInt(nullptr,16));
+                    pos+=2;
+                }
+            }
+        }
+        f.close();
+        return out;
+    }
     return {};
 }
 QStringList SreManager::read(bool* ok,const QString& path)

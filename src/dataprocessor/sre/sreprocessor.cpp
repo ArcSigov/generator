@@ -26,12 +26,19 @@ void SreProcessor::process()
             if (!it.genericType())
             {
                 memory = manager->read(32,it.at(FILE_PATH).toString());
-                if(memory.last().size() == 32) memory.push_back(0);
+                if(memory.size() && memory.last().size() == 32) memory.push_back(0);
             }
             else
                 memory = sre_manager->read(0ull,it.at(FILE_PATH).toString());
 
-            if (sre_manager->beginWrite(Storage::load()->options().loadpath + "/"+it.genericName()))
+            if (memory.size() == 0)
+            {
+                emit sendMessage(MessageCategory::error,"Ошибка открытия файла: " + it.at(FILE_PATH).toString() + ", нет такого файла или каталога");
+                continue;
+            }
+
+
+            if (sre_manager->beginWrite(Storage::load()->options().loadpath + "/" + it.genericName()))
             {
                 auto crc         = 0u;
                 auto table_crc   = it.at(CRC).toUInt();

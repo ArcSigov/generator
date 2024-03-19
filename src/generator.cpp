@@ -11,17 +11,16 @@
 Generator::Generator(QObject *parent) : QObject(parent)
 {
     managers.push_back(new FileManager());
-    managers.push_back(new SreManager());
-    DataProcessor* sre = new SreProcessor(this,managers.back());
+    managers.push_back(new SreManager());    
     processors[new TblDataProcessor(this)] = nullptr;
     processors[new CfgDataProcessor(managers.back(),this)] = nullptr;
     processors[new FlashSwTxtDataProcessor(this)] = &Storage::load()->options().romSW_enabled;
     processors[new FlashRsTxtDataProcessor(this)] = &Storage::load()->options().romRS232_enabled;
     processors[new RamSwTxtDataProcessor(this)]   = &Storage::load()->options().ramSW_enabled;
     processors[new VerifyDataProcessor(this)]   = nullptr;
-    processors[new IdentityDataProcessor(this)]   = nullptr;
-    processors[sre]   = nullptr;
+    processors[new SreProcessor(this,managers.back())]   = nullptr;
     processors[new SziDataProcessor(managers.back(),this)]= nullptr;
+    processors[new IdentityDataProcessor(this)]   = nullptr;
 
     for (const auto& it : processors)
     {

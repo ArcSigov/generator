@@ -266,7 +266,7 @@
 		],	
 		"kernels" : [ 
 			{
-				"name" : "kernel_BCVM_MV100_02_sum.mot",
+				"name" : "kernel_BCVM_MV100_02_01_sum.mot",
 				"rom_offset": "0x0ffc0000",
 				"module" : [1,10]			
 			},

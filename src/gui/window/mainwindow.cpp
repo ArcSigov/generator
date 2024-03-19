@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent):
 
     ui->setupUi(this);
     ui->progressBar->setVisible(false);
-    ui->dob->setIcon(style()->standardIcon(QStyle::SP_FileDialogStart));
+    ui->dob->setIcon(style()->standardIcon(QStyle::SP_FileIcon ));
     ui->rem->setIcon(style()->standardIcon(QStyle::SP_TrashIcon));
     ui->verify->setIcon(style()->standardIcon(QStyle::SP_FileDialogInfoView));
     ui->generate->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
@@ -162,6 +162,7 @@ void MainWindow::message(const MessageCategory& category,const QString& text)
     {
         ui->textBrowser->setTextColor(Qt::red);
         ui->progressBar->setStyleSheet("color:red");
+        ui->progressBar->setValue(ui->progressBar->value()+1);
         break;
     }
     //!< предупреждения
