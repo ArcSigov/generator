@@ -1,3 +1,11 @@
+/*!
+\file verifydataprocessor.h
+\brief Заголовочный файл с описанием методов класса VerifyDataProcessor (выполняет сличение пользовательских данных о идентификаторах с результатами выполнения программы)
+\authors Аркадий Сигов
+Данный файл содержит в себе определения методов класса, используемых в программе
+*/
+
+
 #ifndef VERIFYDATAPROCESSOR_H
 #define VERIFYDATAPROCESSOR_H
 
