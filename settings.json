@@ -130,7 +130,8 @@
 			}			
 		],
 		"base_rom_addr": "0xb0200000",
-		"cfg_rom_addr":  "b7f80000"		
+		"cfg_rom_addr":  "b7f80000",
+		"szi_rom_addr" : "b6200000"		
 	},
 	{
 		"block" : "BCVM",
@@ -266,7 +267,7 @@
 		],	
 		"kernels" : [ 
 			{
-				"name" : "kernel_BCVM_MV100_02_sum.mot",
+				"name" : "kernel_BCVM_MV100_02_01_sum.mot",
 				"rom_offset": "0x0ffc0000",
 				"module" : [1,10]			
 			},
@@ -287,7 +288,8 @@
 			}				
 		],
 		"base_rom_addr": "0xb0200000",
-		"cfg_rom_addr" : "b7f80000"	
+		"cfg_rom_addr" : "b7f80000",	
+		"szi_rom_addr" : "b6200000"
 	},
 	{
 		"block" : "BGS",

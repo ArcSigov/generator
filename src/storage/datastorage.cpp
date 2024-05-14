@@ -116,6 +116,7 @@ void DataStorage::set(const QVariant& v, int column)
             while (generic_size % 4096 != 0 ) generic_size++;
             generic_name.push_back(info.baseName());
             generic_name.push_back(info.completeSuffix() == "elf" ? "_sum.sre" : "_sum.mot");
+            base_name = info.baseName();
             break;
         }
         default : break;
@@ -159,6 +160,15 @@ QString DataStorage::genericIniSize()
 QString DataStorage::genericName() const
 {
     return generic_name;
+}
+
+QString DataStorage::baseName() const
+{
+    return base_name;
+}
+QString DataStorage::baseName()
+{
+    return base_name;
 }
 
 size_t  DataStorage::genericType() const

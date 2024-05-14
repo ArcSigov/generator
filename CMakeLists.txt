@@ -34,6 +34,7 @@ set                        (SEARCH_DIRS
                             src/dataprocessor/sre
                             src/dataprocessor/verify
                             src/dataprocessor/szi
+                            src/dataprocessor/mot
                             )
 
 add_executable(generator    src/main.cpp
@@ -63,11 +64,15 @@ add_executable(generator    src/main.cpp
                             src/manager/manager.h
                             src/manager/filemanager.h
                             src/manager/filemanager.cpp
+                            src/manager/sremanager.h
+                            src/manager/sremanager.cpp
                             src/dataprocessor/sre/sreprocessor.h
                             src/dataprocessor/sre/sreprocessor.cpp
                             src/dataprocessor/dataprocessor.h
                             src/dataprocessor/tbl/tblprocessor.cpp
                             src/dataprocessor/tbl/tblprocessor.h
+                            src/dataprocessor/mot/motprocessor.cpp
+                            src/dataprocessor/mot/motprocessor.h
                             src/dataprocessor/cfg/cfgprocessor.cpp
                             src/dataprocessor/cfg/cfgprocessor.h
                             src/gui/optionwindow/optionwindow.h

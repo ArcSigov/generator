@@ -1,26 +1,10 @@
 #ifndef SZIPROCESSORLOCAL_H
 #define SZIPROCESSORLOCAL_H
 
-
-typedef enum
-{
-NUM_BPO,
-NUM_CONFIG,
-NUM_PARTITION_1,
-NUM_PARTITION_2,
-NUM_PARTITION_3
-} PO_NUM_TYPE;
-
-typedef enum
-{
-    CPU1 = 1,
-    CPU2 = 2
-} CPU_NUM;
-
 struct PO_CHECKSUM {
     int NUMBER_MODUL{0};
-    CPU_NUM NUMBER_CPU{CPU1};
-    PO_NUM_TYPE NUMBER_PO{NUM_BPO};
+    int NUMBER_CPU{0};
+    int NUMBER_PO{0};
     unsigned int CHECKSUM{0};
 };
 

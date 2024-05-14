@@ -36,9 +36,9 @@ const SoftLoad conf_info[]  =\r\n\
 /*module           --------  kernel ---------------    ---------- config --------------    ------------ app 1 -------------    ------------ app 2 -------------    ------------ app 3 ------------- */\r\n";
     QString last_str = "	{ 0xffff, 0xffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff}\r\n};";
 public:
-CfgDataProcessor(DataProcessor* sre,QObject* parent = nullptr) : sreprocessor(sre),DataProcessor(parent) {};
+CfgDataProcessor(Manager* sre,QObject* parent = nullptr) : sre(sre),DataProcessor(parent) {};
     ~CfgDataProcessor() = default;
     virtual void process() override;
 private:
-    DataProcessor* sreprocessor = nullptr;
+    Manager* sre = nullptr;
 };

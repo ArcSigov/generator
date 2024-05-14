@@ -15,11 +15,14 @@ public:
     QByteArrayList  read(const size_t& block_size,const QString& path = QString()) override;
     QByteArray      read(const QString& path = QString()) override;
     bool write(const QStringList &data) override;
-    bool write(const QString &data) override
+    bool write(bool* ok = nullptr,const QString &data = {}) override
     {
-
+        return false;
     }
-    void setFilePath(const QString& path) override;
-private:
-    std::unique_ptr<QFile> f;
+    virtual bool beginWrite(const QString& path) override
+    {
+        return true;
+    };
+    virtual void endWrite() override{}
+    virtual void write(const QString& options,const QByteArrayList& data) override{}
 };

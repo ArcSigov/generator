@@ -1,6 +1,5 @@
 #include "txtdataprocessor.h"
 
-
 /*!
 Выполняет генерацию загрузочного файла для интерфейса SW в ПЗУ
 */
@@ -10,6 +9,7 @@ void FlashSwTxtDataProcessor::process()
     QStringList rom_addr;
     Storage::load()->cfg().loadRomAddresses(rom_addr);
     auto cfgstr = Storage::load()->options().loadpath + "/cfg_" +Storage::load()->cfg().BlockName()+".mot\r\n";
+    auto szistr = Storage::load()->options().loadpath + "/szi_" +Storage::load()->cfg().BlockName()+".mot\r\n";
 
     for (const auto& it : Storage::load()->data())
     {
@@ -28,8 +28,12 @@ void FlashSwTxtDataProcessor::process()
     {
         formatted.push_back(it + " f 00000000 " + cfgstr);
         formatted.push_back(it + " 0 00000000 " + cfgstr);
+        if (Storage::load()->cfg().BlockName() != "BGS")
+        {
+            formatted.push_back(it + " f " + QString::number(Storage::load()->cfg().sziRomAddr(),16) + " "  + szistr);
+            formatted.push_back(it + " 0 " + QString::number(Storage::load()->cfg().sziRomAddr(),16) + " "  + szistr);
+        }
     }
-
     if (manager)
     {
         manager->setFilePath(Storage::load()->options().loadpath + "/sw_load_" + Storage::load()->cfg().BlockName() + "_rom.txt");
@@ -79,6 +83,31 @@ void RamSwTxtDataProcessor::process()
                                 it.at(FILE_PATH).toString() + "\r\n");             //abs path
         }
     }
+
+    std::sort(formatted.begin(),formatted.end(),[](const QString& current, const QString& next){
+
+        auto currentlist = current.split(" ");
+        auto nextlist = next.split(" ");
+        if (currentlist[0].toUInt(nullptr,10) ==  nextlist[0].toUInt(nullptr,10))
+        {
+            return currentlist[5].toUInt(nullptr,16) <  nextlist[5].toUInt(nullptr,16);
+        }
+        return currentlist[0].toUInt(nullptr,10) < nextlist[0].toUInt(nullptr,10);
+    });
+
+    for (auto first = formatted.begin(); first!=formatted.end();first++)
+    {
+        for (auto next = first+1; next!=formatted.end();next++)
+        {
+            if (*first == *next)
+            {
+                formatted.erase(next);
+                first = formatted.begin();
+                break;
+            }
+        }
+    }
+
     if (manager)
     {
         manager->setFilePath(Storage::load()->options().loadpath + "/sw_load_" + Storage::load()->cfg().BlockName() + "_ram.txt");

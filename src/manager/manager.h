@@ -14,6 +14,14 @@ public:
     virtual QByteArray      read(const QString& path = QString()) = 0;
     virtual QStringList     read(bool* ok = nullptr,const QString& path = QString()) = 0;
     virtual bool write(const QStringList &data) = 0;
-    virtual bool write(const QString &data) = 0;
-    virtual void setFilePath(const QString& path) = 0;
+    virtual bool write(bool*ok = nullptr,const QString& data= {}) = 0;
+    void setFilePath(const QString& path)
+    {
+        if (!path.isEmpty()) f.setFileName(path);
+    }
+    virtual bool beginWrite(const QString& path) = 0;
+    virtual void endWrite() = 0;
+    virtual void write(const QString& options,const QByteArrayList& data) = 0;    
+protected:
+    QFile f;
 };

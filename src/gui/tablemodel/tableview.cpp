@@ -80,7 +80,7 @@ Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return Qt::NoItemFlags;
 
-    if (index.column() == PART_N &&  Storage::load()->data().at(index.row()).genericType())
+    if ((index.column() == PART_N &&  Storage::load()->data().at(index.row()).genericType()))
         return Qt::NoItemFlags;
     else
         return Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
