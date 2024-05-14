@@ -7,6 +7,7 @@
 #include "cfgprocessor.h"
 #include "verifydataprocessor.h"
 #include "sziprocessor.h"
+#include "motprocessor.h"
 
 Generator::Generator(QObject *parent) : QObject(parent)
 {
@@ -18,17 +19,22 @@ Generator::Generator(QObject *parent) : QObject(parent)
     processors[new FlashRsTxtDataProcessor(this)] = &Storage::load()->options().romRS232_enabled;
     processors[new RamSwTxtDataProcessor(this)]   = &Storage::load()->options().ramSW_enabled;
     processors[new VerifyDataProcessor(this)]   = nullptr;
+    processors[new IdentityDataProcessor(this)]   = nullptr;
     processors[new SreProcessor(this,managers.back())]   = nullptr;
     processors[new SziDataProcessor(managers.back(),this)]= nullptr;
-    processors[new IdentityDataProcessor(this)]   = nullptr;
+    processors[new MotDataProcessor(this)]= nullptr;
+
+
 
     for (const auto& it : processors)
     {
-        it.first->setFileManager(managers[0]);
+        if (dynamic_cast<MotDataProcessor*>(it.first))
+           it.first->setFileManager(managers[1]);
+        else
+           it.first->setFileManager(managers[0]);
         QObject::connect(it.first, &DataProcessor::sendMessage, this, &Generator::sendMessage);
     }
 }
-
 
 /*!
 Выполняет запуск процессов генерации исходного кода, загрузочных файлов, файлов конфигурации
@@ -39,7 +45,7 @@ void Generator::run()
     emit sendMessage(MessageCategory::run);
     for (const auto& it :  processors)
     {
-        if(!dynamic_cast<TblDataProcessor*>(it.first) && !dynamic_cast<VerifyDataProcessor*>(it.first))
+        if(!dynamic_cast<TblDataProcessor*>(it.first) && !dynamic_cast<VerifyDataProcessor*>(it.first) && !dynamic_cast<MotDataProcessor*>(it.first))
         {
             if (it.first && (!it.second || *it.second))
                 it.first->process();
@@ -55,16 +61,23 @@ void Generator::run()
 void Generator::readTblFile(const QString &path)
 {
     if (path.isEmpty()) return;
+    TblDataProcessor* tbl = nullptr;
+    MotDataProcessor* mot = nullptr;
     for (const auto& it : processors)
     {
-        auto tbl = dynamic_cast<TblDataProcessor*>(it.first);
-        if (tbl)
-        {
-            tbl->setMode(path,TblMode::read);
-            tbl->process();
-            break;
-        }
+        if (!tbl)
+            tbl = dynamic_cast<TblDataProcessor*>(it.first);
+        if (!mot)
+            mot = dynamic_cast<MotDataProcessor*>(it.first);
     }
+
+    if (tbl)
+    {
+        tbl->setMode(path,TblMode::read);
+        tbl->process();
+    }
+    if (mot)
+        mot->process();
 }
 
 /*!

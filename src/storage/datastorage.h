@@ -22,6 +22,7 @@ class DataStorage
     size_t  n_part{0};
     size_t  generic_size{0};
     QString generic_name{};
+    QString base_name{};
     size_t  rom_addr{0};
 public:
     DataStorage() = default;
@@ -33,11 +34,13 @@ public:
     bool     isValid(const int& column);
     static QString  name(const int &column);
     QString genericName();
+    QString baseName();
     size_t  fileSize();
     size_t  fileSize() const;
     QString genericIniSize();
     size_t  genericType();
     QString genericName() const;
+    QString baseName() const;
     QString genericIniSize() const;
     size_t  genericType() const;
     size_t  romAddr();

@@ -19,7 +19,7 @@ void CfgDataProcessor::process()
           auto m_nums = it.at(MODULE_NUM).toString().split(',');
           auto p_num = it.at(PART_N).toUInt();
           for (const auto& m_num: m_nums)
-          {
+          {              
               switch(p_num)
               {
                 case 0:

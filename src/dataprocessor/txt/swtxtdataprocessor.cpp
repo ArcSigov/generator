@@ -9,6 +9,7 @@ void FlashSwTxtDataProcessor::process()
     QStringList rom_addr;
     Storage::load()->cfg().loadRomAddresses(rom_addr);
     auto cfgstr = Storage::load()->options().loadpath + "/cfg_" +Storage::load()->cfg().BlockName()+".mot\r\n";
+    auto szistr = Storage::load()->options().loadpath + "/szi_" +Storage::load()->cfg().BlockName()+".mot\r\n";
 
     for (const auto& it : Storage::load()->data())
     {
@@ -27,6 +28,11 @@ void FlashSwTxtDataProcessor::process()
     {
         formatted.push_back(it + " f 00000000 " + cfgstr);
         formatted.push_back(it + " 0 00000000 " + cfgstr);
+        if (Storage::load()->cfg().BlockName() != "BGS")
+        {
+            formatted.push_back(it + " f " + QString::number(Storage::load()->cfg().sziRomAddr(),16) + " "  + szistr);
+            formatted.push_back(it + " 0 " + QString::number(Storage::load()->cfg().sziRomAddr(),16) + " "  + szistr);
+        }
     }
     if (manager)
     {

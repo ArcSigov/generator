@@ -143,3 +143,8 @@ size_t Configuration::cfgRomAddr()
 {
     return currentBlock["cfg_rom_addr"].toString().toUInt(nullptr,16);
 }
+
+size_t Configuration::sziRomAddr()
+{
+    return currentBlock["szi_rom_addr"].toString().toUInt(nullptr,16);
+}

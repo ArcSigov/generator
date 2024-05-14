@@ -19,11 +19,11 @@ QByteArrayList SreManager::read(const size_t& block_size,const QString& path )
         while (!s.atEnd())
         {
             auto l = s.readLine() + "\r\n";
-            if (l.contains("S3"))
+            if (l.contains("S3") || l.contains("S1"))
             {
                 QByteArray srec_str;
                 auto bytes_count = QString(l.data()+2,2).toUInt(nullptr,16) -1 - 4;
-                auto pos = 12;
+                auto pos = l.contains("S3") ? 12 : 8;
                 for (auto i = 0ull; i < bytes_count;i++)
                 {
                     srec_str.push_back(QString(l.data()+pos,2).toUInt(nullptr,16));
@@ -91,10 +91,10 @@ QByteArray SreManager::read(const QString& path)
         while (!s.atEnd())
         {
             auto l = s.readLine() + "\r\n";
-            if (l.contains("S3"))
+            if (l.contains("S3") || l.contains("S1"))
             {
                 auto bytes_count = QString(l.data()+2,2).toUInt(nullptr,16) -1 - 4;
-                auto pos = 12;
+                auto pos = l.contains("S3") ? 12 : 8;
                 for (auto i = 0ull; i < bytes_count;i++)
                 {
                     out.push_back(QString(l.data()+pos,2).toUInt(nullptr,16));
@@ -107,6 +107,7 @@ QByteArray SreManager::read(const QString& path)
     }
     return {};
 }
+
 QStringList SreManager::read(bool* ok,const QString& path)
 {
     return {};

@@ -130,7 +130,8 @@
 			}			
 		],
 		"base_rom_addr": "0xb0200000",
-		"cfg_rom_addr":  "b7f80000"		
+		"cfg_rom_addr":  "b7f80000",
+		"szi_rom_addr" : "b6200000"		
 	},
 	{
 		"block" : "BCVM",
@@ -287,7 +288,8 @@
 			}				
 		],
 		"base_rom_addr": "0xb0200000",
-		"cfg_rom_addr" : "b7f80000"	
+		"cfg_rom_addr" : "b7f80000",	
+		"szi_rom_addr" : "b6200000"
 	},
 	{
 		"block" : "BGS",
